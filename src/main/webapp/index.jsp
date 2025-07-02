@@ -20,10 +20,8 @@ pageEncoding="UTF-8"%>
           >
             <form
               class="d-flex flex-column gap-4"
-              style="width: 23rem"
+              style="width: 32rem"
               id="login-form"
-              action="<%= request.getContextPath() %>/login-servlet"
-              method="POST"
             >
               <h3 class="h3">Sign In</h3>
 
@@ -74,11 +72,11 @@ pageEncoding="UTF-8"%>
       </div>
     </div>
     <script src="js/bootstrap.min.js"></script>
-    <!-- <script>
+    <script>
       document.addEventListener('DOMContentLoaded', () => {
         const loginForm = document.querySelector('#login-form');
         loginForm.addEventListener('submit', (ev) => {
-         ev.preventDefault();
+          ev.preventDefault();
 
           const formData = new FormData(loginForm);
           const email = formData.get('email');
@@ -90,6 +88,7 @@ pageEncoding="UTF-8"%>
           });
         });
       });
-    </script> -->
+    </script>
+    <
   </body>
 </html>
