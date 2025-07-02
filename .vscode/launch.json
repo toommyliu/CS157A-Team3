@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug PatientPortal",
+      "type": "java",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 8000,
+      "preLaunchTask": "Maven: Debug with Tomcat"
+    }
+  ]
+}
