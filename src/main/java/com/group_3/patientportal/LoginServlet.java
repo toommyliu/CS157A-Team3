@@ -14,8 +14,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "loginServlet", value = "/login-servlet")
 public class LoginServlet extends HttpServlet {
-//  public void init() {
-//  }
+  @Override
+  public void init() {
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+    } catch (ClassNotFoundException e) {
+      System.out.println("Could not load JDBC driver. Is it in the classpath?");
+      e.printStackTrace();
+    }
+  }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,8 +44,7 @@ public class LoginServlet extends HttpServlet {
     String dbPassword = "password";
 
     try {
-      java.sql.Connection con;
-      con = DriverManager.getConnection(String.format("jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false", dbName), dbUser, dbPassword);
+      java.sql.Connection con = DriverManager.getConnection(String.format("jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false", dbName), dbUser, dbPassword);
       out.println("Initial entries in table \"Student\": <br/>");
       Statement stmt = con.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM Student");
