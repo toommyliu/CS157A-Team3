@@ -1,10 +1,9 @@
-package com.group_3.patientportal;
+package com.group_3.healthlink;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import java.sql.*;
-import com.mysql.jdbc.Driver;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -44,25 +43,27 @@ public class LoginServlet extends HttpServlet {
     String dbPassword = "password";
 
     try {
-      java.sql.Connection con = DriverManager.getConnection(String.format("jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false", dbName), dbUser, dbPassword);
+      java.sql.Connection con = DriverManager.getConnection(
+          String.format("jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false", dbName), dbUser, dbPassword);
       out.println("Initial entries in table \"Student\": <br/>");
       Statement stmt = con.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM Student");
       while (rs.next()) {
-        out.println("<tr>" + "<td>" +  rs.getInt(1) + "</td>"+ "<td>" +    rs.getString(2) + "</td>"+   "<td>" + rs.getString(3) + "</td>"  + "</tr>");
+        out.println("<tr>" + "<td>" + rs.getInt(1) + "</td>" + "<td>" + rs.getString(2) + "</td>" + "<td>"
+            + rs.getString(3) + "</td>" + "</tr>");
       }
       rs.close();
       stmt.close();
       con.close();
       out.println("</table>");
       out.println("</body></html>");
-    } catch(SQLException e) {
+    } catch (SQLException e) {
       out.println("SQLException caught: " + e.getMessage());
     } catch (Exception e) {
       out.println("Exception caught: " + e.getMessage());
     }
   }
 
-//  public void destroy() {
-//  }
+  // public void destroy() {
+  // }
 }

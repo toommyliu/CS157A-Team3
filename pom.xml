@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.group_3</groupId>
-    <artifactId>patientportal</artifactId>
+    <artifactId>healthlink</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>patientportal</name>
+    <name>healthlink</name>
     <packaging>war</packaging>
 
     <properties>
