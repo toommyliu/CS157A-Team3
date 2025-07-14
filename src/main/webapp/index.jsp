@@ -54,7 +54,7 @@ pageEncoding="UTF-8"%>
 
               <p>
                 Don't have an account?
-                <a href="/" class="link-info">Register here</a>
+                <a href="<%= request.getContextPath() %>/register" class="link-info">Register here</a>
               </p>
             </form>
           </div>
