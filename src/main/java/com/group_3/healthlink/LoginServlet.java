@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 
 import java.sql.*;
 
+import com.group_3.healthlink.services.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -35,10 +36,12 @@ public class LoginServlet extends HttpServlet {
     out.println("<h1>Login Successful!</h1>");
     out.println("<p>Email: " + email + "</p>");
     out.println("<p>Password: " + password + "</p>");
+    out.println("<p>Hashed Password: " + AuthService.hashPassword(password) + "</p>");
+    out.println("<p>Does user exist? " + AuthService.doesUserExist(email) + "</p>");
     out.println("<table border=\"1\">");
     out.println("<tr><td>SJSU ID</td><td>Name</td><td>Major</td></tr>");
 
-    String dbName = "Liu";
+    String dbName = "Tommy_Liu";
     String dbUser = "root";
     String dbPassword = "password";
 
@@ -63,7 +66,4 @@ public class LoginServlet extends HttpServlet {
       out.println("Exception caught: " + e.getMessage());
     }
   }
-
-  // public void destroy() {
-  // }
 }
