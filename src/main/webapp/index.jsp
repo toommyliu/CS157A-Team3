@@ -8,6 +8,10 @@ pageEncoding="UTF-8"%>
     <link href="css/bootstrap.min.css" rel="stylesheet" />
   </head>
   <body class="min-vh-100">
+    <% if (session.getAttribute("user") != null) {
+      response.sendRedirect(request.getContextPath() + "/dashboard");
+      return;
+    } %>
     <div class="d-flex justify-content-center align-items-center vh-100 px-5">
       <div class="row h-100 justify-content-center align-items-center g-2">
         <div class="col-sm-6 col-lg-5 container mx-auto">
@@ -19,7 +23,7 @@ pageEncoding="UTF-8"%>
             <form
               class="d-flex flex-column gap-4 w-75"
               id="login-form"
-              action="<%= request.getContextPath() %>/login-servlet"
+              action="<%= request.getContextPath() %>/login"
               method="POST"
             >
               <h3 class="h3">Sign In</h3>
@@ -54,7 +58,11 @@ pageEncoding="UTF-8"%>
 
               <p>
                 Don't have an account?
-                <a href="/" class="link-info">Register here</a>
+                <a
+                  href="<%= request.getContextPath() %>/register"
+                  class="link-info"
+                  >Register here</a
+                >
               </p>
             </form>
           </div>
