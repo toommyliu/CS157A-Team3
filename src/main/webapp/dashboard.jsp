@@ -61,6 +61,6 @@
 
     <a href="<%= request.getContextPath() %>/logout" class="btn btn-danger"
       >Logout</a
-    >\
+    >
   </body>
 </html>

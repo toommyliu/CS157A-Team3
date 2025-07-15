@@ -9,9 +9,7 @@ pageEncoding="UTF-8"%>
   </head>
   <body class="min-vh-100">
     <% if (session.getAttribute("user") != null) {
-      response.sendRedirect(request.getContextPath() + "/dashboard");
-      return;
-    } %>
+    response.sendRedirect(request.getContextPath() + "/dashboard"); return; } %>
     <div class="d-flex justify-content-center align-items-center vh-100 px-5">
       <div class="row h-100 justify-content-center align-items-center g-2">
         <div class="col-sm-6 col-lg-5 container mx-auto">
@@ -20,6 +18,9 @@ pageEncoding="UTF-8"%>
           </div>
 
           <div class="d-flex align-items-center px-3 px-lg-4 mt-2">
+            <% if (request.getAttribute("loginError") != null) { %>
+            <p class="text-danger"><%= request.getAttribute("loginError") %></p>
+            <% } %>
             <form
               class="d-flex flex-column gap-4 w-75"
               id="login-form"

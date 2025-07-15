@@ -1,7 +1,6 @@
 package com.group_3.healthlink;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import com.group_3.healthlink.services.AuthService;
 import jakarta.servlet.ServletException;
@@ -76,23 +75,12 @@ public class LoginServlet extends HttpServlet {
         response.addCookie(userCookie);
 
         response.sendRedirect(request.getContextPath() + "/dashboard");
-      } else {
-        System.out.println("Password does not match for user ID: " + userId);
-
-        PrintWriter out = response.getWriter();
-        out.println("<html><body>");
-        out.println("<h1>Login Failed!</h1>");
-        out.println("<p>Invalid password.</p>");
-        out.println("</body></html>");
+        return;
       }
-    } else {
-      System.out.println("User not found in database for email: " + email);
-
-      PrintWriter out = response.getWriter();
-      out.println("<html><body>");
-      out.println("<h1>Login Failed!</h1>");
-      out.println("<p>User not found.</p>");
-      out.println("</body></html>");
     }
+
+    System.out.println("Invalid credentials for email: " + email);
+    request.setAttribute("loginError", "Invalid credentials.");
+    request.getRequestDispatcher("/index.jsp").forward(request, response);
   }
 }
