@@ -7,9 +7,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
   </head>
   <body>
     <% if (session.getAttribute("user") == null) {
-        response.sendRedirect(request.getContextPath() + "/login");
-        return;
-    } %>
+    response.sendRedirect(request.getContextPath() + "/login"); return; } %>
     <%User user = (User) session.getAttribute("user"); %>
     <p>hello from dashboard!</p>
     <p>it seems you are logged in.</p>
@@ -24,6 +22,8 @@ contentType="text/html;charset=UTF-8" language="java" %>
       <li>Updated At: <%= user.getUpdatedAt() %></li>
     </ul>
 
-    <button>logout</button>
+    <a href="<%= request.getContextPath() %>/logout" class="btn btn-danger"
+      >Logout</a
+    >
   </body>
 </html>
