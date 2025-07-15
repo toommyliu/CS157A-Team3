@@ -152,6 +152,32 @@ INSERT INTO `message` VALUES (1,1,11,'Dr. Chen, I have a question about my medic
 UNLOCK TABLES;
 
 --
+-- Table structure for table `note`
+--
+
+DROP TABLE IF EXISTS `note`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `note` (
+  `note_id` int NOT NULL AUTO_INCREMENT,
+  `doctor_id` int DEFAULT NULL,
+  `patient_id` int DEFAULT NULL,
+  `content` varchar(256) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`note_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `note`
+--
+
+LOCK TABLES `note` WRITE;
+/*!40000 ALTER TABLE `note` DISABLE KEYS */;
+/*!40000 ALTER TABLE `note` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `notification`
 --
 
@@ -277,7 +303,7 @@ CREATE TABLE `user` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,7 +312,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin@patientlink.com','$2b$12$Yn7UNktWJAEtR.ZeguOdcueJ3foV92u4hla6EW','admin','admin','admin','2025-07-08 07:54:32','2025-07-08 07:54:32'),(2,'tommy.liu@sjsu.edu','$2b$12$wA4PrHZ5tcVHZJAxHckLj.e5cvkFL5qDDBtHY1','Tommy','Liu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(3,'fnu.hasham@sjsu.edu','$2b$12$SLjahlduI49oXt6Piah8Q.WD/ZUwsEicYHaQX/','Fnu','Hasham','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(4,'hiba.hasan@sjsu.edu','$2b$12$Xa1FKaAmoKddgOrgIelCEONF5WhU03UsKNJHqP','Hiba','Hasan','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(5,'Ching-seh.Wu@sjsu.edu','$2b$12$PN4AXNSW4p6wDr2Idv6hwevd0wbIgPmgz5/WVo','Mike','Wu','doctor','2025-07-08 07:54:32','2025-07-08 07:54:32'),(6,'heidi-madden39@gmail.com','$2b$12$MaDAgKIzg38M.RORvTU94eQnD70XKUFjs8XtS3','Madden','Heidi','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(7,'sanders-deborah96@gmail.com','$2b$12$VqpDO3ZMexdXrQBzK3tWo.vFo.k7SQ3WtfxpLA','Deborah','Sanders','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(8,'shaffer-seamus6@gmail.com','$2b$12$CDFdd2XVNVaHSnxvKHrhaeuYmHXWnfnydbEtmG','Shaffer','Seamus','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(9,'hamilton-stubbs65@gmail.com','$2b$12$ZyXqQl3gAju7SVcvkmq.Hur1y6HJi5DNQDSPiJ','Hamilton','Stubbs','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(10,'louis_kade16@gmail.com','$2b$12$sTj5wFkH1XocrAEI8LGfLu00bj111StmlK5w0a','Kade','Louis','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(11,'dr.michael.chen@gmail.com','$2b$12$5BgU5wZHN9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Michael','Chen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(12,'dr.sarah.williams@gmail.com','$2b$12$QhOeX1J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Sarah','Williams','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(13,'dr.david.patel@gmail.com','$2b$12$5BgU5wDp3fFtNc4gKq1SvLbYm','David','Patel','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(14,'dr.emily.nguyen@gmail.com','$2b$12$51J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Emily','Nguyen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(15,'dr.james.rodriguez@gmail.com','$2b$12k8mR2dDp3fFtNc4gKq1SvLbYm','James','Rodriguez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(16,'dr.jessica.kim@gmail.com','$2b$12$5BJ9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Jessica','Kim','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(17,'dr.robert.wilson@gmail.com','$2b$12$5BgU2dDp3fFtNc4gKq1SvLbYm','Robert','Wilson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(18,'dr.olivia.martinez@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYw','Olivia','Martinez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(19,'dr.daniel.thompson@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOe','Daniel','Thompson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(20,'dr.sophia.garcia@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOeXm','Sophia','Garcia','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(21,'johnny-smith@gmail.com','$2b$12$5BgU5wZHYwWQhOeXm','Johnny','Smith','patient','2025-07-08 08:17:55','2025-07-08 08:17:55'),(22,NULL,NULL,NULL,NULL,NULL,'2025-07-14 16:21:47','2025-07-14 16:21:47'),(23,'t@t.com','$2a$12$JHXhm.hx6H464olzp.xla.xvn3OYRCr5JLig2A8sdNGK/iP8KvLDG','asd','asd','patient','2025-07-14 00:00:00','2025-07-14 00:00:00'),(24,'asdasd@gmail.com','$2a$12$3FJAZQiP3QUPa/vn6kN4duT6elyl/aT1u4OMvpqhpOUrRg3829sZu','asdasd','asdasd','patient','2025-07-14 00:00:00','2025-07-14 00:00:00');
+INSERT INTO `user` VALUES (1,'admin@patientlink.com','$2b$12$Yn7UNktWJAEtR.ZeguOdcueJ3foV92u4hla6EW','admin','admin','admin','2025-07-08 07:54:32','2025-07-08 07:54:32'),(2,'tommy.liu@sjsu.edu','$2b$12$wA4PrHZ5tcVHZJAxHckLj.e5cvkFL5qDDBtHY1','Tommy','Liu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(3,'fnu.hasham@sjsu.edu','$2b$12$SLjahlduI49oXt6Piah8Q.WD/ZUwsEicYHaQX/','Fnu','Hasham','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(4,'hiba.hasan@sjsu.edu','$2b$12$Xa1FKaAmoKddgOrgIelCEONF5WhU03UsKNJHqP','Hiba','Hasan','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(5,'Ching-seh.Wu@sjsu.edu','$2b$12$PN4AXNSW4p6wDr2Idv6hwevd0wbIgPmgz5/WVo','Mike','Wu','doctor','2025-07-08 07:54:32','2025-07-08 07:54:32'),(6,'heidi-madden39@gmail.com','$2b$12$MaDAgKIzg38M.RORvTU94eQnD70XKUFjs8XtS3','Madden','Heidi','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(7,'sanders-deborah96@gmail.com','$2b$12$VqpDO3ZMexdXrQBzK3tWo.vFo.k7SQ3WtfxpLA','Deborah','Sanders','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(8,'shaffer-seamus6@gmail.com','$2b$12$CDFdd2XVNVaHSnxvKHrhaeuYmHXWnfnydbEtmG','Shaffer','Seamus','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(9,'hamilton-stubbs65@gmail.com','$2b$12$ZyXqQl3gAju7SVcvkmq.Hur1y6HJi5DNQDSPiJ','Hamilton','Stubbs','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(10,'louis_kade16@gmail.com','$2b$12$sTj5wFkH1XocrAEI8LGfLu00bj111StmlK5w0a','Kade','Louis','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(11,'dr.michael.chen@gmail.com','$2b$12$5BgU5wZHN9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Michael','Chen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(12,'dr.sarah.williams@gmail.com','$2b$12$QhOeX1J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Sarah','Williams','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(13,'dr.david.patel@gmail.com','$2b$12$5BgU5wDp3fFtNc4gKq1SvLbYm','David','Patel','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(14,'dr.emily.nguyen@gmail.com','$2b$12$51J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Emily','Nguyen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(15,'dr.james.rodriguez@gmail.com','$2b$12k8mR2dDp3fFtNc4gKq1SvLbYm','James','Rodriguez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(16,'dr.jessica.kim@gmail.com','$2b$12$5BJ9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Jessica','Kim','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(17,'dr.robert.wilson@gmail.com','$2b$12$5BgU2dDp3fFtNc4gKq1SvLbYm','Robert','Wilson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(18,'dr.olivia.martinez@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYw','Olivia','Martinez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(19,'dr.daniel.thompson@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOe','Daniel','Thompson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(20,'dr.sophia.garcia@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOeXm','Sophia','Garcia','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(21,'johnny-smith@gmail.com','$2b$12$5BgU5wZHYwWQhOeXm','Johnny','Smith','patient','2025-07-08 08:17:55','2025-07-08 08:17:55'),(30,'asd@gmail.com','$2a$12$Bi1KBRx8KYbINABcIf0CH.ILw0Pf3vmeDqECCM3sqBnKqbYTUJEJS','asd','asd','patient','2025-07-14 00:00:00','2025-07-14 00:00:00');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -299,4 +325,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-14 16:28:51
+-- Dump completed on 2025-07-14 21:22:59
