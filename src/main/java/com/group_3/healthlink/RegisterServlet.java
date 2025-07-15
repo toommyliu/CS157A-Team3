@@ -21,7 +21,7 @@ public class RegisterServlet extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
-     throws IOException {
+      throws IOException {
 
     String firstName = request.getParameter("firstName");
     String lastName = request.getParameter("lastName");
@@ -40,15 +40,14 @@ public class RegisterServlet extends HttpServlet {
         lastName,
         emailAddress,
         password,
-        role
-    );
+        role);
 
     if (userId != -1) {
       System.out.println("User registered successfully with userId: " + userId);
 
       Cookie userCookie = new Cookie("userId", String.valueOf(userId));
       userCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
-      userCookie.setPath(request.getContextPath());
+      userCookie.setPath("/");
       response.addCookie(userCookie);
     } else {
       System.out.println("Failed to register user.");

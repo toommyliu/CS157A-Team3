@@ -76,6 +76,15 @@ pageEncoding="UTF-8"%>
                 />
               </div>
 
+              <div class="d-flex flex-column gap-2 w-50">
+                <label for="role" class="form-label">Role</label>
+                <select class="form-select" id="role" name="role" required>
+                    <option value="" disabled selected>Select your role</option>
+                    <option value="patient">Patient</option>
+                    <option value="doctor">Doctor</option>
+                </select>
+              </div>
+
               <div class="pt-1 mb-4">
                 <button class="btn btn-primary" type="submit">Register</button>
               </div>
