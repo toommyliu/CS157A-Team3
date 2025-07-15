@@ -9,7 +9,10 @@ pageEncoding="UTF-8"%>
   </head>
   <body class="min-vh-100">
     <% if (session.getAttribute("user") != null) {
-    response.sendRedirect(request.getContextPath() + "/dashboard"); return; } %>
+      response.sendRedirect(request.getContextPath() + "/dashboard");
+      return;
+    } %>
+
     <div class="d-flex justify-content-center align-items-center vh-100 px-5">
       <div class="row h-100 justify-content-center align-items-center g-2">
         <div class="col-sm-6 col-lg-5 container mx-auto">
@@ -17,9 +20,15 @@ pageEncoding="UTF-8"%>
             <h1 class="h1 fw-bold">Healthlink</h1>
           </div>
 
-          <div class="d-flex align-items-center px-3 px-lg-4 mt-2">
+          <div class="flex-col w-100 px-3 px-lg-4 mt-2">
             <% if (request.getAttribute("loginError") != null) { %>
-            <p class="text-danger"><%= request.getAttribute("loginError") %></p>
+              <div style="height: min-content;">
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                  <div>
+                    <%= request.getAttribute("loginError") %>
+                  </div>
+                </div>
+              </div>
             <% } %>
             <form
               class="d-flex flex-column gap-4 w-75"
@@ -80,22 +89,5 @@ pageEncoding="UTF-8"%>
       </div>
     </div>
     <script src="js/bootstrap.min.js"></script>
-    <!-- <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const loginForm = document.querySelector('#login-form');
-        loginForm.addEventListener('submit', (ev) => {
-          ev.preventDefault();
-
-          const formData = new FormData(loginForm);
-          const email = formData.get('email');
-          const password = formData.get('password');
-
-          console.log('Login form submitted:', {
-            email,
-            password,
-          });
-        });
-      });
-    </script> -->
   </body>
 </html>

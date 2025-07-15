@@ -35,7 +35,7 @@ public class AuthService {
             java.util.Date now = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(now.getTime());
 
-            // String insertSql = "INSERT INTO USER (USERNAME, AGE, CREATED_DATE) "8
+             // String insertSql = "INSERT INTO USER (USERNAME, AGE, CREATED_DATE) "8
             // + "VALUES ('Mike Wu', 18, '" + sqlDate + "')";
             String query = "INSERT INTO user (email_address, password_hashed, first_name, last_name, role, created_at, updated_at)"
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)";
