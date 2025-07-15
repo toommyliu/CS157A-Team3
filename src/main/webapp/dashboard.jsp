@@ -8,7 +8,9 @@
   </head>
   <body>
     <% if (session.getAttribute("user") == null) {
-    response.sendRedirect(request.getContextPath() + "/login"); return; } %>
+      response.sendRedirect(request.getContextPath() + "/login");
+      return;
+    } %>
     <%User user = (User) session.getAttribute("user"); %>
     <p>hello from dashboard!</p>
     <p>it seems you are logged in.</p>
@@ -24,37 +26,37 @@
     </ul>
 
     <% if ("doctor".equalsIgnoreCase(user.getRole())) { %>
-    <div class="col-md-6">
-      <h3>Your Patients:</h3>
-      <%
-        User[] patients = DoctorService.getPatients(user.getId());
-        if (patients.length > 0) {
-      %>
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th>Patient ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Created At</th>
-          </tr>
-          </thead>
-          <tbody>
-            <% for (User patient : patients) { %>
-              <tr>
-                <td><%= patient.getId() %></td>
-                <td><%= patient.getFirstName() %> <%= patient.getLastName() %></td>
-                <td><%= patient.getEmailAddress() %></td>
-                <td><%= patient.getCreatedAt() %></td>
-              </tr>
-           <% } %>
-          </tbody>
-        </table>
+      <div class="col-md-6">
+        <h3>Your Patients:</h3>
+        <%
+          User[] patients = DoctorService.getPatients(user.getId());
+          if (patients.length > 0) {
+        %>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Created At</th>
+            </tr>
+            </thead>
+            <tbody>
+              <% for (User patient : patients) { %>
+                <tr>
+                  <td><%= patient.getId() %></td>
+                  <td><%= patient.getFirstName() %> <%= patient.getLastName() %></td>
+                  <td><%= patient.getEmailAddress() %></td>
+                  <td><%= patient.getCreatedAt() %></td>
+                </tr>
+             <% } %>
+            </tbody>
+          </table>
+        </div>
+        <% } %>
       </div>
       <% } %>
-    </div>
-    <% } %>
     </div>
 
     <a href="<%= request.getContextPath() %>/logout" class="btn btn-danger"
