@@ -23,5 +23,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
       <li>Created At: <%= user.getCreatedAt() %></li>
       <li>Updated At: <%= user.getUpdatedAt() %></li>
     </ul>
+
+    <button>logout</button>
   </body>
 </html>
