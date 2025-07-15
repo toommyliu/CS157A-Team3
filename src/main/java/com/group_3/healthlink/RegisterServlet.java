@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.group_3.healthlink.services.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
     System.out.println("Password: " + password);
     System.out.println("Role: " + role);
 
-    boolean success = AuthService.registerUser(
+    int userId = AuthService.registerUser(
         firstName,
         lastName,
         emailAddress,
@@ -42,8 +43,13 @@ public class RegisterServlet extends HttpServlet {
         role
     );
 
-    if (success) {
-      System.out.println("User registered successfully.");
+    if (userId != -1) {
+      System.out.println("User registered successfully with userId: " + userId);
+
+      Cookie userCookie = new Cookie("userId", String.valueOf(userId));
+      userCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
+      userCookie.setPath(request.getContextPath());
+      response.addCookie(userCookie);
     } else {
       System.out.println("Failed to register user.");
     }

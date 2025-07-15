@@ -46,6 +46,7 @@ public class DatabaseMgr {
         return this.connection;
     }
 
+    // Returns the singleton instance of DatabaseMgr.
     public static DatabaseMgr getInstance() {
         if (instance == null) {
             instance = new DatabaseMgr();
