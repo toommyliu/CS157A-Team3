@@ -16,8 +16,8 @@ public class User {
     }
 
     public User(int id,
-        String emailAddress, String passwordHashed, String firstName, String lastName, String role,
-        Date createdAt, Date updatedAt
+                String emailAddress, String passwordHashed, String firstName, String lastName, String role,
+                Date createdAt, Date updatedAt
     ) {
         this.id = id;
         this.emailAddress = emailAddress;
@@ -69,7 +69,24 @@ public class User {
         this.lastName = lastName;
     }
 
+    public String getFullName() {
+        String fullName = "";
+        if (firstName != null && !firstName.isEmpty()) {
+            fullName += firstName;
+        }
+
+        if (lastName != null && !lastName.isEmpty()) {
+            if (!fullName.isEmpty()) {
+                fullName += " ";
+            }
+            fullName += lastName;
+        }
+
+        return fullName;
+    }
+
     public String getRole() {
+
         return role;
     }
 
