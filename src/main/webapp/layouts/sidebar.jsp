@@ -4,7 +4,7 @@
   class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark min-vh-100 sidebar"
 >
   <a
-    href="/dashboard"
+    href="<%= request.getContextPath() %>/dashboard"
     class="d-flex align-items-center mb-2 text-white text-decoration-none"
   >
     <span class="fs-4">Healthlink</span>
