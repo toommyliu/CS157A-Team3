@@ -43,7 +43,7 @@ public class AuthService {
             // + "VALUES ('Mike Wu', 18, '" + sqlDate + "')";
             String query = "INSERT INTO user (email_address, password_hashed, first_name, last_name, role, created_at, updated_at)"
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, emailAddress);
             stmt.setString(2, hashedPassword);
             stmt.setString(3, firstName);
@@ -53,17 +53,21 @@ public class AuthService {
             stmt.setDate(7, sqlDate);
 
             int rowsAffected = stmt.executeUpdate();
-            stmt.close();
 
-            if (rowsAffected > 0) {
-                ResultSet generatedKeys = stmt.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
-                }
+            if (rowsAffected == 0) {
+                throw new SQLException("Inserting user failed (no rows affected).");
             }
 
-            return -1;
-
+            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int userId = generatedKeys.getInt(1);
+                    generatedKeys.close();
+                    stmt.close();
+                    return userId;
+                } else {
+                    throw new SQLException("Inserting user failed (no ID obtained).");
+                }
+            }
         } catch (Exception e) {
             System.err.println("Error registering user: " + e.getMessage());
             return -1;
@@ -159,7 +163,7 @@ public class AuthService {
                 int id = Integer.parseInt(userId);
                 user = getUserById(id);
                 if (user != null) {
-                     System.out.println("Found user by id, from cookie");
+                    System.out.println("Found user by id, from cookie");
                     request.getSession().setAttribute("user", user);
                     return user;
                 }
