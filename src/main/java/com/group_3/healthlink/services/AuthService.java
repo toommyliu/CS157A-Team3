@@ -84,27 +84,7 @@ public class AuthService {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                String emailAddress = rs.getString("email_address");
-                String passwordHashed = rs.getString("password_hashed");
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String role = rs.getString("role");
-                Date createdAt = rs.getDate("created_at");
-                Date updatedAt = rs.getDate("updated_at");
-
-                User user = new User();
-                user.setId(userId);
-                user.setEmailAddress(emailAddress);
-                user.setPasswordHashed(passwordHashed);
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setRole(role);
-                user.setCreatedAt(createdAt);
-                user.setUpdatedAt(updatedAt);
-
-                rs.close();
-                stmt.close();
-                return user;
+                return getUser(stmt, rs, userId);
             } else {
                 rs.close();
                 stmt.close();
@@ -131,27 +111,7 @@ public class AuthService {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("user_id");
-                String emailAddress = rs.getString("email_address");
-                String passwordHashed = rs.getString("password_hashed");
-                String firstName = rs.getString("first_name");
-                String lastName = rs.getString("last_name");
-                String role = rs.getString("role");
-                Date createdAt = rs.getDate("created_at");
-                Date updatedAt = rs.getDate("updated_at");
-
-                User user = new User();
-                user.setId(id);
-                user.setEmailAddress(emailAddress);
-                user.setPasswordHashed(passwordHashed);
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setRole(role);
-                user.setCreatedAt(createdAt);
-                user.setUpdatedAt(updatedAt);
-
-                rs.close();
-                stmt.close();
-                return user;
+                return getUser(stmt, rs, id);
             } else {
                 rs.close();
                 stmt.close();
@@ -161,6 +121,30 @@ public class AuthService {
             System.err.println("Error getUserByEmail:" + e.getMessage());
             return null;
         }
+    }
+
+    private static User getUser(PreparedStatement stmt, ResultSet rs, int id) throws SQLException {
+        String emailAddress = rs.getString("email_address");
+        String passwordHashed = rs.getString("password_hashed");
+        String firstName = rs.getString("first_name");
+        String lastName = rs.getString("last_name");
+        String role = rs.getString("role");
+        Date createdAt = rs.getDate("created_at");
+        Date updatedAt = rs.getDate("updated_at");
+
+        User user = new User();
+        user.setId(id);
+        user.setEmailAddress(emailAddress);
+        user.setPasswordHashed(passwordHashed);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setRole(role);
+        user.setCreatedAt(createdAt);
+        user.setUpdatedAt(updatedAt);
+
+        rs.close();
+        stmt.close();
+        return user;
     }
 
     public static User ensureAuthenticated(HttpServletRequest request) {
