@@ -3,20 +3,16 @@ import="com.group_3.healthlink.services.DoctorService" %> <%@ page
 contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>Dashboard</title>
+    <title>Healthlink - Dashboard</title>
     <link href="css/styles.css" rel="stylesheet" />
   </head>
   <body>
-    <% if (session.getAttribute("user") == null) {
-      response.sendRedirect(request.getContextPath() + "/login");
-      return;
-    } %>
+    <% User user = (User)session.getAttribute("user"); %>
 
     <div class="app-container">
       <jsp:include page="layouts/sidebar.jsp" />
 
       <div class="main-content">
-        <%User user = (User) session.getAttribute("user"); %>
         <p>hello from dashboard!</p>
         <p>it seems you are logged in.</p>
         <h3>User Details:</h3>
@@ -49,9 +45,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
                 <% for (User patient : patients) { %>
                 <tr>
                   <td><%= patient.getId() %></td>
-                  <td>
-                    <%= patient.getFullName() %>
-                  </td>
+                  <td><%= patient.getFullName() %></td>
                   <td><%= patient.getEmailAddress() %></td>
                   <td><%= patient.getCreatedAt() %></td>
                 </tr>
@@ -60,7 +54,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
             </table>
           </div>
           <% } else { %>
-            <p class="text-muted">No patients assigned yet.</p>
+          <p class="text-muted">No patients assigned yet.</p>
           <% } %>
         </div>
         <% } %>
@@ -74,6 +68,6 @@ contentType="text/html;charset=UTF-8" language="java" %>
         </div>
       </div>
     </div>
-    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="js/bootstrap.min.js"></script> -->
   </body>
 </html>

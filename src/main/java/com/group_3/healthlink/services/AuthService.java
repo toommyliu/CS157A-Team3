@@ -1,8 +1,12 @@
 package com.group_3.healthlink.services;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.group_3.healthlink.DatabaseMgr;
 import com.group_3.healthlink.User;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.sql.*;
 
@@ -68,7 +72,7 @@ public class AuthService {
 
     /**
      * Retrieves a user by their ID.
-     * 
+     *
      * @param userId the user's ID
      * @return a User object if found, or null if not found
      */
@@ -114,7 +118,7 @@ public class AuthService {
 
     /**
      * Retrieves a user by their email address.
-     * 
+     *
      * @param email the user's email address
      * @return a User object if found, or null if not found
      */
@@ -159,25 +163,39 @@ public class AuthService {
         }
     }
 
-    public static boolean doesUserExist(String email) {
-        java.sql.Connection con = DatabaseMgr.getInstance().getConnection();
-        try {
-            String query = "SELECT COUNT(*) FROM user WHERE email_address = ?";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setString(1, email);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                rs.close();
-                stmt.close();
-                return count > 0;
-            }
-            rs.close();
-            stmt.close();
-            return false;
-        } catch (Exception e) {
-            System.err.println("Error checking if user exists: " + e.getMessage());
-            return false;
+    public static User ensureAuthenticated(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        if (user != null) {
+            return user;
         }
+
+        String userId = getUserIdFromCookie(request);
+        if (userId != null) {
+            try {
+                int id = Integer.parseInt(userId);
+                user = getUserById(id);
+                if (user != null) {
+                     System.out.println("Found user by id, from cookie");
+                    request.getSession().setAttribute("user", user);
+                    return user;
+                }
+            } catch (NumberFormatException e) {
+            }
+        }
+
+        return null;
+    }
+
+    private static String getUserIdFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userId")) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 }

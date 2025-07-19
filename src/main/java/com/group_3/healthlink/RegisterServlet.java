@@ -45,14 +45,19 @@ public class RegisterServlet extends HttpServlet {
     if (userId != -1) {
       System.out.println("User registered successfully with userId: " + userId);
 
+      User newUser = AuthService.getUserById(userId);
+      if (newUser != null) {
+        request.getSession().setAttribute("user", newUser);
+      }
+
       Cookie userCookie = new Cookie("userId", String.valueOf(userId));
       userCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
       userCookie.setPath("/");
       response.addCookie(userCookie);
+      response.sendRedirect(request.getContextPath() + "/dashboard");
     } else {
       System.out.println("Failed to register user.");
+      response.sendRedirect(request.getContextPath() + "/register");
     }
-
-    response.sendRedirect(request.getContextPath() + "/");
   }
 }

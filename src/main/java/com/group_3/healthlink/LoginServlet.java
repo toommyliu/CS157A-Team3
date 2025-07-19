@@ -23,28 +23,11 @@ public class LoginServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String userId = null;
-    if (request.getCookies() != null) {
-      for (jakarta.servlet.http.Cookie cookie : request.getCookies()) {
-        if (cookie.getName().equals("userId")) {
-          userId = cookie.getValue();
-          break;
-        }
-      }
-    }
 
-    if (userId != null) {
-      try {
-        int id = Integer.parseInt(userId);
-        User user = AuthService.getUserById(id);
-        if (user != null) {
-          request.getSession().setAttribute("user", user);
-          response.sendRedirect(request.getContextPath() + "/dashboard");
-          return;
-        }
-      } catch (NumberFormatException e) {
-        // TODO:
-      }
+    User user = (User) request.getSession().getAttribute("user");
+    if (user != null) {
+      response.sendRedirect(request.getContextPath() + "/dashboard");
+      return;
     }
 
     request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -71,7 +54,7 @@ public class LoginServlet extends HttpServlet {
 
         jakarta.servlet.http.Cookie userCookie = new jakarta.servlet.http.Cookie("userId", userId);
         userCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days
-        userCookie.setPath("/");
+        userCookie.setPath(request.getContextPath());
         response.addCookie(userCookie);
 
         response.sendRedirect(request.getContextPath() + "/dashboard");

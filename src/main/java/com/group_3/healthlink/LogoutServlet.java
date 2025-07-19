@@ -34,9 +34,8 @@ public class LogoutServlet extends HttpServlet {
 
     Cookie userCookie = new Cookie("userId", "");
     userCookie.setMaxAge(0);
-    userCookie.setPath("/");
+    userCookie.setPath(request.getContextPath());
     response.addCookie(userCookie);
-
     response.sendRedirect(request.getContextPath() + "/");
   }
 }

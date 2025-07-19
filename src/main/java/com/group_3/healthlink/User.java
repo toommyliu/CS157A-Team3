@@ -16,9 +16,8 @@ public class User {
     }
 
     public User(int id,
-                String emailAddress, String passwordHashed, String firstName, String lastName, String role,
-                Date createdAt, Date updatedAt
-    ) {
+            String emailAddress, String passwordHashed, String firstName, String lastName, String role,
+            Date createdAt, Date updatedAt) {
         this.id = id;
         this.emailAddress = emailAddress;
         this.passwordHashed = passwordHashed;
@@ -86,7 +85,6 @@ public class User {
     }
 
     public String getRole() {
-
         return role;
     }
 
