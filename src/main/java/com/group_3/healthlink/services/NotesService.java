@@ -25,7 +25,6 @@ public class NotesService {
 
       int rowsAffected = stmt.executeUpdate();
       stmt.close();
-      con.close();
       return rowsAffected > 0;
     } catch (Exception e) {
       System.err.println("Error createNote: " + e.getMessage());
@@ -55,7 +54,6 @@ public class NotesService {
 
       rs.close();
       stmt.close();
-      con.close();
 
       return notesList.toArray(new Note[0]);
     } catch (Exception e) {
