@@ -176,7 +176,7 @@
                           <% for (Doctor doctor : assignedDoctors) { %>
                             <div class="border-bottom pb-2 mb-2">
                               <p class="mb-1"><strong><%= doctor.getFullName() != null ? doctor.getFullName() : "Unknown Doctor" %></strong></p>
-                              <p class="text-muted small mb-0">Specialization: <%= doctor.getDepartment() != null ? doctor.getDepartment() : "N/A" %></p>
+                              <p class="text-muted small mb-0">Department: <%= doctor.getDepartment() != null ? doctor.getDepartment() : "N/A" %></p>
                             </div>
                           <% } %>
                         <% } else { %>
