@@ -1,10 +1,50 @@
 package com.group_3.healthlink.services;
 
 import com.group_3.healthlink.DatabaseMgr;
+import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.Doctor;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class DoctorService {
+    public static Doctor getByUserId(int userId) {
+        java.sql.Connection con = DatabaseMgr.getInstance().getConnection();
+        String query = "SELECT * FROM doctor WHERE user_id = ?";
+
+        try {
+            java.sql.PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, userId);
+            java.sql.ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return getDoctor(stmt, rs);
+            }
+
+            rs.close();
+            stmt.close();
+
+            return null;
+        } catch (Exception e) {
+            System.err.println("Error getByUserId: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private static Doctor getDoctor(PreparedStatement stmt, ResultSet rs) throws SQLException {
+        Doctor doctor = new Doctor();
+        doctor.setDoctorId(rs.getInt("doctor_id"));
+        doctor.setDepartment(rs.getString("department"));
+        doctor.setUserId(rs.getInt("user_id"));
+
+        rs.close();
+        stmt.close();
+
+        return doctor;
+    }
+
     public static Doctor getByDoctorId(int doctorId) {
         java.sql.Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT * FROM doctor WHERE doctor_id = ?";
@@ -15,22 +55,11 @@ public class DoctorService {
             java.sql.ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println("got a doctor 2");
-                Doctor doctor = new Doctor();
-                doctor.setDoctorId(rs.getInt("doctor_id"));
-                doctor.setDepartment(rs.getString("department"));
-                doctor.setUserId(rs.getInt("user_id"));
-
-                rs.close();
-                stmt.close();
-
-                return doctor;
+                return getDoctor(stmt, rs);
             }
 
             rs.close();
             stmt.close();
-
-            System.out.println("got no doctor 2");
             return null;
         } catch (Exception e) {
             System.err.println("Error getByDoctorId: " + e.getMessage());
@@ -38,7 +67,7 @@ public class DoctorService {
         }
     }
 
-    public static User[] getPatients(int doctorId) {
+    public static Patient[] getPatients(int doctorId) {
         java.sql.Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT * FROM assigned_to WHERE doctor_id = ?";
 
@@ -47,21 +76,24 @@ public class DoctorService {
             stmt.setInt(1, doctorId);
             java.sql.ResultSet rs = stmt.executeQuery();
 
-            java.util.List<User> patients = new java.util.ArrayList<>();
+            java.util.List<Patient> patients = new java.util.ArrayList<>();
             while (rs.next()) {
                 int patientId = rs.getInt("patient_id");
-                User patient = AuthService.getUserById(patientId);
-                if (patient != null) {
+                Patient patient = PatientService.getByPatientId(patientId);
+                User user = AuthService.getUserById(patientId);
+                if (patient != null && user != null) {
+                    patient.setUser(user);
                     patients.add(patient);
                 }
             }
 
             rs.close();
             stmt.close();
-            return patients.toArray(new User[0]);
+            return patients.toArray(new Patient[0]);
         } catch (Exception e) {
             System.err.println("Error getPatients" + e.getMessage());
-            return new User[0];
+            return new Patient[0];
         }
     }
+
 }

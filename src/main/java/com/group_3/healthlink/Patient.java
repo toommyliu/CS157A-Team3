@@ -70,4 +70,15 @@ public class Patient extends User {
     public void setEmergencyContactPhoneNumber(String emergencyContactPhoneNumber) {
         this.emergencyContactPhoneNumber = emergencyContactPhoneNumber;
     }
+
+    public void setUser(User user) {
+        this.setUserId(user.getUserId());
+        this.setEmailAddress(user.getEmailAddress());
+        this.setPasswordHashed(user.getPasswordHashed());
+        this.setFirstName(user.getFirstName());
+        this.setLastName(user.getLastName());
+        this.setRole(user.getRole());
+        this.setCreatedAt(user.getCreatedAt());
+        this.setUpdatedAt(user.getUpdatedAt());
+    }
 }

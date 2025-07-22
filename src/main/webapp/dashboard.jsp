@@ -36,51 +36,49 @@ contentType="text/html;charset=UTF-8" language="java" %>
         <div class="mt-4">
           <h3>Your Patients:</h3>
           <% if (patients != null && patients.length > 0) { %>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Patient ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Created At</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% for (User patient : patients) { %>
-                <tr>
-                  <td><%= patient.getUserId() %></td>
-                  <td><%= patient.getFullName() %></td>
-                  <td><%= patient.getEmailAddress() %></td>
-                  <td><%= patient.getCreatedAt() %></td>
-                  <td>
-                    <button
-                      class="btn btn-primary medicationBtn"
-                      data-bs-toggle="modal"
-                      data-bs-target="#medicationModal"
-                      data-patient-id="<%= patient.getUserId() %>"
-                    >
-                      <i class="bi bi-prescription2"></i>
-                    </button>
-                  </td>
-                </tr>
-                <% } %>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Patient ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created At</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% for (User patient : patients) { %>
+                  <tr>
+                    <td><%= patient.getUserId() %></td>
+                    <td><%= patient.getFullName() %></td>
+                    <td><%= patient.getEmailAddress() %></td>
+                    <td><%= patient.getCreatedAt() %></td>
+                    <td>
+                      <button
+                        class="btn btn-primary medicationBtn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#medicationModal"
+                        data-patient-id="<%= patient.getUserId() %>"
+                      >
+                        <i class="bi bi-prescription2"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+              <p class="text-muted">No patients assigned yet.</p>
+            <% } %>
           </div>
-          <% } else { %>
-          <p class="text-muted">No patients assigned yet.</p>
-          <% } %>
-        </div>
         <% } %>
 
         <div class="mt-4">
-          <a
-            href="<%= request.getContextPath() %>/logout"
-            class="btn btn-danger"
-            >Logout</a
-          >
+          <a href="<%= request.getContextPath() %>/logout" class="btn btn-danger">
+            Logout
+          </a>
         </div>
       </div>
     </div>

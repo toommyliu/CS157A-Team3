@@ -50,7 +50,6 @@ public class PatientService {
             java.sql.ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                System.out.println("got rs.next");
                 patient = getPatient(rs);
 
                 rs.close();
@@ -110,6 +109,7 @@ public class PatientService {
         patient.setEmergencyContactName(rs.getString("emergency_contact_name"));
         patient.setEmergencyContactPhoneNumber(rs.getString("emergency_contact_phone_number"));
         patient.setUserId(rs.getInt("user_id"));
+
         return patient;
     }
 }
