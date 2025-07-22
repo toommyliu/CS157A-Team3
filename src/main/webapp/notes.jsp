@@ -3,12 +3,19 @@ import="com.group_3.healthlink.services.PatientService" %> <%@ page
 import="com.group_3.healthlink.Patient" %> <%@ page
 import="com.group_3.healthlink.User" %> <%@ page
 import="com.group_3.healthlink.Doctor" %>
+<%@ page import="com.group_3.healthlink.Note" %>
+<%@ page import="com.group_3.healthlink.services.NotesService" %>
 <html>
   <head>
     <title>Healthlink - Notes</title>
     <link href="css/styles.css" rel="stylesheet" />
   </head>
   <body>
+    <% User user = (User)session.getAttribute("user"); %>
+    <% Patient patient = PatientService.getByUserId(user.getUserId()); %>
+    <% Doctor[] doctors = PatientService.getDoctors(patient.getPatientId()); %>
+    <% Note[] notes = NotesService.getNotesByPatientId(patient.getPatientId()); %>
+
     <div class="app-container">
       <jsp:include page="layouts/sidebar.jsp" />
 
@@ -26,12 +33,23 @@ import="com.group_3.healthlink.Doctor" %>
             </button>
           </div>
         </div>
+
+        <% if (notes.length > 0) { %>
+          <% for (Note note: notes) { %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <p class="card-text">
+                  <%= note.getContent() %>
+                </p>
+                <div class="card-footer">
+                  <p class="text-muted mb-0">created at <%= note.getCreatedAt() %></p>
+                </div>
+              </div>
+            </div>
+          <% } %>
+        <% } %>
       </div>
     </div>
-
-    <% User user = (User)session.getAttribute("user"); %>
-    <% Patient patient = PatientService.getByUserId(user.getUserId()); %>
-    <% Doctor[] doctors = PatientService.getDoctors(patient.getPatientId()); %>
 
     <div class="modal fade" id="noteModal" tabindex="-1">
       <div class="modal-dialog">
