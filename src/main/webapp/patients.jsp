@@ -3,6 +3,8 @@
 <%@ page import="com.group_3.healthlink.Patient" %>
 <%@ page import="com.group_3.healthlink.services.DoctorService" %>
 <%@ page import="com.group_3.healthlink.Doctor" %>
+<%@ page import="com.group_3.healthlink.Medication" %>
+<%@ page import="java.util.List" %>
 <html>
 <head>
   <title>Healthlink - Patients</title>
@@ -118,6 +120,7 @@
             <% } else {
                 Patient patient = (Patient) request.getAttribute("patient");
                 Doctor[] assignedDoctors = (Doctor[]) request.getAttribute("assignedDoctors");
+                List<Medication> medications = (List<Medication>) request.getAttribute("medications");
                 if (patient != null) { %>
               <div class="main-content">
                 <div class="d-flex justify-content-between align-items-center border-bottom mb-4 pb-2">
@@ -184,6 +187,126 @@
                         <% } %>
                       </div>
                     </div>
+
+                    <div style="height: 24px;"></div>
+
+                    <div class="card">
+                      <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Medications</h5>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMedicationModal">
+                          Add Medication
+                        </button>
+                      </div>
+                      <div class="card-body">
+                        <% if (medications != null && !medications.isEmpty()) { %>
+                          <% for (Medication medication : medications) { %>
+                            <div class="border-bottom pb-2 mb-2">
+                              <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                  <p class="mb-1"><strong><%= medication.getName() %></strong></p>
+                                  <p class="text-muted small mb-1">Dosage: <%= medication.getDosage() %></p>
+                                  <p class="text-muted small mb-1">Frequency: <%= medication.getFrequency() %></p>
+                                  <% if (medication.getNotes() != null && !medication.getNotes().trim().isEmpty()) { %>
+                                    <p class="text-muted small mb-0">Notes: <%= medication.getNotes() %></p>
+                                  <% } %>
+                                </div>
+                                <div class="btn-group btn-group-sm">
+                                  <button class="btn btn-outline-primary edit-medication-btn"
+                                          data-id="<%= medication.getId() %>"
+                                          data-name="<%= medication.getName() %>"
+                                          data-dosage="<%= medication.getDosage() %>"
+                                          data-frequency="<%= medication.getFrequency() %>"
+                                          data-notes="<%= medication.getNotes() != null ? medication.getNotes() : "" %>"
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#editMedicationModal">
+                                    Edit
+                                  </button>
+                                  <button class="btn btn-outline-danger delete-medication-btn"
+                                          data-id="<%= medication.getId() %>"
+                                          data-name="<%= medication.getName() %>">
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          <% } %>
+                        <% } else { %>
+                          <p class="text-muted">No medications prescribed for this patient.</p>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal fade" id="addMedicationModal" tabindex="-1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h2 class="modal-title fs-5">Add New Medication</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form id="addMedicationForm" action="<%= request.getContextPath() %>/medication/create" method="POST">
+                        <input type="hidden" name="patientId" value="<%= patient.getPatientId() %>">
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="addMedicationName" class="form-label">Medication Name</label>
+                            <input type="text" id="addMedicationName" name="medicationName" class="form-control" placeholder="Medication name" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="addDosage" class="form-label">Dosage</label>
+                            <input type="text" id="addDosage" name="dosage" class="form-control" placeholder="e.g., 10mg" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="addFrequency" class="form-label">Frequency</label>
+                            <input type="text" id="addFrequency" name="frequency" class="form-control" placeholder="e.g., Twice daily" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="addNoteContent" class="form-label">Notes (Optional)</label>
+                            <textarea id="addNoteContent" name="noteContent" class="form-control" rows="3" placeholder="Additional notes"></textarea>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary">Add Medication</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal fade" id="editMedicationModal" tabindex="-1">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h2 class="modal-title fs-5">Edit Medication</h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form id="editMedicationForm" action="<%= request.getContextPath() %>/medication/update" method="POST">
+                        <input type="hidden" id="editMedicationId" name="medicationId">
+                        <div class="modal-body">
+                          <div class="mb-3">
+                            <label for="editMedicationName" class="form-label">Medication Name</label>
+                            <input type="text" id="editMedicationName" name="medicationName" class="form-control" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="editDosage" class="form-label">Dosage</label>
+                            <input type="text" id="editDosage" name="dosage" class="form-control" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="editFrequency" class="form-label">Frequency</label>
+                            <input type="text" id="editFrequency" name="frequency" class="form-control" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="editNoteContent" class="form-label">Notes (Optional)</label>
+                            <textarea id="editNoteContent" name="noteContent" class="form-control" rows="3"></textarea>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                          <button type="submit" class="btn btn-primary">Update Medication</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -200,5 +323,141 @@
     </div>
   <% } %>
   <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const addMedicationForm = document.querySelector('#addMedicationForm');
+      const addMedicationModal = new bootstrap.Modal('#addMedicationModal');
+      addMedicationForm.addEventListener('submit', async function(ev) {
+          ev.preventDefault();
+          const formData = new FormData(addMedicationForm);
+          const data = new URLSearchParams();
+          for (const pair of formData) {
+            data.append(pair[0], pair[1]);
+          }
+
+          try {
+            const resp = await fetch(addMedicationForm.action, {
+              method: 'POST',
+              body: data,
+            });
+
+            let result;
+            try {
+              result = await resp.json();
+            } catch {
+              result = { success: resp.ok };
+            }
+
+            addMedicationModal.hide();
+
+            if (result.success) {
+              alert('Medication added successfully');
+              window.location.reload();
+            } else {
+              alert('Failed to add medication');
+            }
+          } catch (error) {
+            console.error('error adding medication:', error);
+            alert('Error adding medication');
+          }
+        });
+
+
+      const editButtons = document.querySelectorAll('.edit-medication-btn');
+      for (const btn of editButtons) {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const name = btn.getAttribute('data-name');
+          const dosage = btn.getAttribute('data-dosage');
+          const frequency = btn.getAttribute('data-frequency');
+          const notes = btn.getAttribute('data-notes');
+
+          document.querySelector('#editMedicationId').value = id;
+          document.querySelector('#editMedicationName').value = name;
+          document.querySelector('#editDosage').value = dosage;
+          document.querySelector('#editFrequency').value = frequency;
+          document.querySelector('#editNoteContent').value = notes;
+        });
+      }
+
+      const editMedicationForm = document.querySelector('#editMedicationForm');
+      const editMedicationModal = new bootstrap.Modal('#editMedicationModal');
+
+      editMedicationForm.addEventListener('submit', async function(ev) {
+        ev.preventDefault();
+        const formData = new FormData(editMedicationForm);
+        const data = new URLSearchParams();
+        for (const pair of formData) {
+          data.append(pair[0], pair[1]);
+        }
+
+        try {
+          const resp = await fetch(editMedicationForm.action, {
+            method: 'POST',
+            body: data,
+          });
+
+          let result;
+          try {
+            result = await resp.json();
+          } catch (e) {
+            result = { success: resp.ok };
+          }
+
+          editMedicationModal.hide();
+
+          if (result.success) {
+            alert('Medication updated successfully');
+            location.reload();
+          } else {
+            alert('Failed to update medication');
+          }
+        } catch (error) {
+          console.error('error updating medication:');
+          console.error(error);
+          alert('Error updating medication');
+        }
+      });
+
+      const deleteButtons = document.querySelectorAll('.delete-medication-btn');
+      for (const btn of deleteButtons) {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-id');
+          const name = btn.getAttribute('data-name');
+
+          console.log('delete button clicked', id, name);
+
+          if (confirm(`Are you sure you want to delete this medication?`)) {
+            try {
+              const formData = new URLSearchParams();
+              formData.append('medicationId', id);
+
+              const resp = await fetch('${pageContext.request.contextPath}/medication/delete', {
+                method: 'POST',
+                body: formData,
+              });
+
+              let result;
+              try {
+                result = await resp.json();
+              } catch (e) {
+                result = { success: resp.ok };
+              }
+
+              if (result.success) {
+                alert('Medication deleted successfully');
+                location.reload();
+              } else {
+                alert('Failed to delete medication');
+              }
+            } catch (error) {
+              console.error('Error deleting medication:', error);
+              alert('Error deleting medication');
+            }
+          }
+        });
+      }
+    });
+  </script>
   </body>
 </html>

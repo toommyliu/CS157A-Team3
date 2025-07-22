@@ -1,6 +1,7 @@
 package com.group_3.healthlink.servlets.patients;
 
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,8 +12,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.Doctor;
+import com.group_3.healthlink.Medication;
 import com.group_3.healthlink.services.PatientService;
 import com.group_3.healthlink.services.AuthService;
+import com.group_3.healthlink.services.MedicationService;
 
 @WebServlet(name = "patientDetailServlet", urlPatterns = { "/patients/*" })
 public class PatientDetailServlet extends HttpServlet {
@@ -34,9 +37,11 @@ public class PatientDetailServlet extends HttpServlet {
           }
 
           Doctor[] assignedDoctors = PatientService.getDoctors(patient.getPatientId());
+          List<Medication> medications = MedicationService.getMedicationsByPatientId(patient.getPatientId());
 
           request.setAttribute("patient", patient);
           request.setAttribute("assignedDoctors", assignedDoctors);
+          request.setAttribute("medications", medications);
           request.setAttribute("patientId", patientIdStr);
         } else {
           request.setAttribute("patientId", patientIdStr);

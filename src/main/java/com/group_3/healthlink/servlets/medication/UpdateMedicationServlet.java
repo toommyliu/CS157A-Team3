@@ -1,0 +1,90 @@
+package com.group_3.healthlink.servlets.medication;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import org.json.JSONObject;
+
+import com.group_3.healthlink.Medication;
+import com.group_3.healthlink.User;
+import com.group_3.healthlink.services.MedicationService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "updateMedicationServlet", urlPatterns = { "/medication/update" })
+public class UpdateMedicationServlet extends HttpServlet {
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    System.out.println("/medication/update POST request received");
+
+    JSONObject json = new JSONObject();
+    response.setContentType("application/json");
+
+    User user = (User) request.getSession().getAttribute("user");
+    if (user == null || !user.isDoctor()) {
+      response.setStatus(401);
+      json.put("error", "unauthorized");
+      response.getWriter().write(json.toString());
+      return;
+    }
+
+    String medicationIdParam = request.getParameter("medicationId");
+    if (medicationIdParam == null || medicationIdParam.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "medicationId is required");
+      response.getWriter().write(json.toString());
+      return;
+    }
+
+    int medicationId;
+    try {
+      medicationId = Integer.parseInt(medicationIdParam);
+    } catch (NumberFormatException e) {
+      response.setStatus(400);
+      json.put("error", "invalid medicationId");
+      response.getWriter().write(json.toString());
+      return;
+    }
+
+    Medication existingMedication = MedicationService.getMedicationById(medicationId);
+    if (existingMedication == null) {
+      response.setStatus(404);
+      json.put("error", "medication not found");
+      response.getWriter().write(json.toString());
+      return;
+    }
+
+    if (existingMedication.getDoctorId() != user.getUserId()) {
+      response.setStatus(403);
+      json.put("error", "unauthorized");
+      response.getWriter().write(json.toString());
+      return;
+    }
+
+    String medicationName = request.getParameter("medicationName");
+    String dosage = request.getParameter("dosage");
+    String frequency = request.getParameter("frequency");
+    String noteContent = request.getParameter("noteContent");
+
+    boolean success = MedicationService.updateMedication(
+        medicationId,
+        medicationName,
+        dosage,
+        frequency,
+        noteContent);
+    System.out.println("Medication updated: " + success);
+
+    if (success) {
+      response.setStatus(200);
+      json.put("success", true);
+    } else {
+      response.setStatus(500);
+      json.put("success", false);
+    }
+    response.getWriter().write(json.toString());
+  }
+}

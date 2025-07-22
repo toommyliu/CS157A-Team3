@@ -65,4 +65,79 @@ public class MedicationService {
 
     return medications;
   }
+
+  public static Medication getMedicationById(int medicationId) {
+    String query = "SELECT * FROM medication WHERE medication_id = ?";
+    Connection con = DatabaseMgr.getInstance().getConnection();
+    try {
+      PreparedStatement stmt = con.prepareStatement(query);
+      stmt.setInt(1, medicationId);
+      ResultSet rs = stmt.executeQuery();
+      if (rs.next()) {
+        Medication med = new Medication();
+        med.setId(rs.getInt("medication_id"));
+        med.setPatientId(rs.getInt("patient_id"));
+        med.setDoctorId(rs.getInt("doctor_id"));
+        med.setName(rs.getString("name"));
+        med.setDosage(rs.getString("dosage"));
+        med.setFrequency(rs.getString("frequency"));
+        med.setNotes(rs.getString("notes"));
+        rs.close();
+        stmt.close();
+        return med;
+      }
+
+      rs.close();
+      stmt.close();
+      return null;
+    } catch (Exception e) {
+      System.err.println("Error getMedicationById: " + e.getMessage());
+      return null;
+    }
+  }
+
+  public static boolean updateMedication(int medicationId, String medicationName, String dosage, String frequency,
+      String noteContent) {
+    String query = "UPDATE medication SET name = ?, dosage = ?, frequency = ?, notes = ? WHERE medication_id = ?";
+    Connection con = DatabaseMgr.getInstance().getConnection();
+
+    try {
+      PreparedStatement stmt = con.prepareStatement(query);
+      stmt.setString(1, medicationName);
+      stmt.setString(2, dosage);
+      stmt.setString(3, frequency);
+
+      if (noteContent != null && !noteContent.trim().isEmpty()) {
+        stmt.setString(4, noteContent);
+      } else {
+        stmt.setNull(4, Types.VARCHAR);
+      }
+
+      stmt.setInt(5, medicationId);
+
+      int rowsAffected = stmt.executeUpdate();
+      stmt.close();
+      return rowsAffected > 0;
+    } catch (Exception e) {
+      System.err.println("Error updateMedication: " + e.getMessage());
+      return false;
+    }
+  }
+
+  public static boolean deleteMedication(int medicationId) {
+    String query = "DELETE FROM medication WHERE medication_id = ?";
+    Connection con = DatabaseMgr.getInstance().getConnection();
+
+    try {
+      PreparedStatement stmt = con.prepareStatement(query);
+      stmt.setInt(1, medicationId);
+
+      int rowsAffected = stmt.executeUpdate();
+      stmt.close();
+      return rowsAffected > 0;
+    } catch (Exception e) {
+      System.err.println("Error deleteMedication: " + e.getMessage());
+      return false;
+    }
+  }
 }
