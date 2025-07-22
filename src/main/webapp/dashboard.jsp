@@ -113,10 +113,9 @@ contentType="text/html;charset=UTF-8" language="java" %>
                     required
                   >
                     <% for (User patient : patients) { %>
-                    <option value="<%= patient.getUserId() %>">
-                      <%= patient.getFullName() %> (<%= patient.getEmailAddress()
-                      %>)
-                    </option>
+                      <option value="<%= patient.getUserId() %>">
+                        <%= patient.getFullName() %> (<%= patient.getEmailAddress()%>)
+                      </option>
                     <% } %>
                   </select>
                 </div>
