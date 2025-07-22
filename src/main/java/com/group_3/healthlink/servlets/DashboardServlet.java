@@ -1,4 +1,4 @@
-package com.group_3.healthlink;
+package com.group_3.healthlink.servlets;
 
 import java.io.IOException;
 

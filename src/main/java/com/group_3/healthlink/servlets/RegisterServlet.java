@@ -1,7 +1,8 @@
-package com.group_3.healthlink;
+package com.group_3.healthlink.servlets;
 
 import java.io.IOException;
 
+import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
