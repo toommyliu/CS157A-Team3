@@ -1,12 +1,13 @@
 package com.group_3.healthlink.servlets.medication;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import org.json.JSONObject;
 
+import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Medication;
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.MedicationService;
 
 import jakarta.servlet.ServletException;
@@ -58,7 +59,8 @@ public class DeleteMedicationServlet extends HttpServlet {
       return;
     }
 
-    if (existingMedication.getDoctorId() != user.getUserId()) {
+    Doctor doctor = DoctorService.getByUserId(user.getUserId());
+    if (doctor == null || existingMedication.getDoctorId() != doctor.getDoctorId()) {
       response.setStatus(403);
       json.put("error", "not authorized to delete this medication");
       response.getWriter().write(json.toString());

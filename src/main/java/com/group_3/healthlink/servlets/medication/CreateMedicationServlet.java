@@ -3,10 +3,13 @@ package com.group_3.healthlink.servlets.medication;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.MedicationService;
 import com.group_3.healthlink.services.PatientService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,12 +30,18 @@ public class CreateMedicationServlet extends HttpServlet {
       return;
     }
 
-    // Determine patientId: for doctor, from parameter; for patient, from session
     int patientId = -1;
+    int doctorId = -1;
+
     if (user.isDoctor()) {
       String patientIdParam = request.getParameter("patientId");
       if (patientIdParam != null && !patientIdParam.isEmpty()) {
         patientId = Integer.parseInt(patientIdParam);
+      }
+
+      Doctor doctor = DoctorService.getByUserId(user.getUserId());
+      if (doctor != null) {
+        doctorId = doctor.getDoctorId();
       }
     } else {
       Patient patient = PatientService.getByUserId(user.getUserId());
@@ -48,7 +57,7 @@ public class CreateMedicationServlet extends HttpServlet {
 
     boolean success = MedicationService.createMedication(
         patientId,
-        user.getUserId(),
+        doctorId,
         medicationName,
         dosage,
         frequency,

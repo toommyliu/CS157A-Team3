@@ -5,8 +5,10 @@ import java.io.PrintWriter;
 
 import org.json.JSONObject;
 
+import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Medication;
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.MedicationService;
 
 import jakarta.servlet.ServletException;
@@ -58,7 +60,8 @@ public class UpdateMedicationServlet extends HttpServlet {
       return;
     }
 
-    if (existingMedication.getDoctorId() != user.getUserId()) {
+    Doctor doctor = DoctorService.getByUserId(user.getUserId());
+    if (doctor == null || existingMedication.getDoctorId() != doctor.getDoctorId()) {
       response.setStatus(403);
       json.put("error", "unauthorized");
       response.getWriter().write(json.toString());

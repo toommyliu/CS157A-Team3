@@ -4,6 +4,7 @@ import com.group_3.healthlink.DatabaseMgr;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.Doctor;
+import com.group_3.healthlink.services.AuthService;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +56,25 @@ public class DoctorService {
             java.sql.ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return getDoctor(stmt, rs);
+                Doctor doctor = new Doctor();
+                doctor.setDoctorId(rs.getInt("doctor_id"));
+                doctor.setDepartment(rs.getString("department"));
+                doctor.setUserId(rs.getInt("user_id"));
+
+                rs.close();
+                stmt.close();
+
+                User user = AuthService.getUserById(doctor.getUserId());
+                if (user != null) {
+                    doctor.setFirstName(user.getFirstName());
+                    doctor.setLastName(user.getLastName());
+                    doctor.setEmailAddress(user.getEmailAddress());
+                    doctor.setRole(user.getRole());
+                    doctor.setCreatedAt(user.getCreatedAt());
+                    doctor.setUpdatedAt(user.getUpdatedAt());
+                }
+
+                return doctor;
             }
 
             rs.close();
@@ -80,9 +99,11 @@ public class DoctorService {
             while (rs.next()) {
                 int patientId = rs.getInt("patient_id");
                 Patient patient = PatientService.getByPatientId(patientId);
-                User user = AuthService.getUserById(patientId);
-                if (patient != null && user != null) {
-                    patient.setUser(user);
+                if (patient != null) {
+                    User user = AuthService.getUserById(patient.getUserId());
+                    if (user != null) {
+                        patient.setUser(user);
+                    }
                     patients.add(patient);
                 }
             }
