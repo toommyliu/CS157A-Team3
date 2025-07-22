@@ -7,9 +7,13 @@ contentType="text/html;charset=UTF-8" language="java" %>
     <link href="css/styles.css" rel="stylesheet" />
   </head>
   <body>
-    <% User user = (User) session.getAttribute("user"); User[] patients = null;
-    if (user != null && user.isDoctor()) { patients =
-    DoctorService.getPatients(user.getUserId()); } %>
+    <%
+      User user = (User) session.getAttribute("user");
+      User[] patients = null;
+      if (user != null && user.isDoctor()) {
+        patients = DoctorService.getPatients(user.getUserId());
+      }
+    %>
 
     <div class="app-container">
       <jsp:include page="layouts/sidebar.jsp" />
@@ -82,101 +86,101 @@ contentType="text/html;charset=UTF-8" language="java" %>
     </div>
 
     <% if (user.isDoctor() && patients != null && patients.length > 0) { %>
-    <div class="modal fade" id="medicationModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 class="modal-title fs-5">New Medication</h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <form
-            action="<%= request.getContextPath() %>/medication/create"
-            method="POST"
-            id="medicationForm"
-          >
-            <div class="modal-body">
-              <div class="mb-2">
-                <label for="patientId" class="form-label">Patient</label>
-                <select
-                  id="patientId"
-                  name="patientId"
-                  class="form-select"
-                  required
-                >
-                  <% for (User patient : patients) { %>
-                  <option value="<%= patient.getUserId() %>">
-                    <%= patient.getFullName() %> (<%= patient.getEmailAddress()
-                    %>)
-                  </option>
-                  <% } %>
-                </select>
-              </div>
-              <div class="mb-2">
-                <label for="medicationName" class="form-label"
-                  >Medication Name</label
-                >
-                <input
-                  type="text"
-                  id="medicationName"
-                  name="medicationName"
-                  class="form-control"
-                  placeholder="Medication name"
-                  required
-                />
-              </div>
-              <div class="mb-2">
-                <label for="dosage" class="form-label">Dosage</label>
-                <input
-                  type="text"
-                  id="dosage"
-                  name="dosage"
-                  class="form-control"
-                  placeholder="Dosage"
-                  required
-                />
-              </div>
-              <div class="mb-2">
-                <label for="frequency" class="form-label">Frequency</label>
-                <input
-                  type="text"
-                  id="frequency"
-                  name="frequency"
-                  class="form-control"
-                  placeholder="Frequency"
-                  required
-                />
-              </div>
-              <div class="mb-2">
-                <label for="noteContent" class="form-label"
-                  >Notes (optional)</label
-                >
-                <textarea
-                  id="noteContent"
-                  name="noteContent"
-                  class="form-control"
-                  placeholder="Note content (optional)"
-                ></textarea>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                <button type="submit" class="btn btn-primary">Create</button>
-              </div>
+      <div class="modal fade" id="medicationModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title fs-5">New Medication</h2>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
-          </form>
+            <form
+              action="<%= request.getContextPath() %>/medication/create"
+              method="POST"
+              id="medicationForm"
+            >
+              <div class="modal-body">
+                <div class="mb-2">
+                  <label for="patientId" class="form-label">Patient</label>
+                  <select
+                    id="patientId"
+                    name="patientId"
+                    class="form-select"
+                    required
+                  >
+                    <% for (User patient : patients) { %>
+                    <option value="<%= patient.getUserId() %>">
+                      <%= patient.getFullName() %> (<%= patient.getEmailAddress()
+                      %>)
+                    </option>
+                    <% } %>
+                  </select>
+                </div>
+                <div class="mb-2">
+                  <label for="medicationName" class="form-label"
+                    >Medication Name</label
+                  >
+                  <input
+                    type="text"
+                    id="medicationName"
+                    name="medicationName"
+                    class="form-control"
+                    placeholder="Medication name"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label for="dosage" class="form-label">Dosage</label>
+                  <input
+                    type="text"
+                    id="dosage"
+                    name="dosage"
+                    class="form-control"
+                    placeholder="Dosage"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label for="frequency" class="form-label">Frequency</label>
+                  <input
+                    type="text"
+                    id="frequency"
+                    name="frequency"
+                    class="form-control"
+                    placeholder="Frequency"
+                    required
+                  />
+                </div>
+                <div class="mb-2">
+                  <label for="noteContent" class="form-label"
+                    >Notes (optional)</label
+                  >
+                  <textarea
+                    id="noteContent"
+                    name="noteContent"
+                    class="form-control"
+                    placeholder="Note content (optional)"
+                  ></textarea>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
     <% } %>
 
     <script src="js/bootstrap.min.js"></script>
