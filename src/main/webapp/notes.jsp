@@ -1,8 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ page
-import="com.group_3.healthlink.services.PatientService" %> <%@ page
-import="com.group_3.healthlink.Patient" %> <%@ page
-import="com.group_3.healthlink.User" %> <%@ page
-import="com.group_3.healthlink.Doctor" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.group_3.healthlink.services.PatientService" %>
+<%@ page import="com.group_3.healthlink.Patient" %>
+<%@ page import="com.group_3.healthlink.User" %>
+<%@ page import="com.group_3.healthlink.Doctor" %>
 <%@ page import="com.group_3.healthlink.Note" %>
 <%@ page import="com.group_3.healthlink.services.NotesService" %>
 <html>

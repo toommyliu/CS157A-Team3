@@ -26,25 +26,30 @@
             </a>
         </li>
         <% if (user != null) { %>
-        <% if (user.isPatient()) { %>
-        <li>
-            <a href="<%= contextPath %>/notes"
-               class="nav-link text-white <%= currentPath.contains("/notes") ? "active" : "" %>">
-                <i class="bi bi-journal-text me-2"></i> Notes
-            </a>
-        </li>
-        <li>
-            <a href="<%= contextPath %>/medications"
-               class="nav-link text-white <%= currentPath.contains("/medications") ? "active" : "" %>">
-                <i class="bi bi-capsule-pill me-2"></i> Medications
-            </a>
-        </li>
-        <% } else if (user.isDoctor()) { %>
-        <li>
-            <a href="<%= contextPath %>/patients"
-               class="nav-link text-white <%= currentPath.contains("/patients") ? "active" : "" %>"> Patients </a>
-        </li>
-        <% } %>
+            <% if (user.isPatient()) { %>
+                <li>
+                    <a href="<%= contextPath %>/notes"
+                       class="nav-link text-white <%= currentPath.contains("/notes") ? "active" : "" %>">
+                        <i class="bi bi-journal-text me-2"></i>
+                        Notes
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= contextPath %>/medications"
+                       class="nav-link text-white <%= currentPath.contains("/medications") ? "active" : "" %>">
+                        <i class="bi bi-capsule-pill me-2"></i>
+                        Medications
+                    </a>
+                </li>
+            <% } else if (user.isDoctor()) { %>
+                <li>
+                    <a href="<%= contextPath %>/patients"
+                       class="nav-link text-white <%= currentPath.contains("/patients") ? "active" : "" %>">
+                        <i class="bi bi-person"></i>
+                        Patients
+                    </a>
+                </li>
+            <% } %>
         <% } %>
         <li>
             <a href="<%= contextPath %>/messages"
@@ -55,7 +60,7 @@
     </ul>
     <hr/>
     <% if (user != null) { %>
-    <p><%= user.getFullName() %>
+        <p><%= user.getFullName() %>
     </p>
     <% } %>
 </div>
