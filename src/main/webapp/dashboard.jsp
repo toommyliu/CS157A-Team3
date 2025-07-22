@@ -26,7 +26,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
           <li>Updated At: <%= user.getUpdatedAt() %></li>
         </ul>
 
-        <% if ("doctor".equalsIgnoreCase(user.getRole())) { %>
+        <% if (user.isDoctor()) { %>
         <div class="mt-4">
           <h3>Your Patients:</h3>
           <% User[] patients = DoctorService.getPatients(user.getId()); if

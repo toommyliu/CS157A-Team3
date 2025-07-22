@@ -3,12 +3,13 @@ package com.group_3.healthlink;
 import java.util.Date;
 
 public class User {
+
     private int id;
     private String emailAddress;
     private String passwordHashed;
     private String firstName;
     private String lastName;
-    private String role;
+    private UserRole role;
     private Date createdAt;
     private Date updatedAt;
 
@@ -16,7 +17,7 @@ public class User {
     }
 
     public User(int id,
-            String emailAddress, String passwordHashed, String firstName, String lastName, String role,
+            String emailAddress, String passwordHashed, String firstName, String lastName, UserRole role,
             Date createdAt, Date updatedAt) {
         this.id = id;
         this.emailAddress = emailAddress;
@@ -84,12 +85,24 @@ public class User {
         return fullName;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public Boolean isPatient() {
+        return this.role == UserRole.Patient;
+    }
+
+    public Boolean isDoctor() {
+        return this.role == UserRole.Doctor;
+    }
+
+    public Boolean isAdmin() {
+        return this.role == UserRole.Admin;
     }
 
     public Date getCreatedAt() {

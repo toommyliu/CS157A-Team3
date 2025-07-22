@@ -2,6 +2,7 @@ package com.group_3.healthlink.services;
 
 import com.group_3.healthlink.DatabaseMgr;
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.UserRole;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
@@ -132,7 +133,7 @@ public class AuthService {
         String passwordHashed = rs.getString("password_hashed");
         String firstName = rs.getString("first_name");
         String lastName = rs.getString("last_name");
-        String role = rs.getString("role");
+        String roleStr = rs.getString("role");
         Date createdAt = rs.getDate("created_at");
         Date updatedAt = rs.getDate("updated_at");
 
@@ -142,6 +143,22 @@ public class AuthService {
         user.setPasswordHashed(passwordHashed);
         user.setFirstName(firstName);
         user.setLastName(lastName);
+
+        UserRole role;
+        switch (roleStr.toLowerCase()) {
+            case "admin":
+                role = UserRole.Admin;
+                break;
+            case "doctor":
+                role = UserRole.Doctor;
+                break;
+            case "patient":
+                role = UserRole.Patient;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown role: " + roleStr);
+        }
+
         user.setRole(role);
         user.setCreatedAt(createdAt);
         user.setUpdatedAt(updatedAt);
