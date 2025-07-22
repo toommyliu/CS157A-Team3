@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 
     User user = AuthService.getUserByEmail(email);
     if (user != null) {
-      String userId = String.valueOf(user.getId());
+      String userId = String.valueOf(user.getUserId());
       System.out.println("User ID found in database: " + userId);
 
       String hashedPassword = user.getPasswordHashed();
