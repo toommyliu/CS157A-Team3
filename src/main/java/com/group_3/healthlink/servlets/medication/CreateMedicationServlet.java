@@ -20,13 +20,16 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CreateMedicationServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    System.out.println("/medication/create POST request received");
+    System.out.println("POST /medication/create");
 
     User user = (User) request.getSession().getAttribute("user");
+    PrintWriter out = response.getWriter();
+    org.json.JSONObject json = new org.json.JSONObject();
     if (user == null) {
       response.setStatus(401);
       response.setContentType("application/json");
-      response.getWriter().write("{\"error\": \"unauthorized\"}");
+      json.put("error", "unauthorized");
+      out.print(json);
       return;
     }
 
@@ -64,17 +67,15 @@ public class CreateMedicationServlet extends HttpServlet {
         noteContent);
     System.out.println("Medication created: " + success);
 
-    PrintWriter out = response.getWriter();
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
     if (success) {
       response.setStatus(200);
-      out.print("{\"success\": true}");
-      out.flush();
+      json.put("success", true);
     } else {
       response.setStatus(500);
-      out.print("{\"success\": false}");
-      out.flush();
+      json.put("success", false);
     }
+    out.print(json);
   }
 }

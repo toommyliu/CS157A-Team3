@@ -17,7 +17,8 @@ public class DoctorService {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT d.doctor_id, d.department, d.user_id, " +
                 "u.first_name, u.last_name, u.email_address, u.role, u.created_at, u.updated_at " +
-                "FROM doctor d JOIN user u ON d.user_id = u.user_id WHERE d.user_id = ?";
+                "FROM doctor d JOIN user u ON d.user_id = u.user_id " +
+                "WHERE d.user_id = ?";
 
         try {
             PreparedStatement stmt = con.prepareStatement(query);
@@ -54,7 +55,8 @@ public class DoctorService {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT d.doctor_id, d.department, d.user_id, " +
                 "u.first_name, u.last_name, u.email_address, u.role, u.created_at, u.updated_at " +
-                "FROM doctor d JOIN user u ON d.user_id = u.user_id WHERE d.doctor_id = ?";
+                "FROM doctor d JOIN user u ON d.user_id = u.user_id " +
+                "WHERE d.doctor_id = ?";
 
         try {
             PreparedStatement stmt = con.prepareStatement(query);
@@ -129,5 +131,4 @@ public class DoctorService {
             return new Patient[0];
         }
     }
-
 }

@@ -21,16 +21,18 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UpdateMedicationServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    System.out.println("/medication/update POST request received");
+    System.out.println("POST /medication/update");
 
     JSONObject json = new JSONObject();
+
+    PrintWriter out = response.getWriter();
     response.setContentType("application/json");
 
     User user = (User) request.getSession().getAttribute("user");
     if (user == null || !user.isDoctor()) {
       response.setStatus(401);
       json.put("error", "unauthorized");
-      response.getWriter().write(json.toString());
+      out.print(json);
       return;
     }
 
@@ -38,7 +40,7 @@ public class UpdateMedicationServlet extends HttpServlet {
     if (medicationIdParam == null || medicationIdParam.isEmpty()) {
       response.setStatus(400);
       json.put("error", "medicationId is required");
-      response.getWriter().write(json.toString());
+      out.print(json);
       return;
     }
 
@@ -48,7 +50,7 @@ public class UpdateMedicationServlet extends HttpServlet {
     } catch (NumberFormatException e) {
       response.setStatus(400);
       json.put("error", "invalid medicationId");
-      response.getWriter().write(json.toString());
+      out.print(json);
       return;
     }
 
@@ -56,7 +58,7 @@ public class UpdateMedicationServlet extends HttpServlet {
     if (existingMedication == null) {
       response.setStatus(404);
       json.put("error", "medication not found");
-      response.getWriter().write(json.toString());
+      out.print(json);
       return;
     }
 
@@ -64,7 +66,7 @@ public class UpdateMedicationServlet extends HttpServlet {
     if (doctor == null || existingMedication.getDoctorId() != doctor.getDoctorId()) {
       response.setStatus(403);
       json.put("error", "unauthorized");
-      response.getWriter().write(json.toString());
+      out.print(json);
       return;
     }
 
@@ -88,6 +90,7 @@ public class UpdateMedicationServlet extends HttpServlet {
       response.setStatus(500);
       json.put("success", false);
     }
-    response.getWriter().write(json.toString());
+
+    out.print(json);
   }
 }
