@@ -1,10 +1,14 @@
 <%@ page import="com.group_3.healthlink.User" %>
 <%
-  String requestUrl = request.getRequestURL().toString();
-  String contextPath = request.getContextPath();
-  String currentPath = requestUrl.substring(contextPath.length()).replace(".jsp", "");
+  String requestUrl = request.getRequestURL().toString(); // http://localhost:8080/healthlink_war_exploded/notes.jsp
+  String contextPath = request.getContextPath(); // /healthlink_war_exploded
+  String currentPath = requestUrl
+          .substring(requestUrl.indexOf(contextPath) + contextPath.length() + 1) // notes.jsp
+          .replace(".jsp", ""); // notes
 
   User user = (User) session.getAttribute("user");
+  System.out.println("requestUrl: " + requestUrl);
+  System.out.println("contextPath: " + contextPath);
   System.out.println("Current Path: " + currentPath);
 %>
 <div
