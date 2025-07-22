@@ -11,6 +11,7 @@ import="com.group_3.healthlink.Doctor" %>
     <link href="css/styles.css" rel="stylesheet" />
   </head>
   <body>
+    <%--    TODO: this is a little buggy--%>
     <% User user = (User)session.getAttribute("user"); %>
     <% Patient patient = PatientService.getByUserId(user.getUserId()); %>
     <% Doctor[] doctors = PatientService.getDoctors(patient.getPatientId()); %>
