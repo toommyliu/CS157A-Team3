@@ -69,7 +69,7 @@ public class DoctorService {
                 doctor.setFirstName(rs.getString("first_name"));
                 doctor.setLastName(rs.getString("last_name"));
                 doctor.setEmailAddress(rs.getString("email_address"));
-                doctor.setRole(UserRole.valueOf(rs.getString("role")));
+                doctor.setRole(UserRole.Doctor);
                 doctor.setCreatedAt(rs.getTimestamp("created_at"));
                 doctor.setUpdatedAt(rs.getTimestamp("updated_at"));
 
@@ -115,7 +115,7 @@ public class DoctorService {
                 patient.setFirstName(rs.getString("first_name"));
                 patient.setLastName(rs.getString("last_name"));
                 patient.setEmailAddress(rs.getString("email_address"));
-                patient.setRole(UserRole.valueOf(rs.getString("role")));
+                patient.setRole(UserRole.Patient);
                 patient.setCreatedAt(rs.getTimestamp("created_at"));
                 patient.setUpdatedAt(rs.getTimestamp("updated_at"));
                 patients.add(patient);
