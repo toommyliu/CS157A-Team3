@@ -81,6 +81,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
       </div>
     </div>
 
+    <% if (user.isDoctor() && patients != null && patients.length > 0) { %>
     <div class="modal fade" id="medicationModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -176,6 +177,7 @@ contentType="text/html;charset=UTF-8" language="java" %>
         </div>
       </div>
     </div>
+    <% } %>
 
     <script src="js/bootstrap.min.js"></script>
     <script>
