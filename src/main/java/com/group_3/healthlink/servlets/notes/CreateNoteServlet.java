@@ -3,16 +3,18 @@ package com.group_3.healthlink.servlets.notes;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.NotesService;
 import com.group_3.healthlink.services.PatientService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.json.JSONObject;
 
 @WebServlet(name = "createNoteServlet", urlPatterns = { "/notes/create" })
 public class CreateNoteServlet extends HttpServlet {
@@ -42,13 +44,17 @@ public class CreateNoteServlet extends HttpServlet {
     PrintWriter out = response.getWriter();
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
+
+    JSONObject json = new JSONObject();
+
     if (success) {
       response.setStatus(200);
-      out.print("{\"success\": true}");
+      json.put("success", true);
+      out.print(json.toString());
       out.flush();
     } else {
       response.setStatus(500);
-      out.print("{\"success\": false}");
+      json.put("success", false);
       out.flush();
     }
   }
