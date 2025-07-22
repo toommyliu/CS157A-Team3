@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.group_3.healthlink.Medication" %>
 <html>
 <head>
   <title>Healthlink - Medications</title>
@@ -9,7 +11,34 @@
   <jsp:include page="layouts/sidebar.jsp" />
 
   <div class="main-content">
-    <p>hello from medications!</p>
+    <h2>Your Medications</h2>
+    <%
+      List<Medication> medications = (List<Medication>) request.getAttribute("medications");
+      if (medications != null && !medications.isEmpty()) {
+    %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Dosage</th>
+          <th>Frequency</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (Medication med : medications) { %>
+        <tr>
+          <td><%= med.getName() %></td>
+          <td><%= med.getDosage() %></td>
+          <td><%= med.getFrequency() %></td>
+          <td><%= med.getNotes() != null ? med.getNotes() : "" %></td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <% } else { %>
+      <p>No medications found.</p>
+    <% } %>
   </div>
 </div>
 <script src="js/bootstrap.min.js"></script>
