@@ -138,7 +138,7 @@ public class AuthService {
         Date updatedAt = rs.getDate("updated_at");
 
         User user = new User();
-        user.setId(id);
+        user.setUserId(id);
         user.setEmailAddress(emailAddress);
         user.setPasswordHashed(passwordHashed);
         user.setFirstName(firstName);
