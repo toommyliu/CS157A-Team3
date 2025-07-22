@@ -1,10 +1,12 @@
 package com.group_3.healthlink.servlets.notes;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.services.NotesService;
 import com.group_3.healthlink.services.PatientService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,18 +23,33 @@ public class CreateNoteServlet extends HttpServlet {
     User user = (User) request.getSession().getAttribute("user");
     if (user == null) {
       response.setStatus(401);
+      response.setContentType("application/json");
       response.getWriter().write("{\"error\": \"unauthorized\"}");
       return;
     }
 
     Patient patient = PatientService.getByUserId(user.getUserId());
-    Doctor[] doctors = PatientService.getDoctors(patient.getPatientId());
 
     String noteContent = request.getParameter("noteContent");
-    System.out.println("Note content: " + noteContent);
     String doctorId = request.getParameter("doctorId");
-    System.out.println("Selected doctor ID: " + doctorId);
 
-    response.sendRedirect(request.getContextPath() + "/notes");
+    boolean success = NotesService.createNote(
+        noteContent,
+        patient.getPatientId(),
+        doctorId != null && !doctorId.isEmpty() ? Integer.parseInt(doctorId) : -1);
+    System.out.println("Note created: " + success);
+
+    PrintWriter out = response.getWriter();
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+    if (success) {
+      response.setStatus(200);
+      out.print("{\"success\": true}");
+      out.flush();
+    } else {
+      response.setStatus(500);
+      out.print("{\"success\": false}");
+      out.flush();
+    }
   }
 }
