@@ -24,7 +24,6 @@ public class UpdateMedicationServlet extends HttpServlet {
     System.out.println("POST /medication/update");
 
     JSONObject json = new JSONObject();
-
     PrintWriter out = response.getWriter();
     response.setContentType("application/json");
 
@@ -74,6 +73,34 @@ public class UpdateMedicationServlet extends HttpServlet {
     String dosage = request.getParameter("dosage");
     String frequency = request.getParameter("frequency");
     String noteContent = request.getParameter("noteContent");
+
+    if (medicationName == null || medicationName.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "medicationName is required");
+      out.print(json);
+      return;
+    }
+
+    if (dosage == null || dosage.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "dosage is required");
+      out.print(json);
+      return;
+    }
+
+    if (frequency == null || frequency.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "frequency is required");
+      out.print(json);
+      return;
+    }
+
+    if (noteContent == null || noteContent.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "noteContent is required");
+      out.print(json);
+      return;
+    }
 
     boolean success = MedicationService.updateMedication(
         medicationId,

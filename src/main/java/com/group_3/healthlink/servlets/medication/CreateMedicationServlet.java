@@ -3,6 +3,8 @@ package com.group_3.healthlink.servlets.medication;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.json.JSONObject;
+
 import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
@@ -23,11 +25,13 @@ public class CreateMedicationServlet extends HttpServlet {
     System.out.println("POST /medication/create");
 
     User user = (User) request.getSession().getAttribute("user");
+
+    JSONObject json = new JSONObject();
     PrintWriter out = response.getWriter();
-    org.json.JSONObject json = new org.json.JSONObject();
+    response.setContentType("application/json");
+
     if (user == null) {
       response.setStatus(401);
-      response.setContentType("application/json");
       json.put("error", "unauthorized");
       out.print(json);
       return;
@@ -58,6 +62,34 @@ public class CreateMedicationServlet extends HttpServlet {
     String frequency = request.getParameter("frequency");
     String noteContent = request.getParameter("noteContent");
 
+    if (medicationName == null || medicationName.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "medicationName is required");
+      out.print(json);
+      return;
+    }
+
+    if (dosage == null || dosage.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "dosage is required");
+      out.print(json);
+      return;
+    }
+
+    if (frequency == null || frequency.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "frequency is required");
+      out.print(json);
+      return;
+    }
+
+    if (noteContent == null || noteContent.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "noteContent is required");
+      out.print(json);
+      return;
+    }
+
     boolean success = MedicationService.createMedication(
         patientId,
         doctorId,
@@ -67,8 +99,6 @@ public class CreateMedicationServlet extends HttpServlet {
         noteContent);
     System.out.println("Medication created: " + success);
 
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
     if (success) {
       response.setStatus(200);
       json.put("success", true);
