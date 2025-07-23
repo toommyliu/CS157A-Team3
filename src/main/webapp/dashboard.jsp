@@ -14,12 +14,6 @@
       if (user != null && user.isDoctor()) {
         patients = DoctorService.getPatients(user.getUserId());
       }
-
-      boolean isOnboarded = AuthService.isUserOnboarded(user.getUserId());
-      if (!isOnboarded) {
-        response.sendRedirect(request.getContextPath() + "/onboarding");
-        return;
-      }
     %>
 
     <div class="app-container">
