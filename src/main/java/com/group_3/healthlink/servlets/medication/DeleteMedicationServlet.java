@@ -64,16 +64,14 @@ public class DeleteMedicationServlet extends HttpServlet {
     Doctor doctor = DoctorService.getByUserId(user.getUserId());
     if (doctor == null || existingMedication.getDoctorId() != doctor.getDoctorId()) {
       response.setStatus(403);
-      json.put("error", "not authorized to delete this medication");
+      json.put("error", "unauthorized");
       out.print(json);
       return;
     }
 
     boolean success = MedicationService.deleteMedication(medicationId);
     System.out.println("Medication deleted: " + success);
-
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
+    
     if (success) {
       response.setStatus(200);
       json.put("success", true);
