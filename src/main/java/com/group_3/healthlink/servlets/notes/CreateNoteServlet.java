@@ -36,8 +36,29 @@ public class CreateNoteServlet extends HttpServlet {
 
     Patient patient = PatientService.getByUserId(user.getUserId());
 
+    if (patient == null) {
+      response.setStatus(404);
+      json.put("error", "patient not found");
+      out.print(json);
+      return;
+    }
+
     String noteContent = request.getParameter("noteContent");
     String doctorId = request.getParameter("doctorId");
+
+    if (noteContent == null || noteContent.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "noteContent is required");
+      out.print(json);
+      return;
+    }
+
+    if (doctorId == null || doctorId.isEmpty()) {
+      response.setStatus(400);
+      json.put("error", "doctorId is required");
+      out.print(json);
+      return;
+    }
 
     boolean success = NotesService.createNote(
         noteContent,
