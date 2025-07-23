@@ -3,6 +3,8 @@ package com.group_3.healthlink.servlets.notes;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.json.JSONObject;
+
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.NotesService;
@@ -14,19 +16,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
-
 @WebServlet(name = "createNoteServlet", urlPatterns = { "/notes/create" })
 public class CreateNoteServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    System.out.println("/notes/create POST request received");
+    System.out.println("POST /notes/create");
+
+    JSONObject json = new JSONObject();
+    PrintWriter out = response.getWriter();
+    response.setContentType("application/json");
 
     User user = (User) request.getSession().getAttribute("user");
     if (user == null) {
       response.setStatus(401);
-      response.setContentType("application/json");
-      response.getWriter().write("{\"error\": \"unauthorized\"}");
+      json.put("error", "unauthorized");
+      out.print(json);
       return;
     }
 
@@ -41,21 +45,14 @@ public class CreateNoteServlet extends HttpServlet {
         doctorId != null && !doctorId.isEmpty() ? Integer.parseInt(doctorId) : -1);
     System.out.println("Note created: " + success);
 
-    PrintWriter out = response.getWriter();
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
-
-    JSONObject json = new JSONObject();
-
     if (success) {
       response.setStatus(200);
       json.put("success", true);
-      out.print(json.toString());
-      out.flush();
     } else {
       response.setStatus(500);
       json.put("success", false);
-      out.flush();
     }
+
+    out.print(json);
   }
 }
