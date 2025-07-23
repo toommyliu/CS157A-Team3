@@ -12,6 +12,13 @@
                 We are excited to work together with you! Please fill out your information before proceeding.
             </h5>
         </div>
+        
+        <% if (request.getAttribute("error") != null && (Boolean) request.getAttribute("error")) { %>
+            <div class="alert alert-danger mx-auto w-50 text-center" role="alert">
+                An error occurred, try again.
+            </div>
+        <% } %>
+        
         <div class="d-flex justify-content-center">
             <form
                 id="onboarding-form"
@@ -37,8 +44,8 @@
                             name="phoneNumber"
                             class="form-control"
                             required
-                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                            placeholder="123-456-7890"
+                            pattern="^\(\d{3}\) \d{3}-\d{4}$"
+                            placeholder="(408) 456-7890"
                     />
                 </div>
                 <div class="mb-3">
@@ -52,29 +59,25 @@
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="emergencyName" class="form-label"
-                    >Emergency Contact Name</label
-                    >
+                    <label for="emergencyContactName" class="form-label">Emergency Contact Name</label>
                     <input
                             type="text"
-                            id="emergencyName"
-                            name="emergencyName"
+                            id="emergencyContactName"
+                            name="emergencyContactName"
                             class="form-control"
                             required
                     />
                 </div>
                 <div class="mb-3">
-                    <label for="emergencyPhone" class="form-label"
-                    >Emergency Contact Phone Number</label
-                    >
+                    <label for="emergencyContactPhone" class="form-label">Emergency Contact Phone Number</label>
                     <input
                             type="tel"
-                            id="emergencyPhone"
-                            name="emergencyPhone"
+                            id="emergencyContactPhone"
+                            name="emergencyContactPhone"
                             class="form-control"
                             required
-                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                            placeholder="123-456-7890"
+                            pattern="^\(\d{3}\) \d{3}-\d{4}$"
+                            placeholder="(408) 456-7890"
                     />
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Submit</button>
