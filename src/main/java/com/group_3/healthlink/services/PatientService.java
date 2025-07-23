@@ -99,6 +99,31 @@ public class PatientService {
         }
     }
 
+    public static boolean createNew(int userId, String dateOfBirth, String phoneNumber, String address,
+                                           String emergencyContactName, String emergencyContactPhoneNumber) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        String query = "INSERT INTO patient (date_of_birth, phone_number, address, emergency_contact_name, " +
+                "emergency_contact_phone_number, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, dateOfBirth);
+            stmt.setString(2, phoneNumber);
+            stmt.setString(3, address);
+            stmt.setString(4, emergencyContactName);
+            stmt.setString(5, emergencyContactPhoneNumber);
+            stmt.setInt(6, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Error creating new patient: " + e.getMessage());
+            return false;
+        }
+    }
+
     private static Patient getPatient(ResultSet rs) throws SQLException {
         Patient patient;
         patient = new Patient();
