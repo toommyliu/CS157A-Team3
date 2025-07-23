@@ -1,6 +1,7 @@
-<%@ page import="com.group_3.healthlink.User" %> <%@ page
-import="com.group_3.healthlink.services.DoctorService" %> <%@ page
-contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.group_3.healthlink.User" %>
+<%@ page import="com.group_3.healthlink.services.DoctorService" %>
+<%@ page import="com.group_3.healthlink.services.AuthService" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
     <title>Healthlink - Dashboard</title>
@@ -12,6 +13,12 @@ contentType="text/html;charset=UTF-8" language="java" %>
       User[] patients = null;
       if (user != null && user.isDoctor()) {
         patients = DoctorService.getPatients(user.getUserId());
+      }
+
+      boolean isOnboarded = AuthService.isUserOnboarded(user.getUserId());
+      if (!isOnboarded) {
+        response.sendRedirect(request.getContextPath() + "/onboarding");
+        return;
       }
     %>
 
