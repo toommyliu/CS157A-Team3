@@ -68,12 +68,11 @@ public class CreateNoteServlet extends HttpServlet {
 
     if (success) {
       response.setStatus(200);
-      json.put("success", true);
     } else {
       response.setStatus(500);
-      json.put("success", false);
     }
 
+    json.put("success", success);
     out.print(json);
   }
 }
