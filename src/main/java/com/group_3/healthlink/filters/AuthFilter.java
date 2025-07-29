@@ -41,7 +41,7 @@ public class AuthFilter implements Filter {
       return;
     }
 
-    boolean isOnboarded = AuthService.isUserOnboarded(user.getUserId());
+    boolean isOnboarded = AuthService.isUserOnboarded(user.getUserId()) || user.isAdmin();
     if (!isOnboarded) {
       httpRequest.setAttribute("user", user);
       if (!relativePath.equals("/onboarding")) {
