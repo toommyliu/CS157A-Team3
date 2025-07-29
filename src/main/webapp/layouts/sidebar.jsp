@@ -57,6 +57,17 @@
                 <i class="bi bi-chat-dots me-2"></i> Messages
             </a>
         </li>
+        <% if (user.isAdmin()) { %>
+            <div class="border-top my-2"></div>
+
+            <li>
+                <a href="<%= contextPath %>/admin/doctors"
+                   class="nav-link text-white <%= currentPath.contains("/admin/doctors") ? "active" : "" %>">
+                    <i class="bi bi-person-vcard me-2"></i>
+                    Doctors
+                </a>
+            </li>
+        <% } %>
     </ul>
     <hr/>
     <% if (user != null) { %>
