@@ -3,6 +3,7 @@ package com.group_3.healthlink.servlets;
 import java.io.IOException;
 
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.UserRole;
 import com.group_3.healthlink.services.AuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,20 +29,20 @@ public class RegisterServlet extends HttpServlet {
     String lastName = request.getParameter("lastName");
     String emailAddress = request.getParameter("email");
     String password = request.getParameter("password");
-    String role = request.getParameter("role");
 
     System.out.println("First Name: " + firstName);
     System.out.println("Last Name: " + lastName);
     System.out.println("Email Address: " + emailAddress);
     System.out.println("Password: " + password);
-    System.out.println("Role: " + role);
+    System.out.println("Role: patient");
 
     int userId = AuthService.registerUser(
         firstName,
         lastName,
         emailAddress,
         password,
-        role);
+        UserRole.Patient.toString()
+    );
 
     if (userId != -1) {
       System.out.println("User registered successfully with userId: " + userId);
