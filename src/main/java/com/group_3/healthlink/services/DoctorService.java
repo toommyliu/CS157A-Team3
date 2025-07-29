@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,17 +27,7 @@ public class DoctorService {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Doctor doctor = new Doctor();
-                doctor.setDoctorId(rs.getInt("doctor_id"));
-                doctor.setDepartment(rs.getString("department"));
-                doctor.setUserId(rs.getInt("user_id"));
-                doctor.setFirstName(rs.getString("first_name"));
-                doctor.setLastName(rs.getString("last_name"));
-                doctor.setEmailAddress(rs.getString("email_address"));
-                doctor.setRole(UserRole.Doctor);
-                doctor.setCreatedAt(rs.getTimestamp("created_at"));
-                doctor.setUpdatedAt(rs.getTimestamp("updated_at"));
-
+                Doctor doctor = getDoctor(rs);
                 rs.close();
                 stmt.close();
                 return doctor;
@@ -64,16 +55,7 @@ public class DoctorService {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                Doctor doctor = new Doctor();
-                doctor.setDoctorId(rs.getInt("doctor_id"));
-                doctor.setDepartment(rs.getString("department"));
-                doctor.setUserId(rs.getInt("user_id"));
-                doctor.setFirstName(rs.getString("first_name"));
-                doctor.setLastName(rs.getString("last_name"));
-                doctor.setEmailAddress(rs.getString("email_address"));
-                doctor.setRole(UserRole.Doctor);
-                doctor.setCreatedAt(rs.getTimestamp("created_at"));
-                doctor.setUpdatedAt(rs.getTimestamp("updated_at"));
+                Doctor doctor = getDoctor(rs);
 
                 rs.close();
                 stmt.close();
@@ -130,5 +112,65 @@ public class DoctorService {
             System.err.println("Error getPatients: " + e.getMessage());
             return new Patient[0];
         }
+    }
+
+    public static Doctor[] getAll() {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+
+        String query = "SELECT d.doctor_id, d.department, d.user_id, " +
+                "u.first_name, u.last_name, u.email_address, u.role, u.created_at, u.updated_at " +
+                "FROM doctor d JOIN user u ON d.user_id = u.user_id";
+
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            List<Doctor> doctors = new ArrayList<>();
+            while (rs.next()) {
+                Doctor doctor = getDoctor(rs);
+                if (doctor != null)
+                    doctors.add(doctor);
+            }
+
+            rs.close();
+            stmt.close();
+            return doctors.toArray(new Doctor[0]);
+        } catch (Exception e) {
+            System.err.println("Error getAll: " + e.getMessage());
+            return new Doctor[0];
+        }
+    }
+
+    public static boolean createNew(int userId, String department) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        String query = "INSERT INTO doctor (department, user_id) VALUES (?, ?)";
+
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, department);
+            stmt.setInt(2, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Error creating new doctor: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private static Doctor getDoctor(ResultSet rs) throws SQLException {
+        Doctor doctor = new Doctor();
+        doctor.setDoctorId(rs.getInt("doctor_id"));
+        doctor.setDepartment(rs.getString("department"));
+        doctor.setUserId(rs.getInt("user_id"));
+        doctor.setFirstName(rs.getString("first_name"));
+        doctor.setLastName(rs.getString("last_name"));
+        doctor.setEmailAddress(rs.getString("email_address"));
+        doctor.setRole(UserRole.Doctor);
+        doctor.setCreatedAt(rs.getTimestamp("created_at"));
+        doctor.setUpdatedAt(rs.getTimestamp("updated_at"));
+        return doctor;
     }
 }
