@@ -42,7 +42,6 @@ public class DoctorsServlet extends HttpServlet {
     User user = (User) request.getSession().getAttribute("user");
 
     if (user != null && user.isAdmin()) {
-
       String firstName = request.getParameter("firstName");
       String lastName = request.getParameter("lastName");
       String email = request.getParameter("email");
