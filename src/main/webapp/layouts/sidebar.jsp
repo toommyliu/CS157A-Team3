@@ -10,6 +10,7 @@
 %>
 <div
         class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark min-vh-100 sidebar"
+        style="display: flex !important; flex-direction: column !important;"
 >
     <a
             href="<%= contextPath %>/dashboard"
@@ -27,6 +28,13 @@
         </li>
         <% if (user != null) { %>
             <% if (user.isPatient()) { %>
+                <li>
+                    <a href="<%= contextPath %>/doctors"
+                       class="nav-link text-white <%= currentPath.contains("/doctors") ? "active" : "" %>">
+                        <i class="bi bi-person-vcard me-2"></i>
+                        My Doctors
+                    </a>
+                </li>
                 <li>
                     <a href="<%= contextPath %>/notes"
                        class="nav-link text-white <%= currentPath.contains("/notes") ? "active" : "" %>">
@@ -71,7 +79,18 @@
     </ul>
     <hr/>
     <% if (user != null) { %>
-        <p><%= user.getFullName() %>
-    </p>
+        <div class="mt-auto" style="margin-top: auto !important;">
+            <a href="<%= contextPath %>/profile" 
+               class="d-flex align-items-center text-white text-decoration-none p-3 rounded"
+               style="transition: background-color 0.2s ease;"
+               onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+               onmouseout="this.style.backgroundColor='transparent'">
+                <i class="bi bi-person-circle me-3" style="font-size: 2rem; color: #fff;"></i>
+                <div class="d-flex flex-column">
+                    <span class="fw-semibold text-white"><%= user.getFullName() %></span>
+                    <small class="text-light opacity-75"><%= user.getRole() %></small>
+                </div>
+            </a>
+        </div>
     <% } %>
 </div>
