@@ -34,7 +34,15 @@
 
               <% String filter = request.getParameter("filter"); %>
               <% String query = request.getParameter("query"); %>
-              <% Patient[] allPatients = DoctorService.getPatients(user.getUserId()); %>
+              <%
+                com.group_3.healthlink.Doctor doctor = DoctorService.getByUserId(user.getUserId());
+                Patient[] allPatients = null;
+                if (doctor != null) {
+                  allPatients = DoctorService.getPatients(doctor.getDoctorId());
+                } else {
+                  allPatients = new Patient[0];
+                }
+              %>
               <% filteredPatients = new java.util.ArrayList<>(); %>
 
               <form class="flex w-100 mb-3" style="max-width: 50%" id="searchForm" method="get">
