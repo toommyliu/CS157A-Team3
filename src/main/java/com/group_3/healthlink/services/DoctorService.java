@@ -141,6 +141,34 @@ public class DoctorService {
         }
     }
 
+    public static Doctor[] getByDepartment(String department) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        String query = "SELECT d.doctor_id, d.department, d.user_id, " +
+                "u.first_name, u.last_name, u.email_address, u.role, u.created_at, u.updated_at " +
+                "FROM doctor d JOIN user u ON d.user_id = u.user_id " +
+                "WHERE d.department = ?";
+
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, department);
+            ResultSet rs = stmt.executeQuery();
+
+            List<Doctor> doctors = new ArrayList<>();
+            while (rs.next()) {
+                Doctor doctor = getDoctor(rs);
+                if (doctor != null)
+                    doctors.add(doctor);
+            }
+
+            rs.close();
+            stmt.close();
+            return doctors.toArray(new Doctor[0]);
+        } catch (Exception e) {
+            System.err.println("Error getByDepartment: " + e.getMessage());
+            return new Doctor[0];
+        }
+    }
+
     public static boolean createNew(int userId, String department) {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "INSERT INTO doctor (department, user_id) VALUES (?, ?)";
