@@ -36,6 +36,13 @@ public class RegisterServlet extends HttpServlet {
     System.out.println("Password: " + password);
     System.out.println("Role: patient");
 
+    if (AuthService.isEmailRegistered(emailAddress)) {
+      System.out.println("Email address already registered: " + emailAddress);
+      request.getSession().setAttribute("registerError", "Email address is already registered.");
+      response.sendRedirect(request.getContextPath() + "/register");
+      return;
+    }
+
     int userId = AuthService.registerUser(
         firstName,
         lastName,

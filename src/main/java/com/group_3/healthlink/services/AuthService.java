@@ -162,6 +162,31 @@ public class AuthService {
         }
     }
 
+    public static boolean isEmailRegistered(String email) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+
+        try {
+            String query = "SELECT COUNT(*) FROM user WHERE email_address = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                boolean isRegistered = rs.getInt(1) > 0;
+                rs.close();
+                stmt.close();
+                return isRegistered;
+            }
+
+            rs.close();
+            stmt.close();
+            return false;
+        } catch (Exception e) {
+            System.err.println("Error isEmailRegistered: " + e.getMessage());
+            return false;
+        }
+    }
+
     private static User getUser(PreparedStatement stmt, ResultSet rs, int id) throws SQLException {
         String emailAddress = rs.getString("email_address");
         String passwordHashed = rs.getString("password_hashed");

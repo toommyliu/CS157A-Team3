@@ -24,7 +24,13 @@
                             class="alert alert-danger d-flex align-items-center"
                             role="alert"
                     >
-                        <div>Failed to register account. Try again.</div>
+                        <% if (session.getAttribute("registerError") instanceof String) { %>
+                        <div>
+                            <%= session.getAttribute("registerError") %>
+                        </div>
+                        <% } else { %>
+                            <div>Failed to register account. Try again.</div>
+                        <% } %>
                     </div>
                 </div>
                 <% session.removeAttribute("registerError"); %> <% } %>
