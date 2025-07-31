@@ -29,7 +29,7 @@ public class DoctorsServlet extends HttpServlet {
       return;
     }
 
-    response.sendRedirect(reques`t.getContextPath() + "/dashboard");
+    response.sendRedirect(request.getContextPath() + "/dashboard");
   }
 
   @Override

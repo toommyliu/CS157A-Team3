@@ -77,7 +77,6 @@
             </li>
         <% } %>
     </ul>
-    <hr/>
     <% if (user != null) { %>
         <div class="mt-auto" style="margin-top: auto !important;">
             <a href="<%= contextPath %>/profile" 
