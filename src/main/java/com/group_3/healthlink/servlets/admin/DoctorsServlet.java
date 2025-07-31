@@ -29,7 +29,7 @@ public class DoctorsServlet extends HttpServlet {
       return;
     }
 
-    response.sendRedirect(request.getContextPath() + "/dashboard");
+    response.sendRedirect(reques`t.getContextPath() + "/dashboard");
   }
 
   @Override
@@ -89,7 +89,7 @@ public class DoctorsServlet extends HttpServlet {
       System.out.println("password: " + password);
       System.out.println("department: " + department);
 
-      int userId = AuthService.registerUser(firstName, password, email, password, "doctor");
+      int userId = AuthService.registerUser(firstName, lastName, email, password, "doctor");
       if (userId != -1) {
         boolean doctorSuccess = DoctorService.createNew(userId, department);
         json.put("success", doctorSuccess);
