@@ -189,6 +189,31 @@ public class DoctorService {
         }
     }
 
+    /**
+     * Updates the record of a doctor in the database.
+     * @param doctorId The doctor id
+     * @param department The new department of the doctor
+     * @return Whether the update was successful or not.
+     */
+    public static boolean updateDoctor(int doctorId, String department) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        String query = "UPDATE doctor SET department = ? WHERE doctor_id = ?";
+
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, department);
+            stmt.setInt(2, doctorId);
+
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating doctor: " + e.getMessage());
+            return false;
+        }
+    }
+
     private static Doctor getDoctor(ResultSet rs) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.setDoctorId(rs.getInt("doctor_id"));

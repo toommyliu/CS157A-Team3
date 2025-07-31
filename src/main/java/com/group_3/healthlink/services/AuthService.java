@@ -187,6 +187,30 @@ public class AuthService {
         }
     }
 
+    public static boolean updateUser(int userId, String firstName, String lastName, String emailAddress, String password) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+
+        try {
+            String query = "UPDATE user SET first_name = ?, last_name = ?, email_address = ?, password = ? WHERE user_id = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+
+            String hashedPassword = hashPassword(password);
+
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, emailAddress);
+            stmt.setString(4, hashedPassword);
+            stmt.setInt(5, userId);
+
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            System.err.println("Error updateUser: " + e.getMessage());
+            return false;
+        }
+    }
+
     private static User getUser(PreparedStatement stmt, ResultSet rs, int id) throws SQLException {
         String emailAddress = rs.getString("email_address");
         String passwordHashed = rs.getString("password_hashed");

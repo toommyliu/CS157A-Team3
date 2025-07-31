@@ -21,45 +21,52 @@
 
             <% Doctor[] doctors = (Doctor[]) request.getAttribute("doctors"); %>
             <% if (doctors != null && doctors.length > 0) { %>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Doctor ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Department</th>
-                        <th>Created At</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% for (Doctor doctor : doctors) { %>
-                    <tr>
-                        <td><%= doctor.getDoctorId() %>
-                        </td>
-                        <td><%= doctor.getFirstName() %>
-                        </td>
-                        <td><%= doctor.getLastName() %>
-                        </td>
-                        <td><%= doctor.getEmailAddress() %>
-                        </td>
-                        <td><%= doctor.getDepartment() %>
-                        </td>
-                        <td><%= doctor.getCreatedAt() %>
-                        </td>
-                    </tr>
-                    <% } %>
-                    </tbody>
-                </table>
-            </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Doctor ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% for (Doctor doctor : doctors) { %>
+                            <tr>
+                                <td><%= doctor.getDoctorId() %></td>
+                                <td><%= doctor.getFirstName() %></td>
+                                <td><%= doctor.getLastName() %></td>
+                                <td><%= doctor.getEmailAddress() %></td>
+                                <td><%= doctor.getDepartment() %></td>
+                                <td>
+                                    <button type="button" class="btn btn-secondary btn-sm edit-doctor-btn" title="Edit this doctor" data-bs-toggle="modal" data-bs-target="#doctorModal"
+                                        data-doctor-id="<%= doctor.getDoctorId() %>"
+                                        data-user-id="<%= doctor.getUserId() %>"
+                                        data-first-name="<%= doctor.getFirstName() %>"
+                                        data-last-name="<%= doctor.getLastName() %>"
+                                        data-email="<%= doctor.getEmailAddress() %>"
+                                        data-department="<%= doctor.getDepartment() %>">
+                                        <span class="bi bi-pencil"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" title="Delete this doctor" data-bs-toggle="modal" data-bs-target="#deleteDoctorModal" data-doctor-id="<%= doctor.getDoctorId() %>" data-user-id="<%= doctor.getUserId() %>">
+                                        <span class="bi bi-trash"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+                </div>
             <% } %>
 
             <div class="modal" id="doctorModal" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content" style="width: 600px;">
                         <div class="modal-header">
-                            <h2 class="modal-title fs-5">Add New Doctor</h2>
+                            <h2 class="modal-title fs-5" id="doctorModalTitle">Add New Doctor</h2>
                             <button
                                     type="button"
                                     class="btn-close"
@@ -68,9 +75,9 @@
                             ></button>
                         </div>
                         <form
+                                id="doctorForm"
                                 action="<%= request.getContextPath() %>/admin/doctors"
                                 method="POST"
-                                id="doctorForm"
                         >
                             <div class="modal-body">
                                 <div class="d-flex flex-row gap-4 w-100 mb-3">
@@ -153,5 +160,41 @@
         </div>
     </div>
     <script src="../js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const doctorModal = document.getElementById("doctorModal");
+            const doctorModalTitle = document.getElementById("doctorModalTitle");
+            const doctorForm = document.getElementById("doctorForm");
+            const firstNameInput = doctorForm.querySelector('input[name="firstName"]');
+            const lastNameInput = doctorForm.querySelector('input[name="lastName"]');
+            const emailInput = doctorForm.querySelector('input[name="email"]');
+            const departmentInput = doctorForm.querySelector('input[name="department"]');
+            const passwordInput = doctorForm.querySelector('input[name="password"]');
+            const submitBtn = doctorForm.querySelector('button[type="submit"]');
+
+            const defaultTitle = doctorModalTitle.textContent;
+            const defaultBtnText = submitBtn.textContent;
+
+            for (const btn of document.querySelectorAll('.edit-doctor-btn')) {
+                btn.addEventListener("click", () => {
+                    doctorModalTitle.textContent = "Edit this doctor";
+                    submitBtn.textContent = "Update";
+
+                    firstNameInput.value = btn.getAttribute('data-first-name') || "";
+                    lastNameInput.value = btn.getAttribute('data-last-name') || "";
+                    emailInput.value = btn.getAttribute('data-email') || "";
+                    departmentInput.value = btn.getAttribute('data-department') || "";
+                    passwordInput.value = "";
+                });
+            }
+
+            // As soon as the modal is hidden, reset to "Add New Doctor" modal
+            doctorModal.addEventListener("hidden.bs.modal", () => {
+                doctorModalTitle.textContent = defaultTitle;
+                submitBtn.textContent = defaultBtnText;
+                doctorForm.reset();
+            });
+        });
+        </script>
 </body>
 </html>
