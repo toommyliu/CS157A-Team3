@@ -224,7 +224,6 @@ public class DoctorService {
 
             rs.close();
             stmt.close();
-            con.close();
         } catch (Exception e) {
             System.err.println("Error fetching doctor notes: " + e.getMessage());
         }
