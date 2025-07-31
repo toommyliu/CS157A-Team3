@@ -4,6 +4,7 @@ import com.group_3.healthlink.DatabaseMgr;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.UserRole;
+import com.group_3.healthlink.Note;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -200,5 +201,33 @@ public class DoctorService {
         doctor.setCreatedAt(rs.getTimestamp("created_at"));
         doctor.setUpdatedAt(rs.getTimestamp("updated_at"));
         return doctor;
+    }
+
+    public static List<Note> getNotesByDoctorId(int doctorId) {
+        List<Note> notes = new ArrayList<>();
+        try {
+            Connection con = DatabaseMgr.getInstance().getConnection();
+            String query = "SELECT * FROM notes WHERE doctor_id = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, doctorId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Note note = new Note();
+                note.setId(rs.getInt("note_id"));
+                note.setContent(rs.getString("note_content"));
+                note.setPatientId(rs.getInt("patient_id"));
+                note.setDoctorId(rs.getInt("doctor_id"));
+                note.setCreatedAt(rs.getTimestamp("created_at"));
+                notes.add(note);
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+        } catch (Exception e) {
+            System.err.println("Error fetching doctor notes: " + e.getMessage());
+        }
+        return notes;
     }
 }
