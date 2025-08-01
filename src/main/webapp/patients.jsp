@@ -94,11 +94,17 @@
                         <td><%=p.getFullName()%></td>
                         <td>
                           <div class="btn-group" role="group">
-                            <a href="${pageContext.request.contextPath}/patients/<%=p.getUserId()%>"
-                               class="btn btn-primary btn-sm">View</a>
+                            <a href="${pageContext.request.contextPath}/patients/<%=p.getUserId()%>" class="btn btn-outline-primary btn-sm">
+                              <i class="bi bi-eye"></i> View
+                            </a>
                             <a href="${pageContext.request.contextPath}/messages/<%=p.getUserId()%>" class="btn btn-outline-primary btn-sm">
                               <i class="bi bi-chat"></i> Message
                             </a>
+                            <button type="button" class="btn btn-outline-danger btn-sm remove-patient-btn"
+                                    data-patient-id="<%= p.getPatientId() %>"
+                                    data-patient-name="<%= p.getFullName() %>">
+                              <i class="bi bi-trash"></i> Remove
+                            </button>
                           </div>
                         </td>
                       </tr>
@@ -319,9 +325,18 @@
   <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Check if Bootstrap is loaded
+      if (typeof bootstrap === 'undefined') {
+        console.warn('Bootstrap is not loaded');
+        return;
+      }
+
       const addMedicationForm = document.querySelector('#addMedicationForm');
-      const addMedicationModal = new bootstrap.Modal('#addMedicationModal');
-      addMedicationForm.addEventListener('submit', async function(ev) {
+      const addMedicationModalElement = document.getElementById('addMedicationModal');
+      const addMedicationModal = addMedicationModalElement ? new bootstrap.Modal(addMedicationModalElement) : null;
+      
+      if (addMedicationForm) {
+        addMedicationForm.addEventListener('submit', async function(ev) {
           ev.preventDefault();
           const formData = new FormData(addMedicationForm);
           const data = new URLSearchParams();
@@ -342,7 +357,9 @@
               result = { success: resp.ok };
             }
 
-            addMedicationModal.hide();
+            if (addMedicationModal) {
+              addMedicationModal.hide();
+            }
 
             if (result.success) {
               alert('Medication added successfully');
@@ -355,6 +372,7 @@
             alert('Error adding medication');
           }
         });
+      }
 
 
       const editButtons = document.querySelectorAll('.edit-medication-btn');
@@ -375,9 +393,11 @@
       }
 
       const editMedicationForm = document.querySelector('#editMedicationForm');
-      const editMedicationModal = new bootstrap.Modal('#editMedicationModal');
+      const editMedicationModalElement = document.getElementById('editMedicationModal');
+      const editMedicationModal = editMedicationModalElement ? new bootstrap.Modal(editMedicationModalElement) : null;
 
-      editMedicationForm.addEventListener('submit', async function(ev) {
+      if (editMedicationForm) {
+        editMedicationForm.addEventListener('submit', async function(ev) {
         ev.preventDefault();
         const formData = new FormData(editMedicationForm);
         const data = new URLSearchParams();
@@ -398,7 +418,9 @@
             result = { success: resp.ok };
           }
 
-          editMedicationModal.hide();
+                      if (editMedicationModal) {
+              editMedicationModal.hide();
+            }
 
           if (result.success) {
             alert('Medication updated successfully');
@@ -412,6 +434,7 @@
           alert('Error updating medication');
         }
       });
+    }
 
       const deleteButtons = document.querySelectorAll('.delete-medication-btn');
       for (const btn of deleteButtons) {
@@ -452,6 +475,44 @@
         });
       }
     });
+
+    // Handle remove patient buttons
+    const removePatientButtons = document.querySelectorAll('.remove-patient-btn');
+    for (const btn of removePatientButtons) {
+      btn.addEventListener('click', async () => {
+        const patientId = btn.getAttribute('data-patient-id');
+        const patientName = btn.getAttribute('data-patient-name');
+
+        if (confirm(`Are you sure you want to remove ${patientName} from your patient list?`)) {
+          try {
+            const formData = new URLSearchParams();
+            formData.append('patientId', patientId);
+
+            const resp = await fetch('${pageContext.request.contextPath}/remove-patient', {
+              method: 'POST',
+              body: formData,
+            });
+
+            let result;
+            try {
+              result = await resp.json();
+            } catch (e) {
+              result = { success: resp.ok };
+            }
+
+            if (result.success) {
+              alert('Patient removed successfully');
+              location.reload();
+            } else {
+              alert('Failed to remove patient: ' + (result.error || 'Unknown error'));
+            }
+          } catch (error) {
+            console.error('Error removing patient:', error);
+            alert('Error removing patient');
+          }
+        }
+      });
+    }
   </script>
   </body>
 </html>
