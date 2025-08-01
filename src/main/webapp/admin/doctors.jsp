@@ -79,6 +79,9 @@
                                 action="<%= request.getContextPath() %>/admin/doctors"
                                 method="POST"
                         >
+                            <input type="hidden" id="action" name="action" value="create">
+                            <input type="hidden" id="doctorId" name="doctorId">
+                            <input type="hidden" id="userId" name="userId">
                             <div class="modal-body">
                                 <div class="d-flex flex-row gap-4 w-100 mb-3">
                                     <div class="d-flex flex-column w-50">
@@ -132,14 +135,20 @@
 
                                 <div class="d-flex flex-column mb-3">
                                     <label for="department" class="form-label">Department</label>
-                                    <input
-                                            id="text"
-                                            type="text"
-                                            name="department"
-                                            class="form-control"
-                                            placeholder="Enter the doctor's department"
-                                            required
-                                    />
+                                    <select id="department" name="department" class="form-control" required>
+                                        <option value="">Select a department</option>
+                                        <option value="Cardiology">Cardiology</option>
+                                        <option value="Dermatology">Dermatology</option>
+                                        <option value="Endocrinology">Endocrinology</option>
+                                        <option value="Gastroenterology">Gastroenterology</option>
+                                        <option value="Pediatrics">Pediatrics</option>
+                                        <option value="General Medicine">General Medicine</option>
+                                        <option value="Oncology">Oncology</option>
+                                        <option value="Nephrology">Nephrology</option>
+                                        <option value="Urology">Urology</option>
+                                        <option value="Ophthalmology">Ophthalmology</option>
+                                        <option value="ENT">ENT</option>
+                                    </select>
                                 </div>
 
                                 <div class="modal-footer">
@@ -157,6 +166,30 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Delete Doctor Modal -->
+            <div class="modal fade" id="deleteDoctorModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title fs-5">Delete Doctor</h2>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this doctor? This action cannot be undone.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form id="deleteDoctorForm" action="<%= request.getContextPath() %>/admin/doctors" method="POST" style="display: inline;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" id="deleteDoctorId" name="doctorId">
+                                <input type="hidden" id="deleteUserId" name="userId">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="../js/bootstrap.min.js"></script>
@@ -168,9 +201,12 @@
             const firstNameInput = doctorForm.querySelector('input[name="firstName"]');
             const lastNameInput = doctorForm.querySelector('input[name="lastName"]');
             const emailInput = doctorForm.querySelector('input[name="email"]');
-            const departmentInput = doctorForm.querySelector('input[name="department"]');
+            const departmentSelect = doctorForm.querySelector('select[name="department"]');
             const passwordInput = doctorForm.querySelector('input[name="password"]');
             const submitBtn = doctorForm.querySelector('button[type="submit"]');
+            const actionInput = doctorForm.querySelector('#action');
+            const doctorIdInput = doctorForm.querySelector('#doctorId');
+            const userIdInput = doctorForm.querySelector('#userId');
 
             const defaultTitle = doctorModalTitle.textContent;
             const defaultBtnText = submitBtn.textContent;
@@ -179,12 +215,34 @@
                 btn.addEventListener("click", () => {
                     doctorModalTitle.textContent = "Edit this doctor";
                     submitBtn.textContent = "Update";
+                    actionInput.value = "update";
 
-                    firstNameInput.value = btn.getAttribute('data-first-name') || "";
-                    lastNameInput.value = btn.getAttribute('data-last-name') || "";
-                    emailInput.value = btn.getAttribute('data-email') || "";
-                    departmentInput.value = btn.getAttribute('data-department') || "";
+                    const doctorId = btn.getAttribute('data-doctor-id');
+                    const userId = btn.getAttribute('data-user-id');
+                    const firstName = btn.getAttribute('data-first-name') || "";
+                    const lastName = btn.getAttribute('data-last-name') || "";
+                    const email = btn.getAttribute('data-email') || "";
+                    const department = btn.getAttribute('data-department') || "";
+
+                    doctorIdInput.value = doctorId;
+                    userIdInput.value = userId;
+                    firstNameInput.value = firstName;
+                    lastNameInput.value = lastName;
+                    emailInput.value = email;
+                    departmentSelect.value = department;
                     passwordInput.value = "";
+                    passwordInput.required = false;
+                });
+            }
+
+            // Handle delete button clicks
+            for (const btn of document.querySelectorAll('[data-bs-target="#deleteDoctorModal"]')) {
+                btn.addEventListener("click", () => {
+                    const doctorId = btn.getAttribute('data-doctor-id');
+                    const userId = btn.getAttribute('data-user-id');
+                    
+                    document.getElementById('deleteDoctorId').value = doctorId;
+                    document.getElementById('deleteUserId').value = userId;
                 });
             }
 
@@ -192,7 +250,11 @@
             doctorModal.addEventListener("hidden.bs.modal", () => {
                 doctorModalTitle.textContent = defaultTitle;
                 submitBtn.textContent = defaultBtnText;
+                actionInput.value = "create";
+                doctorIdInput.value = "";
+                userIdInput.value = "";
                 doctorForm.reset();
+                passwordInput.required = true;
             });
         });
         </script>
