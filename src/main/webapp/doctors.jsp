@@ -79,12 +79,36 @@
 
         <% if (filteredDoctors.isEmpty()) { %>
           <div class="alert alert-info" role="alert">
-            <h6>No doctors found</h6>
+            <h6 class="mb-3">
+              <i class=></i> No doctors found
+            </h6>
             <% if (assignedDoctors.length == 0) { %>
-              <p class="mb-2">You haven't been assigned to any doctors yet. You can:</p>
-              <a href="<%= request.getContextPath() %>/department-selection" class="btn btn-primary">
-                Choose a Department & Doctor
-              </a>
+              <p class="mb-3">You haven't been assigned to any doctors yet. To get started with your healthcare journey:</p>
+              <div class="mb-3">
+                <p class="text-muted mb-2">
+                  <i class="bi bi-info-circle"></i> Click the <strong>"Add Doctor"</strong> button below to get started!
+                </p>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="card border-primary h-100">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                      <i class="bi bi-building text-primary mb-2" style="font-size: 2rem;"></i>
+                      <h6 class="card-title">Step 1: Choose Your Department</h6>
+                      <p class="card-text small text-muted">Select the medical department that best matches your health needs</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card border-success h-100">
+                    <div class="card-body text-center d-flex flex-column justify-content-center">
+                      <i class="bi bi-person-badge text-success mb-2" style="font-size: 2rem;"></i>
+                      <h6 class="card-title">Step 2: Find Your Doctor</h6>
+                      <p class="card-text small text-muted">Browse and select from qualified healthcare professionals</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <% } else { %>
               <p class="mb-2">No doctors match your search criteria.</p>
             <% } %>
@@ -126,7 +150,7 @@
         <!-- Add Another Doctor Button -->
         <div class="mt-3">
           <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
-            <i class="bi bi-plus-circle"></i> Add Another Doctor
+            <i class="bi bi-plus-circle"></i> Add Doctor
           </button>
         </div>
       </div>
