@@ -44,9 +44,7 @@ public class DoctorsServlet extends HttpServlet {
     if (user != null && user.isAdmin()) {
       String action = request.getParameter("action");
       
-      if ("delete".equals(action)) {
-        handleDelete(request, response, json, out);
-      } else if ("update".equals(action)) {
+      if ("update".equals(action)) {
         handleUpdate(request, response, json, out);
       } else {
         handleCreate(request, response, json, out);
@@ -206,47 +204,5 @@ public class DoctorsServlet extends HttpServlet {
     }
   }
 
-  private void handleDelete(HttpServletRequest request, HttpServletResponse response, JSONObject json, PrintWriter out) throws IOException {
-    String doctorIdStr = request.getParameter("doctorId");
-    String userIdStr = request.getParameter("userId");
 
-    if (doctorIdStr == null || doctorIdStr.isEmpty()) {
-      json.put("error", "doctorId is required");
-      response.setStatus(400);
-      out.print(json);
-      return;
-    }
-
-    if (userIdStr == null || userIdStr.isEmpty()) {
-      json.put("error", "userId is required");
-      response.setStatus(400);
-      out.print(json);
-      return;
-    }
-
-    try {
-      int doctorId = Integer.parseInt(doctorIdStr);
-      int userId = Integer.parseInt(userIdStr);
-
-      System.out.println("Deleting doctor - doctorId: " + doctorId);
-      System.out.println("Deleting doctor - userId: " + userId);
-
-      boolean success = DoctorService.deleteDoctor(doctorId, userId);
-      
-      if (success) {
-        json.put("success", true);
-        response.setStatus(200);
-        response.sendRedirect(request.getContextPath() + "/admin/doctors");
-        return;
-      } else {
-        json.put("error", "Failed to delete doctor");
-        response.setStatus(500);
-        out.print(json);
-      }
-    } catch (NumberFormatException e) {
-      json.put("error", "Invalid doctorId or userId");
-      response.setStatus(400);
-      out.print(json);
-    }
-  }
 }
