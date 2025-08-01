@@ -214,6 +214,90 @@ public class DoctorService {
         }
     }
 
+    /**
+     * Updates the user information for a doctor.
+     * @param userId The user id
+     * @param firstName The new first name
+     * @param lastName The new last name
+     * @param email The new email
+     * @param password The new password (optional, only if not null/empty)
+     * @return Whether the update was successful or not.
+     */
+    public static boolean updateUser(int userId, String firstName, String lastName, String email, String password) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        String query;
+        
+        if (password != null && !password.trim().isEmpty()) {
+            query = "UPDATE user SET first_name = ?, last_name = ?, email_address = ?, password = ? WHERE user_id = ?";
+        } else {
+            query = "UPDATE user SET first_name = ?, last_name = ?, email_address = ? WHERE user_id = ?";
+        }
+
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, email);
+            
+            if (password != null && !password.trim().isEmpty()) {
+                stmt.setString(4, password);
+                stmt.setInt(5, userId);
+            } else {
+                stmt.setInt(4, userId);
+            }
+
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating user: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Deletes a doctor and their associated user account.
+     * @param doctorId The doctor id
+     * @param userId The user id
+     * @return Whether the deletion was successful or not.
+     */
+    public static boolean deleteDoctor(int doctorId, int userId) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        
+        try {
+            con.setAutoCommit(false);
+            
+            // First delete the doctor record
+            String deleteDoctorQuery = "DELETE FROM doctor WHERE doctor_id = ?";
+            PreparedStatement deleteDoctorStmt = con.prepareStatement(deleteDoctorQuery);
+            deleteDoctorStmt.setInt(1, doctorId);
+            int doctorRowsAffected = deleteDoctorStmt.executeUpdate();
+            deleteDoctorStmt.close();
+            
+            // Then delete the user record
+            String deleteUserQuery = "DELETE FROM user WHERE user_id = ?";
+            PreparedStatement deleteUserStmt = con.prepareStatement(deleteUserQuery);
+            deleteUserStmt.setInt(1, userId);
+            int userRowsAffected = deleteUserStmt.executeUpdate();
+            deleteUserStmt.close();
+            
+            con.commit();
+            con.setAutoCommit(true);
+            
+            return doctorRowsAffected > 0 && userRowsAffected > 0;
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+                con.setAutoCommit(true);
+            } catch (SQLException rollbackEx) {
+                System.err.println("Error rolling back transaction: " + rollbackEx.getMessage());
+            }
+            System.err.println("Error deleting doctor: " + e.getMessage());
+            return false;
+        }
+    }
+
     private static Doctor getDoctor(ResultSet rs) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.setDoctorId(rs.getInt("doctor_id"));
