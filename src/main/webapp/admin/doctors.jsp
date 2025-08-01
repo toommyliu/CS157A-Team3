@@ -51,9 +51,6 @@
                                         data-department="<%= doctor.getDepartment() %>">
                                         <span class="bi bi-pencil"></span>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-sm" title="Delete this doctor" data-bs-toggle="modal" data-bs-target="#deleteDoctorModal" data-doctor-id="<%= doctor.getDoctorId() %>" data-user-id="<%= doctor.getUserId() %>">
-                                        <span class="bi bi-trash"></span>
-                                    </button>
                                 </td>
                             </tr>
                         <% } %>
@@ -167,29 +164,7 @@
                 </div>
             </div>
 
-            <!-- Delete Doctor Modal -->
-            <div class="modal fade" id="deleteDoctorModal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title fs-5">Delete Doctor</h2>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to delete this doctor? This action cannot be undone.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <form id="deleteDoctorForm" action="<%= request.getContextPath() %>/admin/doctors" method="POST" style="display: inline;">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" id="deleteDoctorId" name="doctorId">
-                                <input type="hidden" id="deleteUserId" name="userId">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
     <script src="../js/bootstrap.min.js"></script>
@@ -235,16 +210,7 @@
                 });
             }
 
-            // Handle delete button clicks
-            for (const btn of document.querySelectorAll('[data-bs-target="#deleteDoctorModal"]')) {
-                btn.addEventListener("click", () => {
-                    const doctorId = btn.getAttribute('data-doctor-id');
-                    const userId = btn.getAttribute('data-user-id');
-                    
-                    document.getElementById('deleteDoctorId').value = doctorId;
-                    document.getElementById('deleteUserId').value = userId;
-                });
-            }
+
 
             // As soon as the modal is hidden, reset to "Add New Doctor" modal
             doctorModal.addEventListener("hidden.bs.modal", () => {
