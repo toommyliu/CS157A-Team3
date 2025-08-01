@@ -95,12 +95,7 @@ public class UpdateMedicationServlet extends HttpServlet {
       return;
     }
 
-    if (noteContent == null || noteContent.isEmpty()) {
-      response.setStatus(400);
-      json.put("error", "noteContent is required");
-      out.print(json);
-      return;
-    }
+    // noteContent is optional, so we don't validate it
 
     boolean success = MedicationService.updateMedication(
         medicationId,
