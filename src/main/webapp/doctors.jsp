@@ -107,9 +107,9 @@
                   <td><%= doctor.getEmailAddress() %></td>
                   <td>
                     <div class="btn-group" role="group">
-                      <a href="<%= request.getContextPath() %>/messages" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-chat"></i> Message
-                      </a>
+                                              <a href="<%= request.getContextPath() %>/messages/<%= doctor.getUserId() %>" class="btn btn-outline-primary btn-sm">
+                          <i class="bi bi-chat"></i> Message
+                        </a>
                       <button type="button" class="btn btn-outline-danger btn-sm remove-doctor-btn"
                               data-doctor-id="<%= doctor.getDoctorId() %>"
                               data-doctor-name="<%= doctor.getFirstName() %> <%= doctor.getLastName() %>">
