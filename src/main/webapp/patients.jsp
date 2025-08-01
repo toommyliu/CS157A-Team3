@@ -93,8 +93,13 @@
                         <td><%=p.getUserId()%></td>
                         <td><%=p.getFullName()%></td>
                         <td>
-                          <a href="${pageContext.request.contextPath}/patients/<%=p.getUserId()%>"
-                             class="btn btn-primary btn-sm">View</a>
+                          <div class="btn-group" role="group">
+                            <a href="${pageContext.request.contextPath}/patients/<%=p.getUserId()%>"
+                               class="btn btn-primary btn-sm">View</a>
+                            <a href="${pageContext.request.contextPath}/messages/<%=p.getUserId()%>" class="btn btn-outline-primary btn-sm">
+                              <i class="bi bi-chat"></i> Message
+                            </a>
+                          </div>
                         </td>
                       </tr>
                     <% } %>
@@ -178,25 +183,6 @@
                   </div>
 
                   <div class="col-md-4">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5 class="card-title mb-0">Assigned Doctors</h5>
-                      </div>
-                      <div class="card-body">
-                        <% if (assignedDoctors != null && assignedDoctors.length > 0) { %>
-                          <% for (Doctor doctor : assignedDoctors) { %>
-                            <div class="border-bottom pb-2 mb-2">
-                              <p class="mb-1"><strong><%= doctor.getFullName() != null ? doctor.getFullName() : "Unknown Doctor" %></strong></p>
-                              <p class="text-muted small mb-0">Department: <%= doctor.getDepartment() != null ? doctor.getDepartment() : "N/A" %></p>
-                            </div>
-                          <% } %>
-                        <% } else { %>
-                          <p class="text-muted">No doctors assigned to this patient.</p>
-                        <% } %>
-                      </div>
-                    </div>
-
-                    <div style="height: 24px;"></div>
 
                     <div class="card">
                       <div class="card-header d-flex justify-content-between align-items-center">
