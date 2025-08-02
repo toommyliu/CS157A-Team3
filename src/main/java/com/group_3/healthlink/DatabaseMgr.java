@@ -7,7 +7,7 @@ public class DatabaseMgr {
 
     private final String DB_NAME = "healthlink";
     private final String DB_USERNAME = "root";
-    private final String DB_PASSWORD = "Munazza@123456";
+    private final String DB_PASSWORD = "password";
 
     private java.sql.Connection connection;
 

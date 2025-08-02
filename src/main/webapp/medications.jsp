@@ -58,13 +58,15 @@
   <div class="modal fade" id="logMedicationModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form action="#" method="post">
+        <form action="<%= request.getContextPath() %>/medication-log" method="post">
           <div class="modal-header">
             <h5 class="modal-title" id="logMedicationModalLabel">Log Medication</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <input type="hidden" name="medicationId" id="modalMedicationId" />
+            <input type="hidden" name="patientId" value="<%= request.getAttribute("patientId") %>" />
+
             <div class="mb-3">
               <label class="form-label">Medication Name</label>
               <input type="text" class="form-control" id="modalMedicationName" name="medicationName" readonly disabled />
@@ -99,7 +101,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const logMedicationModal = document.querySelector('#logMedicationModal');
-      const form = logMedicationModal.querySelector('form');
+      // const form = logMedicationModal.querySelector('form');
       logMedicationModal.addEventListener('show.bs.modal', (ev) => {
         const button = ev.relatedTarget;
         const medName = button.getAttribute('data-medname');
@@ -115,25 +117,25 @@
         document.querySelector('input[name="takenAt"]').value = formatted;
       });
 
-      form.addEventListener('submit', (ev) => {
-        ev.preventDefault();
-
-        const medicationId = document.querySelector('#modalMedicationId').value;
-        const medicationName = document.querySelector('#modalMedicationName').value;
-        const dosage = document.querySelector('#modalDosage').value;
-        const dosageTaken = form.querySelector('input[name="dosageTaken"]').value;
-        const note = form.querySelector('textarea[name="note"]').value;
-        const takenAt = form.querySelector('input[name="takenAt"]').value;
-
-        console.log('medication log submitted with values:', {
-            medicationId,
-            medicationName,
-            dosage,
-            dosageTaken,
-            note,
-            takenAt
-        })
-      })
+      // form.addEventListener('submit', (ev) => {
+      //   ev.preventDefault();
+      //
+      //   const medicationId = document.querySelector('#modalMedicationId').value;
+      //   const medicationName = document.querySelector('#modalMedicationName').value;
+      //   const dosage = document.querySelector('#modalDosage').value;
+      //   const dosageTaken = form.querySelector('input[name="dosageTaken"]').value;
+      //   const note = form.querySelector('textarea[name="note"]').value;
+      //   const takenAt = form.querySelector('input[name="takenAt"]').value;
+      //
+      //   console.log('medication log submitted with values:', {
+      //       medicationId,
+      //       medicationName,
+      //       dosage,
+      //       dosageTaken,
+      //       note,
+      //       takenAt
+      //   })
+      // })
     });
   </script>
 </body>

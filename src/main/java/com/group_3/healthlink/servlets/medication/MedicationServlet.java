@@ -30,6 +30,7 @@ public class MedicationServlet extends HttpServlet {
                 int patientId = patient.getPatientId();
                 List<Medication> medications = MedicationService.getMedicationsByPatientId(patientId);
                 request.setAttribute("medications", medications);
+                request.setAttribute("patientId", patientId);
 
                 Map<Integer, String> doctorNames = new HashMap<>();
                 for (Medication med : medications) {
