@@ -107,10 +107,10 @@ CREATE TABLE `medication_log` (
   `medication_log_id` int NOT NULL AUTO_INCREMENT,
   `medication_id` int NOT NULL,
   `patient_id` int NOT NULL,
-  `taken_at` varchar(45) DEFAULT NULL,
+  `taken_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `dosage_taken` varchar(45) DEFAULT NULL,
-  `created_at` date DEFAULT NULL,
-  `note` varchar(45) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`medication_log_id`),
   KEY `medication_id_fk` (`medication_id`),
   KEY `patient_id_fk` (`patient_id`),
@@ -125,7 +125,7 @@ CREATE TABLE `medication_log` (
 
 LOCK TABLES `medication_log` WRITE;
 /*!40000 ALTER TABLE `medication_log` DISABLE KEYS */;
-INSERT INTO `medication_log` VALUES (1,1,10,'2025-07-07 09:00:00','10mg','2025-07-07','Taken as prescribed.'),(2,2,10,'2025-07-07 08:30:00','500mg','2025-07-07','Taken with breakfast.'),(3,3,10,'2025-07-06 21:00:00','20mg','2025-07-06','Taken before bed.'),(4,4,10,'2025-07-07 10:00:00','250mg','2025-07-07','Completed full course.'),(5,5,10,'2025-07-07 07:00:00','75mcg','2025-07-07','Taken on an empty stomach.'),(6,6,10,'2025-07-07 08:00:00','20mg','2025-07-07','Taken before first meal.'),(7,7,10,'2025-07-07 09:30:00','50mg','2025-07-07','No side effects reported.'),(8,8,10,'2025-07-07 18:00:00','5mg','2025-07-07','INR check scheduled next week.'),(9,9,10,'2025-07-07 14:15:00','2 puffs','2025-07-07','Used during mild exertion.'),(10,10,10,'2025-07-07 08:45:00','25mg','2025-07-07','Reduced swelling.');
+INSERT INTO `medication_log` VALUES (1,1,10,'2025-07-07 16:00:00','10mg','2025-07-07 07:00:00','Taken as prescribed.'),(2,2,10,'2025-07-07 15:30:00','500mg','2025-07-07 07:00:00','Taken with breakfast.'),(3,3,10,'2025-07-07 04:00:00','20mg','2025-07-06 07:00:00','Taken before bed.'),(4,4,10,'2025-07-07 17:00:00','250mg','2025-07-07 07:00:00','Completed full course.'),(5,5,10,'2025-07-07 14:00:00','75mcg','2025-07-07 07:00:00','Taken on an empty stomach.'),(6,6,10,'2025-07-07 15:00:00','20mg','2025-07-07 07:00:00','Taken before first meal.'),(7,7,10,'2025-07-07 16:30:00','50mg','2025-07-07 07:00:00','No side effects reported.'),(8,8,10,'2025-07-08 01:00:00','5mg','2025-07-07 07:00:00','INR check scheduled next week.'),(9,9,10,'2025-07-07 21:15:00','2 puffs','2025-07-07 07:00:00','Used during mild exertion.'),(10,10,10,'2025-07-07 15:45:00','25mg','2025-07-07 07:00:00','Reduced swelling.');
 /*!40000 ALTER TABLE `medication_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -339,4 +339,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-02 11:01:27
+-- Dump completed on 2025-08-02 11:07:31
