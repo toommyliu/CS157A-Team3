@@ -101,7 +101,6 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const logMedicationModal = document.querySelector('#logMedicationModal');
-      // const form = logMedicationModal.querySelector('form');
       logMedicationModal.addEventListener('show.bs.modal', (ev) => {
         const button = ev.relatedTarget;
         const medName = button.getAttribute('data-medname');
@@ -116,26 +115,6 @@
         const formatted = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
         document.querySelector('input[name="takenAt"]').value = formatted;
       });
-
-      // form.addEventListener('submit', (ev) => {
-      //   ev.preventDefault();
-      //
-      //   const medicationId = document.querySelector('#modalMedicationId').value;
-      //   const medicationName = document.querySelector('#modalMedicationName').value;
-      //   const dosage = document.querySelector('#modalDosage').value;
-      //   const dosageTaken = form.querySelector('input[name="dosageTaken"]').value;
-      //   const note = form.querySelector('textarea[name="note"]').value;
-      //   const takenAt = form.querySelector('input[name="takenAt"]').value;
-      //
-      //   console.log('medication log submitted with values:', {
-      //       medicationId,
-      //       medicationName,
-      //       dosage,
-      //       dosageTaken,
-      //       note,
-      //       takenAt
-      //   })
-      // })
     });
   </script>
 </body>
