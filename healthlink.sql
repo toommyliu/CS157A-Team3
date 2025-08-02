@@ -263,33 +263,7 @@ INSERT INTO `system_log` VALUES (1,5,'User Login','User Tommy Liu logged in succ
 /*!40000 ALTER TABLE `system_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `test_result`
---
 
-DROP TABLE IF EXISTS `test_result`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `test_result` (
-  `test_id` int NOT NULL,
-  `patient_id` int DEFAULT NULL,
-  `uploaded_by` int DEFAULT NULL,
-  `file_path` varchar(45) DEFAULT NULL,
-  `test_type` enum('image','pdf') DEFAULT NULL,
-  `uploaded_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`test_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `test_result`
---
-
-LOCK TABLES `test_result` WRITE;
-/*!40000 ALTER TABLE `test_result` DISABLE KEYS */;
-INSERT INTO `test_result` VALUES (1,1,11,'patient1/blood_work_20250701.pdf','pdf','2025-07-01 10:30:00'),(2,2,12,'patient2/xray_chest_20250628.jpg','image','2025-06-28 15:45:00'),(3,3,13,'patient3/mri_brain_20250703.dcm','image','2025-07-03 11:00:00'),(4,4,14,'patient4/urine_analysis_20250702.pdf','pdf','2025-07-02 09:15:00'),(5,5,15,'patient5/ecg_20250629.pdf','pdf','2025-06-29 13:20:00'),(6,6,16,'patient6/ct_abdomen_20250704.dcm','image','2025-07-04 16:00:00'),(7,7,17,'patient7/thyroid_panel_20250701.pdf','pdf','2025-07-01 11:40:00'),(8,8,18,'patient8/ultrasound_20250705.jpg','image','2025-07-05 09:55:00'),(9,9,19,'patient9/allergy_test_20250630.pdf','pdf','2025-06-30 14:00:00'),(10,10,20,'patient10/colonoscopy_report_20250706.pdf','pdf','2025-07-06 10:10:00');
-/*!40000 ALTER TABLE `test_result` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `user`
@@ -320,6 +294,24 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'admin@admin.com','$2a$12$0VcLk7uyA97dflWvdKDoCeyj6T1oIqJomz3k3pGHsYeeo8hIG8DkC','admin','admin','admin','2025-07-08 07:54:32','2025-07-08 07:54:32'),(2,'tommy.liu@sjsu.edu','$2b$12$wA4PrHZ5tcVHZJAxHckLj.e5cvkFL5qDDBtHY1','Tommy','Liu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(3,'fnu.hasham@sjsu.edu','$2b$12$SLjahlduI49oXt6Piah8Q.WD/ZUwsEicYHaQX/','Fnu','Hasham','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(4,'hiba.hasan@sjsu.edu','$2b$12$Xa1FKaAmoKddgOrgIelCEONF5WhU03UsKNJHqP','Hiba','Hasan','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(5,'Ching-seh.Wu@sjsu.edu','$2b$12$PN4AXNSW4p6wDr2Idv6hwevd0wbIgPmgz5/WVo','Mike','Wu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(6,'heidi-madden39@gmail.com','$2b$12$MaDAgKIzg38M.RORvTU94eQnD70XKUFjs8XtS3','Madden','Heidi','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(7,'sanders-deborah96@gmail.com','$2b$12$VqpDO3ZMexdXrQBzK3tWo.vFo.k7SQ3WtfxpLA','Deborah','Sanders','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(8,'shaffer-seamus6@gmail.com','$2b$12$CDFdd2XVNVaHSnxvKHrhaeuYmHXWnfnydbEtmG','Shaffer','Seamus','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(9,'hamilton-stubbs65@gmail.com','$2b$12$ZyXqQl3gAju7SVcvkmq.Hur1y6HJi5DNQDSPiJ','Hamilton','Stubbs','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(10,'louis_kade16@gmail.com','$2a$12$lyyE4gkgByBPQA8GI00Fge6H/7wTYzFz4HTaxMpAeUusnfncalrru','Kade','Louis','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(11,'dr.michael.chen@gmail.com','$2b$12$5BgU5wZHN9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Michael','Chen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(12,'dr.sarah.williams@gmail.com','$2b$12$QhOeX1J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Sarah','Williams','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(13,'dr.david.patel@gmail.com','$2b$12$5BgU5wDp3fFtNc4gKq1SvLbYm','David','Patel','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(14,'dr.emily.nguyen@gmail.com','$2b$12$51J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Emily','Nguyen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(15,'dr.james.rodriguez@gmail.com','$2b$12k8mR2dDp3fFtNc4gKq1SvLbYm','James','Rodriguez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(16,'dr.jessica.kim@gmail.com','$2b$12$5BJ9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Jessica','Kim','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(17,'dr.robert.wilson@gmail.com','$2b$12$5BgU2dDp3fFtNc4gKq1SvLbYm','Robert','Wilson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(18,'dr.olivia.martinez@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYw','Olivia','Martinez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(19,'dr.daniel.thompson@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOe','Daniel','Thompson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(20,'dr.sophia.garcia@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOeXm','Sophia','Garcia','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(21,'johnny-smith@gmail.com','$2b$12$5BgU5wZHYwWQhOeXm','Johnny','Smith','patient','2025-07-08 08:17:55','2025-07-08 08:17:55'),(42,'doctor@doctor.com','$2a$12$ncILeSlK1fzxp4pl2mT9Fe2hwEasOOiqWOrjSuUGca0IaB8EmrLfm','tommy','liu','doctor','2025-07-21 00:00:00','2025-07-21 00:00:00'),(43,'patient@patient.com','$2a$12$lyyE4gkgByBPQA8GI00Fge6H/7wTYzFz4HTaxMpAeUusnfncalrru','tommy','liu','patient','2025-07-21 00:00:00','2025-07-21 00:00:00'),(45,'test@test','$2a$12$sJkLI6uBJOseBXElJDCrl.V1kM.44Pv5UjV4vGaVjSBCaClnOPkXS','test','test','patient','2025-07-22 00:00:00','2025-07-22 00:00:00'),(46,'admin@admin.com','$2a$12$0VcLk7uyA97dflWvdKDoCeyj6T1oIqJomz3k3pGHsYeeo8hIG8DkC','admin','admin','patient','2025-07-29 00:00:00','2025-07-29 00:00:00'),(53,'Email@email.com','$2a$12$eU0Ddd7rIuz3QFfBfb2CMO4/8bagyOx/WKjY..0dPK.lPTm94ETc2','First','Name','doctor','2025-07-31 00:00:00','2025-07-31 00:00:00');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+-- Test Results Table
+CREATE TABLE `test_results` (
+  `result_id` int NOT NULL AUTO_INCREMENT,
+  `patient_id` int NOT NULL,
+  `doctor_id` int NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_data` longblob NOT NULL,
+  `file_type` varchar(50) NOT NULL,
+  `upload_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `description` text,
+  PRIMARY KEY (`result_id`),
+  KEY `fk_test_results_patient` (`patient_id`),
+  KEY `fk_test_results_doctor` (`doctor_id`),
+  CONSTRAINT `fk_test_results_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_test_results_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
