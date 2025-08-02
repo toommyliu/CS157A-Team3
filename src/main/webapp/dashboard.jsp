@@ -30,97 +30,97 @@
         </div>
         
         <div class="alert alert-info" role="alert">
-          <h5 class="alert-heading">Welcome back, Dr. <%= user.getFirstName() %>!</h5>
+          <h5 class="alert-heading">Welcome back, <%= user.isDoctor() ? "Dr. " : "" %> <%= user.getFirstName() %>!</h5>
           <p class="mb-0">This is your personalized dashboard. Use the sidebar to navigate to different sections.</p>
         </div>
 
         <% if (user.isDoctor()) { %>
-        <div class="mt-4">
-          <!-- <h3>Doctor Dashboard</h3> -->
-          <!-- <p>Welcome, Dr. <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Manage Patients</h5>
-                  <p class="card-text">View and manage your assigned patients</p>
-                  <a href="<%= request.getContextPath() %>/patients" class="btn btn-primary">View Patients</a>
+          <div class="mt-4">
+            <!-- <h3>Doctor Dashboard</h3> -->
+            <!-- <p>Welcome, Dr. <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Manage Patients</h5>
+                    <p class="card-text">View and manage your assigned patients</p>
+                    <a href="<%= request.getContextPath() %>/patients" class="btn btn-primary">View Patients</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Add Medications</h5>
-                  <p class="card-text">Prescribe medications for your patients</p>
-                  <a href="<%= request.getContextPath() %>/medications" class="btn btn-primary">Manage Medications</a>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Add Medications</h5>
+                    <p class="card-text">Prescribe medications for your patients</p>
+                    <a href="<%= request.getContextPath() %>/medications" class="btn btn-primary">Manage Medications</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">View Notes</h5>
-                  <p class="card-text">Read and write patient notes</p>
-                  <a href="<%= request.getContextPath() %>/notes" class="btn btn-primary">View Notes</a>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">View Notes</h5>
+                    <p class="card-text">Read and write patient notes</p>
+                    <a href="<%= request.getContextPath() %>/notes" class="btn btn-primary">View Notes</a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         <% } else if (user.isPatient()) { %>
-        <div class="mt-4">
-          <!-- <h3>Patient Dashboard</h3>
-          <p>Welcome, <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">My Doctors</h5>
-                  <p class="card-text">View and manage your assigned doctors</p>
-                  <a href="<%= request.getContextPath() %>/doctors" class="btn btn-primary">View Doctors</a>
+          <div class="mt-4">
+            <!-- <h3>Patient Dashboard</h3>
+            <p>Welcome, <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">My Doctors</h5>
+                    <p class="card-text">View and manage your assigned doctors</p>
+                    <a href="<%= request.getContextPath() %>/doctors" class="btn btn-primary">View Doctors</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">View Medications</h5>
-                  <p class="card-text">Check your current medications</p>
-                  <a href="<%= request.getContextPath() %>/medications" class="btn btn-primary">View Medications</a>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">View Medications</h5>
+                    <p class="card-text">Check your current medications</p>
+                    <a href="<%= request.getContextPath() %>/medications" class="btn btn-primary">View Medications</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">View Notes</h5>
-                  <p class="card-text">Read notes from your doctors</p>
-                  <a href="<%= request.getContextPath() %>/notes" class="btn btn-primary">View Notes</a>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">View Notes</h5>
+                    <p class="card-text">Read notes from your doctors</p>
+                    <a href="<%= request.getContextPath() %>/notes" class="btn btn-primary">View Notes</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Test Results</h5>
-                  <p class="card-text">Upload and view your test results</p>
-                  <a href="<%= request.getContextPath() %>/test-results" class="btn btn-primary">Upload Test Results</a>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Test Results</h5>
+                    <p class="card-text">Upload and view your test results</p>
+                    <a href="<%= request.getContextPath() %>/test-results" class="btn btn-primary">Upload Test Results</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Send Messages</h5>
-                  <p class="card-text">Communicate with your healthcare team</p>
-                  <a href="<%= request.getContextPath() %>/messages" class="btn btn-primary">Send Message</a>
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Send Messages</h5>
+                    <p class="card-text">Communicate with your healthcare team</p>
+                    <a href="<%= request.getContextPath() %>/messages" class="btn btn-primary">Send Message</a>
+                  </div>
                 </div>
               </div>
-            </div>
 
+            </div>
           </div>
-        </div>
         <% } %>
 
 
