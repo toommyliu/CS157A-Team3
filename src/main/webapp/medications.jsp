@@ -35,7 +35,7 @@
               <td><%= med.getDosage() %></td>
               <td><%= med.getFrequency() %></td>
               <td><%= med.getNotes() != null ? med.getNotes() : "" %></td>
-              <td><%= doctorNames != null ? doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
+              <td><%= doctorNames != null ? "Dr. " + doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
             </tr>
             <% } %>
           </tbody>
