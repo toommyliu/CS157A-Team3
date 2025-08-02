@@ -4,6 +4,7 @@
 <%@ page import="com.group_3.healthlink.services.DoctorService" %>
 <%@ page import="com.group_3.healthlink.Doctor" %>
 <%@ page import="com.group_3.healthlink.Medication" %>
+<%@ page import="com.group_3.healthlink.TestResult" %>
 <%@ page import="java.util.List" %>
 <html>
 <head>
@@ -309,6 +310,68 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Test Results Section -->
+                <% 
+                List<TestResult> testResults = (List<TestResult>) request.getAttribute("testResults");
+                if (patient != null) { 
+                %>
+                <div class="row mt-4">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-header">
+                        <h5 class="card-title mb-0">
+                          <i class="bi bi-file-earmark-medical"></i> Test Results
+                        </h5>
+                      </div>
+                      <div class="card-body">
+                        <% if (testResults != null && !testResults.isEmpty()) { %>
+                          <div class="table-responsive">
+                            <table class="table table-hover">
+                              <thead>
+                                <tr>
+                                  <th>File Name</th>
+                                  <th>Type</th>
+                                  <th>Upload Date</th>
+                                  <th>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for (TestResult result : testResults) { %>
+                                  <tr>
+                                    <td>
+                                      <i class="bi bi-file-earmark-<%= result.isPdf() ? "pdf" : "image" %> text-<%= result.isPdf() ? "danger" : "info" %> me-2"></i>
+                                      <%= result.getFileName() %>
+                                    </td>
+                                    <td>
+                                      <span class="badge bg-<%= result.isPdf() ? "danger" : "info" %>">
+                                        <%= result.getFileType().toUpperCase() %>
+                                      </span>
+                                    </td>
+                                    <td><%= result.getUploadDate() %></td>
+                                    <td>
+                                      <a href="<%= request.getContextPath() %>/test-results/download/<%= result.getResultId() %>" 
+                                         class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-download"></i> Download
+                                      </a>
+                                    </td>
+                                  </tr>
+                                <% } %>
+                              </tbody>
+                            </table>
+                          </div>
+                        <% } else { %>
+                          <div class="text-center py-4">
+                            <i class="bi bi-file-earmark-medical text-muted" style="font-size: 3rem;"></i>
+                            <h6 class="text-muted mt-3">No test results found</h6>
+                            <p class="text-muted small">This patient hasn't uploaded any test results yet.</p>
+                          </div>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
               </div>
             <% } else { %>
               <div class="main-content">
@@ -322,6 +385,7 @@
         <% } %>
     </div>
   <% } %>
+
   <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
