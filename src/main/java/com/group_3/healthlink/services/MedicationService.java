@@ -5,6 +5,7 @@ import com.group_3.healthlink.Medication;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MedicationService {
@@ -139,5 +140,14 @@ public class MedicationService {
       System.err.println("Error deleteMedication: " + e.getMessage());
       return false;
     }
+  }
+
+  public static HashMap<Integer, Medication> getMedicationsByPatientIdMap(int patientId) {
+    List<Medication> medications = getMedicationsByPatientId(patientId);
+    HashMap<Integer, Medication> medicationMap = new HashMap<Integer, Medication>();
+    for (Medication med : medications) {
+      medicationMap.put(med.getId(), med);
+    }
+    return medicationMap;
   }
 }

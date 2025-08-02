@@ -1,23 +1,21 @@
 package com.group_3.healthlink.servlets.patients;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
+import com.group_3.healthlink.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import com.group_3.healthlink.Patient;
-import com.group_3.healthlink.User;
-import com.group_3.healthlink.Doctor;
-import com.group_3.healthlink.Medication;
 import com.group_3.healthlink.services.PatientService;
 import com.group_3.healthlink.services.AuthService;
 import com.group_3.healthlink.services.MedicationService;
 import com.group_3.healthlink.services.TestResultService;
-import com.group_3.healthlink.TestResult;
+import com.group_3.healthlink.services.MedicationLogService;
 
 @WebServlet(name = "patientDetailServlet", urlPatterns = { "/patients/*" })
 public class PatientDetailServlet extends HttpServlet {
@@ -41,12 +39,16 @@ public class PatientDetailServlet extends HttpServlet {
           Doctor[] assignedDoctors = PatientService.getDoctors(patient.getPatientId());
           List<Medication> medications = MedicationService.getMedicationsByPatientId(patient.getPatientId());
           List<TestResult> testResults = TestResultService.getTestResultsByPatientId(patient.getPatientId());
+          List<MedicationLog> medicationLogs = MedicationLogService.getMedicationLogsByPatientId(patient.getPatientId());
+          HashMap<Integer, Medication> medicationMap = MedicationService.getMedicationsByPatientIdMap(patient.getPatientId());
 
           request.setAttribute("patient", patient);
           request.setAttribute("assignedDoctors", assignedDoctors);
           request.setAttribute("medications", medications);
           request.setAttribute("testResults", testResults);
           request.setAttribute("patientId", patientIdStr);
+          request.setAttribute("medicationLogs", medicationLogs);
+          request.setAttribute("medicationMap", medicationMap);
         } else {
           request.setAttribute("patientId", patientIdStr);
           request.setAttribute("patientNotFound", true);
