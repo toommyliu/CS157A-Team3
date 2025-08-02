@@ -36,8 +36,6 @@
 
         <% if (user.isDoctor()) { %>
           <div class="mt-4">
-            <!-- <h3>Doctor Dashboard</h3> -->
-            <!-- <p>Welcome, Dr. <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
             <div class="row g-3">
               <div class="col-md-4">
                 <div class="card">
@@ -70,8 +68,6 @@
           </div>
         <% } else if (user.isPatient()) { %>
           <div class="mt-4">
-            <!-- <h3>Patient Dashboard</h3>
-            <p>Welcome, <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
             <div class="row g-3">
               <div class="col-md-4">
                 <div class="card">
