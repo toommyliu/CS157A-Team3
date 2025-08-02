@@ -27,4 +27,8 @@ public class Doctor extends User {
   public void setDepartment(String department) {
     this.department = department;
   }
+
+  public String getDrName() {
+    return "Dr. " + getFullName();
+  }
 }
