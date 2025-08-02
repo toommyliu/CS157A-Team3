@@ -1,0 +1,36 @@
+package com.group_3.healthlink.servlets.notes;
+
+import com.group_3.healthlink.User;
+import com.group_3.healthlink.Note;
+import com.group_3.healthlink.services.DoctorService;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/doctor/notes")
+public class DoctorNotesServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        User user = (User) req.getSession().getAttribute("user");
+
+        if (user == null || !"doctor".equalsIgnoreCase(user.getRole())) {
+            resp.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
+        }
+
+        int doctorId = user.getUserId(); // assuming this maps to doctor_id
+
+        List<Note> notes = DoctorService.getNotesByDoctorId(doctorId);
+        req.setAttribute("notes", notes);
+        req.getRequestDispatcher("/doctor_notes.jsp").forward(req, resp);
+    }
+}
