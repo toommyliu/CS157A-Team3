@@ -13,20 +13,23 @@ public class DatabaseMgr {
 
     public DatabaseMgr() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            // Use the new MySQL driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Could not load JDBC driver. Is it in the classpath?");
             e.printStackTrace();
         }
-
-        createDbConnection();
     }
 
     // Connects to the database.
     private void createDbConnection() {
         try {
+            if (this.connection != null && !this.connection.isClosed()) {
+                this.connection.close();
+            }
+            
             this.connection = DriverManager.getConnection(
-                    String.format("jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false", DB_NAME),
+                    String.format("jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", DB_NAME),
                     DB_USERNAME,
                     DB_PASSWORD
             );
@@ -39,10 +42,17 @@ public class DatabaseMgr {
 
     // Returns the database connection.
     public java.sql.Connection getConnection() {
-        if (this.connection == null) {
+        try {
+            // Check if connection is null, closed, or invalid
+            if (this.connection == null || this.connection.isClosed() || !this.connection.isValid(5)) {
+                System.out.println("Connection is invalid or closed. Creating new connection...");
+                createDbConnection();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking connection validity: " + e.getMessage());
             createDbConnection();
         }
-
+        
         return this.connection;
     }
 
@@ -51,7 +61,18 @@ public class DatabaseMgr {
         if (instance == null) {
             instance = new DatabaseMgr();
         }
-
         return instance;
+    }
+    
+    // Close the connection (useful for cleanup)
+    public void closeConnection() {
+        try {
+            if (this.connection != null && !this.connection.isClosed()) {
+                this.connection.close();
+                System.out.println("Database connection closed.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error closing connection: " + e.getMessage());
+        }
     }
 }
