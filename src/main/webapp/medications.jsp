@@ -39,7 +39,7 @@
                   <td><%= med.getDosage() %></td>
                   <td><%= med.getFrequency() %></td>
                   <td><%= med.getNotes() != null ? med.getNotes() : "" %></td>
-                  <td><%= doctorNames != null ? "Dr. " + doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
+                  <td><%= doctorNames != null ? doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
                   <td>
                     <button type="button" class="btn btn-outline-primary btn-sm" title="Make log entry" data-bs-toggle="modal" data-bs-target="#logMedicationModal"
                       data-medname="<%= med.getName() %>"
@@ -77,13 +77,14 @@
               <tbody>
                 <% for (MedicationLog log : medicationLogs) {
                     Medication med = medicationMap != null ? medicationMap.get(log.getMedicationId()) : null;
+                    if (med == null) continue;
                 %>
                   <tr>
                     <td><%= log.getTakenAt() %></td>
                     <td><%= med != null ? med.getName() : "Unknown" %></td>
                     <td><%= log.getDosageTaken() %></td>
                     <td><%= log.getNote() != null ? log.getNote() : "" %></td>
-                    <td><%= doctorNames != null && med != null ? "Dr. " + doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
+                    <td><%= doctorNames != null && med != null ? doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
                   </tr>
                 <% } %>
               </tbody>
@@ -98,7 +99,7 @@
   <div class="modal fade" id="logMedicationModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form action="<%= request.getContextPath() %>/medication-log" method="post">
+        <form id="logMedicationForm" action="<%= request.getContextPath() %>/medication-log" method="post">
           <div class="modal-header">
             <h5 class="modal-title" id="logMedicationModalLabel">Log Medication</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -137,6 +138,17 @@
     </div>
   </div>
 
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 10">
+    <div id="logToast" class="toast" role="alert">
+      <div class="toast-header">
+        <strong class="me-auto" id="toastTitle">Status</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+      </div>
+      <div class="toast-body" id="toastBody">
+      </div>
+    </div>
+  </div>
+
   <script src="js/bootstrap.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -154,6 +166,44 @@
         const pad = n => n.toString().padStart(2, '0');
         const formatted = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
         document.querySelector('input[name="takenAt"]').value = formatted;
+      });
+
+      const logForm = document.querySelector('#logMedicationForm');
+      logForm.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const formData = new FormData(logForm);
+        const data = new URLSearchParams();
+        for (const pair of formData.entries()) {
+          data.append(pair[0], pair[1]);
+        }
+
+        const res = await fetch('${pageContext.request.contextPath}/medication-log', {
+          method: 'POST',
+          body: data
+        });
+
+        if (!res.ok) {
+          alert('Failed to log medication entry.');
+          return;
+        }
+
+        const json = await res.json();
+        const toastEl = document.querySelector('#logToast');
+        const toastTitle = document.querySelector('#toastTitle');
+        const toastBody = document.querySelector('#toastBody');
+        if (json.success) {
+          toastTitle.textContent = 'Success';
+          toastBody.textContent = 'Medication log entry created.';
+
+          const modal = bootstrap.Modal.getInstance(logMedicationModal);
+          modal.hide();
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          toastTitle.textContent = 'Error';
+          toastBody.textContent = 'Failed to create medication log entry. Try again.';
+        }
+        const toast = new bootstrap.Toast(toastEl);
+        toast.show();
       });
     });
   </script>

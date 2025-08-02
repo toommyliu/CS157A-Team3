@@ -66,7 +66,7 @@ public class MedicationLogServlet extends HttpServlet {
     }
 
     String note = request.getParameter("note");
-    String takenAtClean = takenAt.replace("T", " " );
+    String takenAtClean = takenAt.replace("T", " ");
 
     java.sql.Timestamp takenAtTimestamp = Timestamp.valueOf(takenAtClean);
 
@@ -80,14 +80,15 @@ public class MedicationLogServlet extends HttpServlet {
     System.out.println("takenAt: " + (takenAt != null && !takenAt.isEmpty() ? takenAt : "no taken at provided"));
 
     boolean success = MedicationLogService.createEntry(medicationId, patientId, dosageTaken, note, takenAtTimestamp);
+
     if (success) {
       response.setStatus(200);
-      json.put("message", "Success");
-      out.print(json);
     } else {
-      response.setStatus(400);
-      json.put("message", "Error");
-      out.print(json);
+      response.setStatus(500);
     }
+
+    json.put("success", success);
+
+    out.print(json);
   }
 }
