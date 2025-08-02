@@ -28,7 +28,8 @@ public class Doctor extends User {
     this.department = department;
   }
 
-  public String getDrName() {
-    return "Dr. " + getFullName();
+  @Override
+  public String getFullName() {
+    return "Dr. " + super.getFullName();
   }
 }
