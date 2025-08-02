@@ -6,8 +6,12 @@ import com.group_3.healthlink.MedicationLog;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class MedicationLogService {
-  public static boolean createEntry(int medicationId, int patientId, String dosageTaken, String note, java.sql.Timestamp takenAt) {
+  public static boolean createEntry(int medicationId, int patientId, String dosageTaken, String note,
+      java.sql.Timestamp takenAt) {
     Connection con = DatabaseMgr.getInstance().getConnection();
 
     String query = "INSERT INTO medication_log (medication_id, patient_id, taken_at, dosage_taken, created_at, note) VALUES (?, ?, ?, ?, ?, ?)";
@@ -40,7 +44,7 @@ public class MedicationLogService {
     }
   }
 
-  public static MedicationLog[] getMedicationLogsByPatientId(int patientId) {
+  public static List<MedicationLog> getMedicationLogsByPatientId(int patientId) {
     Connection con = DatabaseMgr.getInstance().getConnection();
 
     String query = "SELECT * FROM medication_log WHERE patient_id = ?";
@@ -50,7 +54,7 @@ public class MedicationLogService {
       stmt.setInt(1, patientId);
       java.sql.ResultSet rs = stmt.executeQuery();
 
-      java.util.List<MedicationLog> logs = new java.util.ArrayList<>();
+      List<MedicationLog> logs = new ArrayList<>();
       while (rs.next()) {
         MedicationLog log = new MedicationLog();
         log.setMedicationLogId(rs.getInt("medication_log_id"));
@@ -65,10 +69,10 @@ public class MedicationLogService {
 
       rs.close();
       stmt.close();
-      return logs.toArray(new MedicationLog[0]);
+      return logs;
     } catch (java.sql.SQLException e) {
       System.out.println("Error get medication logs by patient id " + e.getMessage());
-      return new MedicationLog[0];
+      return new ArrayList<>();
     }
   }
 }

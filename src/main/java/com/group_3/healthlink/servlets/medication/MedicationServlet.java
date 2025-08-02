@@ -1,17 +1,20 @@
 package com.group_3.healthlink.servlets.medication;
 
 import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.group_3.healthlink.Doctor;
+import com.group_3.healthlink.services.DoctorService;
+import com.group_3.healthlink.services.MedicationLogService;
+import com.group_3.healthlink.services.MedicationService;
+import com.group_3.healthlink.services.PatientService;
+import com.group_3.healthlink.MedicationLog;
 import com.group_3.healthlink.Medication;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
-import com.group_3.healthlink.services.DoctorService;
-import com.group_3.healthlink.services.MedicationService;
-import com.group_3.healthlink.services.PatientService;
+import com.group_3.healthlink.Doctor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -29,13 +32,22 @@ public class MedicationServlet extends HttpServlet {
             if (patient != null) {
                 int patientId = patient.getPatientId();
                 List<Medication> medications = MedicationService.getMedicationsByPatientId(patientId);
+                List<MedicationLog> medicationLogs = MedicationLogService.getMedicationLogsByPatientId(patientId);
+
+                Map<Integer, Medication> medicationMap = new HashMap<>();
+                for (Medication med : medications) {
+                    medicationMap.put(med.getId(), med);
+                }
+
+                request.setAttribute("medicationMap", medicationMap);
+                request.setAttribute("medicationLogs", medicationLogs);
                 request.setAttribute("medications", medications);
                 request.setAttribute("patientId", patientId);
 
                 Map<Integer, String> doctorNames = new HashMap<>();
                 for (Medication med : medications) {
                     int doctorId = med.getDoctorId();
-                    System.out.println(doctorId);
+
                     if (!doctorNames.containsKey(doctorId)) {
                         Doctor doctor = DoctorService.getByDoctorId(doctorId);
                         if (doctor != null) {
@@ -45,6 +57,7 @@ public class MedicationServlet extends HttpServlet {
                         }
                     }
                 }
+
                 request.setAttribute("doctorNames", doctorNames);
             }
         }

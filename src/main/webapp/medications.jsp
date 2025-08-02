@@ -2,6 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="com.group_3.healthlink.Medication" %>
+<%@ page import="com.group_3.healthlink.MedicationLog" %>
+
 <html>
 <head>
   <title>Healthlink - Medications</title>
@@ -12,46 +14,84 @@
     <jsp:include page="layouts/sidebar.jsp" />
 
     <div class="main-content">
-      <h2>Your Medications</h2>
-      <%
-        List<Medication> medications = (List<Medication>) request.getAttribute("medications");
-        if (medications != null && !medications.isEmpty()) {
-      %>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Dosage</th>
-              <th>Frequency</th>
-              <th>Notes</th>
-              <th>Prescribed By</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% Map<Integer, String> doctorNames = (Map<Integer, String>) request.getAttribute("doctorNames"); %>
-            <% for (Medication med : medications) { %>
+      <div>
+        <h2>Your Medications</h2>
+        <%
+          List<Medication> medications = (List<Medication>) request.getAttribute("medications");
+          if (medications != null && !medications.isEmpty()) {
+        %>
+          <table class="table table-striped">
+            <thead>
               <tr>
-                <td><%= med.getName() %></td>
-                <td><%= med.getDosage() %></td>
-                <td><%= med.getFrequency() %></td>
-                <td><%= med.getNotes() != null ? med.getNotes() : "" %></td>
-                <td><%= doctorNames != null ? "Dr. " + doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
-                <td>
-                  <button type="button" class="btn btn-outline-primary btn-sm" title="Make log entry" data-bs-toggle="modal" data-bs-target="#logMedicationModal"
-                    data-medname="<%= med.getName() %>"
-                    data-dosage="<%= med.getDosage() %>"
-                    data-medid="<%= med.getId() %>">
-                    <i class="bi bi-journal-plus"></i>
-                  </button>
-                </td>
+                <th>Name</th>
+                <th>Dosage</th>
+                <th>Frequency</th>
+                <th>Notes</th>
+                <th>Prescribed By</th>
+                <th>Action</th>
               </tr>
-              <% } %>
-          </tbody>
-        </table>
-      <% } else { %>
-        <p>No medications found.</p>
-      <% } %>
+            </thead>
+            <tbody>
+              <% Map<Integer, String> doctorNames = (Map<Integer, String>) request.getAttribute("doctorNames"); %>
+              <% for (Medication med : medications) { %>
+                <tr>
+                  <td><%= med.getName() %></td>
+                  <td><%= med.getDosage() %></td>
+                  <td><%= med.getFrequency() %></td>
+                  <td><%= med.getNotes() != null ? med.getNotes() : "" %></td>
+                  <td><%= doctorNames != null ? "Dr. " + doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
+                  <td>
+                    <button type="button" class="btn btn-outline-primary btn-sm" title="Make log entry" data-bs-toggle="modal" data-bs-target="#logMedicationModal"
+                      data-medname="<%= med.getName() %>"
+                      data-dosage="<%= med.getDosage() %>"
+                      data-medid="<%= med.getId() %>">
+                      <i class="bi bi-journal-plus"></i>
+                    </button>
+                  </td>
+                </tr>
+                <% } %>
+            </tbody>
+          </table>
+        <% } else { %>
+          <p>No medications found.</p>
+        <% } %>
+      </div>
+      <div class="overflow-y-scroll">
+          <h3>Your Medication Log History</h3>
+          <%
+            List<MedicationLog> medicationLogs = (List<MedicationLog>) request.getAttribute("medicationLogs");
+            Map<Integer, String> doctorNames = (Map<Integer, String>) request.getAttribute("doctorNames");
+            Map<Integer, Medication> medicationMap = (Map<Integer, Medication>) request.getAttribute("medicationMap");
+            if (medicationLogs != null && !medicationLogs.isEmpty()) {
+           %>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Date/Time Taken</th>
+                  <th>Medication Name</th>
+                  <th>Dosage Taken</th>
+                  <th>Note</th>
+                  <th>Prescribed By</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (MedicationLog log : medicationLogs) {
+                    Medication med = medicationMap != null ? medicationMap.get(log.getMedicationId()) : null;
+                %>
+                  <tr>
+                    <td><%= log.getTakenAt() %></td>
+                    <td><%= med != null ? med.getName() : "Unknown" %></td>
+                    <td><%= log.getDosageTaken() %></td>
+                    <td><%= log.getNote() != null ? log.getNote() : "" %></td>
+                    <td><%= doctorNames != null && med != null ? "Dr. " + doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
+                  </tr>
+                <% } %>
+              </tbody>
+            </table>
+        <% } else { %>
+          <p>No medication log history found.</p>
+        <% } %>
+      </div>
     </div>
   </div>
 
