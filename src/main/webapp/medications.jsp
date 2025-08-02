@@ -64,7 +64,7 @@
             Map<Integer, Medication> medicationMap = (Map<Integer, Medication>) request.getAttribute("medicationMap");
             if (medicationLogs != null && !medicationLogs.isEmpty()) {
            %>
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th>Date/Time Taken</th>
