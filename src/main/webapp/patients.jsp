@@ -323,7 +323,7 @@
                       <div class="card-body">
                         <% if (testResults != null && !testResults.isEmpty()) { %>
                           <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-striped">
                               <thead>
                                 <tr>
                                   <th>File Name</th>
@@ -380,7 +380,7 @@
                         <% List<MedicationLog> medicationLogs = (List<MedicationLog>) request.getAttribute("medicationLogs"); %>
                         <% if (medicationLogs != null && !medicationLogs.isEmpty()) { %>
                           <div class="table-responsive">
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-striped">
                               <thead>
                                 <tr>
                                   <th>Date Taken</th>
