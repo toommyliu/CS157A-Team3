@@ -4,6 +4,9 @@ import com.group_3.healthlink.DatabaseMgr;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AssignmentService {
     
@@ -69,5 +72,28 @@ public class AssignmentService {
             System.err.println("Error checking assignment: " + e.getMessage());
             return false;
         }
+    }
+    
+    public static List<Integer> getAssignedDoctorIds(int patientId) {
+        List<Integer> doctorIds = new ArrayList<>();
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        String query = "SELECT doctor_id FROM assigned_to WHERE patient_id = ?";
+        
+        try {
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, patientId);
+            
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                doctorIds.add(rs.getInt("doctor_id"));
+            }
+            
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            System.err.println("Error getting assigned doctor IDs: " + e.getMessage());
+        }
+        
+        return doctorIds;
     }
 } 
