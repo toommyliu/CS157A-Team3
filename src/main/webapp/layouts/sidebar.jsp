@@ -49,6 +49,13 @@
                         Medications
                     </a>
                 </li>
+                <li>
+                    <a href="<%= contextPath %>/test-results"
+                       class="nav-link text-white <%= currentPath.contains("/test-results") ? "active" : "" %>">
+                        <i class="bi bi-file-earmark-medical me-2"></i>
+                        Test Results
+                    </a>
+                </li>
             <% } else if (user.isDoctor()) { %>
                 <li>
                     <a href="<%= contextPath %>/patients"
