@@ -30,14 +30,14 @@
         </div>
         
         <div class="alert alert-info" role="alert">
-          <h5 class="alert-heading">Welcome back, <%= user.getFirstName() %>!</h5>
+          <h5 class="alert-heading">Welcome back, Dr. <%= user.getFirstName() %>!</h5>
           <p class="mb-0">This is your personalized dashboard. Use the sidebar to navigate to different sections.</p>
         </div>
 
         <% if (user.isDoctor()) { %>
         <div class="mt-4">
-          <h3>Doctor Dashboard</h3>
-          <p>Welcome, Dr. <%= user.getFirstName() %> <%= user.getLastName() %>!</p>
+          <!-- <h3>Doctor Dashboard</h3> -->
+          <!-- <p>Welcome, Dr. <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
           <div class="row g-3">
             <div class="col-md-4">
               <div class="card">
@@ -70,8 +70,8 @@
         </div>
         <% } else if (user.isPatient()) { %>
         <div class="mt-4">
-          <h3>Patient Dashboard</h3>
-          <p>Welcome, <%= user.getFirstName() %> <%= user.getLastName() %>!</p>
+          <!-- <h3>Patient Dashboard</h3>
+          <p>Welcome, <%= user.getFirstName() %> <%= user.getLastName() %>!</p> -->
           <div class="row g-3">
             <div class="col-md-4">
               <div class="card">
@@ -97,6 +97,15 @@
                   <h5 class="card-title">View Notes</h5>
                   <p class="card-text">Read notes from your doctors</p>
                   <a href="<%= request.getContextPath() %>/notes" class="btn btn-primary">View Notes</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Test Results</h5>
+                  <p class="card-text">Upload and view your test results</p>
+                  <a href="<%= request.getContextPath() %>/test-results" class="btn btn-primary">Upload Test Results</a>
                 </div>
               </div>
             </div>
