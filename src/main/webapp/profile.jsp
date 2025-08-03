@@ -46,9 +46,9 @@
                     Personal Information
                   </h5>
                   <% if (!isAdminViewingOther) { %>
-                  <button class="btn btn-sm btn-outline-primary" id="editPersonalBtn">
-                    <i class="bi bi-pencil"></i> Edit
-                  </button>
+                    <button class="btn btn-sm btn-outline-primary" id="editPersonalBtn">
+                      <i class="bi bi-pencil"></i> Edit
+                    </button>
                   <% } %>
                 </div>
                 <div class="card-body" id="personalInfo">
@@ -102,7 +102,7 @@
                       </div>
                     </div>
                     <% if (!isAdminViewingOther) { %>
-                    <button type="submit" class="btn btn-primary" id="savePersonalBtn" style="display:none;">Save</button>
+                      <button type="submit" class="btn btn-primary" id="savePersonalBtn" style="display:none;">Save</button>
                     <% } %>
                   </form>
                 </div>
@@ -132,7 +132,9 @@
                               <%
                                 String dept = doctor.getDepartment();
                                 java.util.List<String> departments = java.util.Arrays.asList(
-                                  "Cardiology", "Dermatology", "Endocrinology", "Gastroenterology", "Pediatrics", "General Medicine", "Oncology", "Nephrology", "Urology", "Ophthalmology", "ENT"
+                                  "Cardiology", "Dermatology", "Endocrinology", "Gastroenterology",
+                                  "Pediatrics", "General Medicine", "Oncology",
+                                  "Nephrology", "Urology", "Ophthalmology", "ENT"
                                 );
                               %>
                               <select class="form-control" id="departmentSelect" name="department" disabled readonly>
@@ -235,22 +237,22 @@
 
             <div class="col-md-4">
               <% if (!isAdminViewingOther) { %>
-              <div class="card">
-                <div class="card-header">
-                  <h5 class="card-title mb-0">
-                    <i class="bi bi-gear me-2"></i>
-                    Account Actions
-                  </h5>
-                </div>
-                <div class="card-body">
-                  <div class="d-grid gap-2">
-                    <a href="<%= request.getContextPath() %>/logout" class="btn btn-danger">
-                      <i class="bi bi-box-arrow-right me-2"></i>
-                      Logout
-                    </a>
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="card-title mb-0">
+                      <i class="bi bi-gear me-2"></i>
+                      Account Actions
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="d-grid gap-2">
+                      <a href="<%= request.getContextPath() %>/logout" class="btn btn-danger">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        Logout
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
               <% } %>
             </div>
           </div>
