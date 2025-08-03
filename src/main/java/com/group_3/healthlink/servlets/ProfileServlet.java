@@ -101,6 +101,13 @@ public class ProfileServlet extends HttpServlet {
             JsonResponseUtil.sendJsonResponse(response,
                     success ? JsonResponseUtil.createSuccessResponse("Profile updated successfully")
                             : JsonResponseUtil.createErrorResponse("Failed to update profile"));
+
+            // Need to update the session user object to reflect changes, before redirecting
+            if (success) {
+                User updatedUser = AuthService.getUserById(userId);
+                if (updatedUser != null)
+                    request.getSession().setAttribute("user", updatedUser);
+            }
         } else if (action.equals("patient")) {
             String patientIdStr = request.getParameter("patientId");
             String dateOfBirth = request.getParameter("dob");
