@@ -119,18 +119,16 @@
                           <div class="col-md-6">
                             <div class="mb-3">
                               <label for="departmentSelect" class="form-label fw-bold text-muted">Department</label>
+                              <%
+                                String dept = doctor.getDepartment();
+                                java.util.List<String> departments = java.util.Arrays.asList(
+                                  "Cardiology", "Dermatology", "Endocrinology", "Gastroenterology", "Pediatrics", "General Medicine", "Oncology", "Nephrology", "Urology", "Ophthalmology", "ENT"
+                                );
+                              %>
                               <select class="form-control" id="departmentSelect" name="department" disabled readonly>
-                                <option value="Cardiology" <%= doctor != null && "Cardiology".equals(doctor.getDepartment()) ? "selected" : "" %>>Cardiology</option>
-                                <option value="Dermatology" <%= doctor != null && "Dermatology".equals(doctor.getDepartment()) ? "selected" : "" %>>Dermatology</option>
-                                <option value="Endocrinology" <%= doctor != null && "Endocrinology".equals(doctor.getDepartment()) ? "selected" : "" %>>Endocrinology</option>
-                                <option value="Gastroenterology" <%= doctor != null && "Gastroenterology".equals(doctor.getDepartment()) ? "selected" : "" %>>Gastroenterology</option>
-                                <option value="Pediatrics" <%= doctor != null && "Pediatrics".equals(doctor.getDepartment()) ? "selected" : "" %>>Pediatrics</option>
-                                <option value="General Medicine" <%= doctor != null && "General Medicine".equals(doctor.getDepartment()) ? "selected" : "" %>>General Medicine</option>
-                                <option value="Oncology" <%= doctor != null && "Oncology".equals(doctor.getDepartment()) ? "selected" : "" %>>Oncology</option>
-                                <option value="Nephrology" <%= doctor != null && "Nephrology".equals(doctor.getDepartment()) ? "selected" : "" %>>Nephrology</option>
-                                <option value="Urology" <%= doctor != null && "Urology".equals(doctor.getDepartment()) ? "selected" : "" %>>Urology</option>
-                                <option value="Ophthalmology" <%= doctor != null && "Ophthalmology".equals(doctor.getDepartment()) ? "selected" : "" %>>Ophthalmology</option>
-                                <option value="ENT" <%= doctor != null && "ENT".equals(doctor.getDepartment()) ? "selected" : "" %>>ENT</option>
+                                <% for (String d : departments) { %>
+                                  <option value="<%= d %>" <%= dept != null && dept.equals(d) ? "selected" : "" %>><%= d %></option>
+                                <% } %>
                               </select>
                             </div>
                           </div>
