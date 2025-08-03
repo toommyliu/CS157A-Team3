@@ -1,6 +1,8 @@
 package com.group_3.healthlink.servlets;
 
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.util.JsonResponseUtil;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,15 +12,13 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-import org.json.JSONObject;
-
 @WebServlet(name = "profileServlet", urlPatterns = { "/profile" })
 public class ProfileServlet extends HttpServlet {
-    
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -27,28 +27,27 @@ public class ProfileServlet extends HttpServlet {
 
         request.getRequestDispatcher("/profile.jsp").forward(request, response);
     }
-    
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = (User)request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            sendErrorResponse(response, "User not authenticated");
+            JsonResponseUtil.sendErrorResponse(response, "User not authenticated", 401);
             return;
         }
 
         String action = request.getParameter("action");
 
         if (action == null || action.isEmpty()) {
-            sendErrorResponse(response, "action parameter is required");
+            JsonResponseUtil.sendErrorResponse(response, "action parameter is required", 400);
             return;
         }
 
         if (!action.equals("personal") &&
-            !action.equals("patient") &&
-            !action.equals("doctor")
-        ) {
-            sendErrorResponse(response, "Invalid action parameter");
+                !action.equals("patient") &&
+                !action.equals("doctor")) {
+            JsonResponseUtil.sendErrorResponse(response, "Invalid action parameter", 400);
             return;
         }
 
@@ -60,17 +59,17 @@ public class ProfileServlet extends HttpServlet {
             String email = request.getParameter("email");
 
             if (userId == null || userId.isEmpty()) {
-                sendErrorResponse(response, "userId is required");
+                JsonResponseUtil.sendErrorResponse(response, "userId is required", 400);
                 return;
             }
 
             if (fullName == null || fullName.isEmpty()) {
-                sendErrorResponse(response, "fullName is required");
+                JsonResponseUtil.sendErrorResponse(response, "fullName is required", 400);
                 return;
             }
 
             if (email == null || email.isEmpty()) {
-                sendErrorResponse(response, "email is required");
+                JsonResponseUtil.sendErrorResponse(response, "email is required", 400);
                 return;
             }
 
@@ -85,22 +84,22 @@ public class ProfileServlet extends HttpServlet {
             String address = request.getParameter("address");
 
             if (dateOfBirth == null || dateOfBirth.isEmpty()) {
-                sendErrorResponse(response, "dob is required");
+                JsonResponseUtil.sendErrorResponse(response, "dob is required", 400);
                 return;
             }
 
             if (phoneNumber == null || phoneNumber.isEmpty()) {
-                sendErrorResponse(response, "phone is required");
+                JsonResponseUtil.sendErrorResponse(response, "phone is required", 400);
                 return;
             }
 
             if (emergencyContactName == null || emergencyContactName.isEmpty()) {
-                sendErrorResponse(response, "emergencyContact is required");
+                JsonResponseUtil.sendErrorResponse(response, "emergencyContact is required", 400);
                 return;
             }
 
             if (address == null || address.isEmpty()) {
-                sendErrorResponse(response, "address is required");
+                JsonResponseUtil.sendErrorResponse(response, "address is required", 400);
                 return;
             }
 
@@ -114,12 +113,12 @@ public class ProfileServlet extends HttpServlet {
             String department = request.getParameter("department");
 
             if (doctorId == null || doctorId.isEmpty()) {
-                sendErrorResponse(response, "doctorId is required");
+                JsonResponseUtil.sendErrorResponse(response, "doctorId is required", 400);
                 return;
             }
 
             if (department == null || department.isEmpty()) {
-                sendErrorResponse(response, "department is required");
+                JsonResponseUtil.sendErrorResponse(response, "department is required", 400);
                 return;
             }
 
@@ -129,11 +128,4 @@ public class ProfileServlet extends HttpServlet {
 
         doGet(request, response);
     }
-
-    private void sendErrorResponse(HttpServletResponse response, String message) throws IOException {
-        response.setStatus(400);
-        JSONObject json = new JSONObject();
-        json.put("error", message);
-        response.getWriter().write(json.toString());
-    }
-} 
+}
