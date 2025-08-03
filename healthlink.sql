@@ -286,8 +286,8 @@ CREATE TABLE `test_results` (
   PRIMARY KEY (`result_id`),
   KEY `fk_test_results_patient` (`patient_id`),
   KEY `fk_test_results_doctor` (`doctor_id`),
-  CONSTRAINT `fk_test_results_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_test_results_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE
+  CONSTRAINT `fk_test_results_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_test_results_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

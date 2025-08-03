@@ -49,9 +49,9 @@
               <div class="col-md-4">
                 <div class="card">
                   <div class="card-body text-center">
-                    <h5 class="card-title">Add Medications</h5>
-                    <p class="card-text">Prescribe medications for your patients</p>
-                    <a href="<%= request.getContextPath() %>/medications" class="btn btn-primary">Manage Medications</a>
+                    <h5 class="card-title">Send Messages</h5>
+                    <p class="card-text">Communicate with your patients</p>
+                    <a href="<%= request.getContextPath() %>/messages" class="btn btn-primary">Send Messages</a>
                   </div>
                 </div>
               </div>
