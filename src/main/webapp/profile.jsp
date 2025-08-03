@@ -329,6 +329,90 @@
         setDefaultDataAttributes(patientEditForm);
         setDefaultDataAttributes(doctorEditForm);
 
+        const ENDPOINT = '${pageContext.request.contextPath}/profile';
+
+        personalEditForm?.addEventListener('submit', async (ev) => {
+          ev.preventDefault();
+
+          const formData = new FormData(personalEditForm);
+          const data = new URLSearchParams();
+          for (const [key, value] of formData.entries())
+            data.append(key, value);
+
+          const resp = await fetch(ENDPOINT, {
+            method: 'POST',
+            body: data,
+          });
+
+          if (!resp.ok) {
+            alert('Failed to update personal information.');
+            return;
+          }
+
+          const json = await resp.json();
+          if (json?.success) {
+            alert('Personal information updated successfully.');
+            window.location.reload();
+          } else {
+            alert(json?.error || 'Failed to update personal information.');
+          }
+        });
+
+        patientEditForm?.addEventListener('submit', async (ev) => {
+          ev.preventDefault();
+
+          const formData = new FormData(patientEditForm);
+          const data = new URLSearchParams();
+          for (const [key, value] of formData.entries())
+            data.append(key, value);
+
+          const resp = await fetch(ENDPOINT, {
+            method: 'POST',
+            body: data,
+          });
+
+          if (!resp.ok) {
+            alert('Failed to update patient information.');
+            return;
+          }
+
+          const json = await resp.json();
+          if (json?.success) {
+            alert('Patient information updated successfully.');
+            window.location.reload();
+          } else {
+            alert(json?.error || 'Failed to update patient information.');
+          }
+        });
+
+        doctorEditForm?.addEventListener('submit', async (ev) => {
+          ev.preventDefault();
+
+          const formData = new FormData(doctorEditForm);
+          const data = new URLSearchParams();
+          for (const [key, value] of formData.entries())
+            data.append(key, value);
+
+          const resp = await fetch(ENDPOINT, {
+            method: 'POST',
+            body: data,
+          });
+
+          if (!resp.ok) {
+            alert('Failed to update doctor information.');
+            return;
+          }
+
+          const json = await resp.json();
+          if (json?.success) {
+            alert('Doctor information updated successfully.');
+            window.location.reload();
+          } else {
+            alert(json?.error || 'Failed to update doctor information.');
+          }
+        });
+
+
         document.querySelector('#editPersonalBtn')?.addEventListener('click', () => toggleEdit('personal'));
         document.querySelector('#editPatientBtn')?.addEventListener('click', () => toggleEdit('patient'));
         document.querySelector('#editDoctorBtn')?.addEventListener('click', () => toggleEdit('doctor'));
