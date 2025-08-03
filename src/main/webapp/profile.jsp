@@ -9,14 +9,6 @@
     <title>Healthlink - Profile</title>
     <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet" />
   </head>
-<%--  <style>--%>
-<%--    &lt;%&ndash; Make the input not look like an input when its disabled + readonly attribute &ndash;%&gt;--%>
-<%--    input[disabled][readonly] {--%>
-<%--      background-color: white;--%>
-<%--      border: none;--%>
-<%--      box-shadow: none;--%>
-<%--    }--%>
-<%--  </style>--%>
   <body>
     <% User user = (User)session.getAttribute("user"); %>
     <% if (user == null) { %>
