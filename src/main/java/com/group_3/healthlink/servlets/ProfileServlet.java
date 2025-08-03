@@ -28,6 +28,20 @@ public class ProfileServlet extends HttpServlet {
             return;
         }
 
+        User currentUser = (User) session.getAttribute("user");
+        String userIdParam = request.getParameter("userId");
+        User viewedUser = currentUser;
+
+        if (currentUser.isAdmin() && (userIdParam != null || !userIdParam.isEmpty())) {
+            try {
+                int userId = Integer.parseInt(userIdParam);
+                User user = AuthService.getUserById(userId);
+                if (user != null)
+                    viewedUser = user;
+            } catch (NumberFormatException e) {
+            }
+        }
+        request.setAttribute("viewedUser", viewedUser);
         request.getRequestDispatcher("/profile.jsp").forward(request, response);
     }
 

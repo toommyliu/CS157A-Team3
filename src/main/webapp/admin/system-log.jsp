@@ -42,6 +42,7 @@
               <th>Action</th>
               <th>Detail</th>
               <th>Timestamp</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -65,11 +66,17 @@
                     <% SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a"); %>
                     <%= sdf.format(log.getTimestamp()) %>
                   </td>
+                  <td>
+                    <form action="<%= request.getContextPath() %>/profile" method="get" style="display:inline;">
+                      <input type="hidden" name="userId" value="<%= log.getUserId() %>" />
+                      <button type="submit" class="btn btn-sm btn-outline-primary">View Profile</button>
+                    </form>
+                  </td>
                 </tr>
               <% } %>
             <% } else { %>
               <tr>
-                <td colspan="5" class="text-center">No logs available.</td>
+                <td colspan="6" class="text-center">No logs available.</td>
               </tr>
             <% } %>
           </tbody>

@@ -11,6 +11,7 @@
   </head>
   <body>
     <% User user = (User)session.getAttribute("user"); %>
+    <% User viewedUser = (User) request.getAttribute("viewedUser"); %>
     <% if (user == null) { %>
       <script>
         window.location.href = '<%= request.getContextPath() %>/login';
@@ -38,30 +39,33 @@
           <div class="row">
             <div class="col-md-8">
               <div class="card">
+                <% boolean isAdminViewingOther = user.isAdmin() && viewedUser.getUserId() != user.getUserId(); %>
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h5 class="card-title mb-0">
                     <i class="bi bi-person-circle me-2"></i>
                     Personal Information
                   </h5>
+                  <% if (!isAdminViewingOther) { %>
                   <button class="btn btn-sm btn-outline-primary" id="editPersonalBtn">
                     <i class="bi bi-pencil"></i> Edit
                   </button>
+                  <% } %>
                 </div>
                 <div class="card-body" id="personalInfo">
                   <form id="personalEditForm" action="<%= request.getContextPath() %>/profile" method="POST">
                     <input type="hidden" name="action" value="personal" />
-                    <input type="hidden" name="userId" value="<%= user.getUserId() %>" />
+                    <input type="hidden" name="userId" value="<%= viewedUser.getUserId() %>" />
                     <div class="row">
                       <div class="col-md-6">
                         <div class="mb-3">
                           <label class="form-label fw-bold text-muted">Full Name</label>
-                          <input type="text" class="form-control" name="fullName" value="<%= user.getFirstName() %> <%= user.getLastName() %>" disabled readonly />
+                          <input type="text" class="form-control" name="fullName" value="<%= viewedUser.getFirstName() %> <%= viewedUser.getLastName() %>" disabled readonly />
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="mb-3">
                           <label class="form-label fw-bold text-muted">Email Address</label>
-                          <input type="email" class="form-control" name="email" value="<%= user.getEmailAddress() %>" disabled readonly />
+                          <input type="email" class="form-control" name="email" value="<%= viewedUser.getEmailAddress() %>" disabled readonly />
                         </div>
                       </div>
                     </div>
@@ -69,7 +73,7 @@
                       <div class="col-md-6">
                         <div class="mb-3">
                           <label class="form-label fw-bold text-muted">User ID</label>
-                          <input type="text" class="form-control" name="userId" value="<%= user.getUserId() %>" disabled readonly />
+                          <input type="text" class="form-control" name="userId" value="<%= viewedUser.getUserId() %>" disabled readonly />
                         </div>
                       </div>
                       <div class="col-md-6">
@@ -77,7 +81,7 @@
                           <label class="form-label fw-bold text-muted">Role</label>
                           <p class="form-control-plaintext fs-5">
                             <span class="badge bg-primary fs-6">
-                              <%= user.getRole() %>
+                              <%= viewedUser.getRole() %>
                             </span>
                           </p>
                         </div>
@@ -97,13 +101,15 @@
                         </div>
                       </div>
                     </div>
+                    <% if (!isAdminViewingOther) { %>
                     <button type="submit" class="btn btn-primary" id="savePersonalBtn" style="display:none;">Save</button>
+                    <% } %>
                   </form>
                 </div>
               </div>
 
               <!-- Role-specific information -->
-              <% if (user.isDoctor()) { %>
+              <% if (user.isDoctor() && !isAdminViewingOther) { %>
                 <div class="card mt-4">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
@@ -150,7 +156,7 @@
                     <% } %>
                   </div>
                 </div>
-              <% } else if (user.isPatient()) { %>
+              <% } else if (user.isPatient() && !isAdminViewingOther) { %>
                 <div class="card mt-4">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="card-title mb-0">
@@ -228,6 +234,7 @@
             </div>
 
             <div class="col-md-4">
+              <% if (!isAdminViewingOther) { %>
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-title mb-0">
@@ -244,6 +251,7 @@
                   </div>
                 </div>
               </div>
+              <% } %>
             </div>
           </div>
         </div>
