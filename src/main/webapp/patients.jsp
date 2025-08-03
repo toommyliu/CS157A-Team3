@@ -328,6 +328,7 @@
                                 <tr>
                                   <th>File Name</th>
                                   <th>Type</th>
+                                  <th>Description</th>
                                   <th>Upload Date</th>
                                   <th>Actions</th>
                                 </tr>
@@ -343,6 +344,13 @@
                                       <span class="badge bg-<%= result.isPdf() ? "danger" : "info" %>">
                                         <%= result.getFileType().toUpperCase() %>
                                       </span>
+                                    </td>
+                                    <td>
+                                      <% if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) { %>
+                                        <%= result.getDescription() %>
+                                      <% } else { %>
+                                        <span class="text-muted">No description</span>
+                                      <% } %>
                                     </td>
                                     <td><%= result.getUploadDate() %></td>
                                     <td>
