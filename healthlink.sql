@@ -27,7 +27,7 @@ CREATE TABLE `assigned_to` (
   `patient_id` int NOT NULL,
   `doctor_id` int NOT NULL,
   PRIMARY KEY (`assigned_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `assigned_to` (
 
 LOCK TABLES `assigned_to` WRITE;
 /*!40000 ALTER TABLE `assigned_to` DISABLE KEYS */;
-INSERT INTO `assigned_to` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10),(11,10,9),(12,10,42);
+INSERT INTO `assigned_to` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10),(11,10,9),(12,10,42),(13,10,11);
 /*!40000 ALTER TABLE `assigned_to` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +116,7 @@ CREATE TABLE `medication_log` (
   KEY `patient_id_fk` (`patient_id`),
   CONSTRAINT `medication_id_fk` FOREIGN KEY (`medication_id`) REFERENCES `medication` (`medication_id`),
   CONSTRAINT `patient_id_fk` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +125,7 @@ CREATE TABLE `medication_log` (
 
 LOCK TABLES `medication_log` WRITE;
 /*!40000 ALTER TABLE `medication_log` DISABLE KEYS */;
-INSERT INTO `medication_log` VALUES (1,1,10,'2025-07-07 16:00:00','10mg','2025-07-07 07:00:00','Taken as prescribed.'),(2,2,10,'2025-07-07 15:30:00','500mg','2025-07-07 07:00:00','Taken with breakfast.'),(3,3,10,'2025-07-07 04:00:00','20mg','2025-07-06 07:00:00','Taken before bed.'),(4,4,10,'2025-07-07 17:00:00','250mg','2025-07-07 07:00:00','Completed full course.'),(5,5,10,'2025-07-07 14:00:00','75mcg','2025-07-07 07:00:00','Taken on an empty stomach.'),(6,6,10,'2025-07-07 15:00:00','20mg','2025-07-07 07:00:00','Taken before first meal.'),(7,7,10,'2025-07-07 16:30:00','50mg','2025-07-07 07:00:00','No side effects reported.'),(8,8,10,'2025-07-08 01:00:00','5mg','2025-07-07 07:00:00','INR check scheduled next week.'),(9,9,10,'2025-07-07 21:15:00','2 puffs','2025-07-07 07:00:00','Used during mild exertion.'),(10,10,10,'2025-07-07 15:45:00','25mg','2025-07-07 07:00:00','Reduced swelling.');
+INSERT INTO `medication_log` VALUES (1,1,10,'2025-07-07 16:00:00','10mg','2025-07-07 07:00:00','Taken as prescribed.'),(2,2,10,'2025-07-07 15:30:00','500mg','2025-07-07 07:00:00','Taken with breakfast.'),(3,3,10,'2025-07-07 04:00:00','20mg','2025-07-06 07:00:00','Taken before bed.'),(4,4,10,'2025-07-07 17:00:00','250mg','2025-07-07 07:00:00','Completed full course.'),(5,5,10,'2025-07-07 14:00:00','75mcg','2025-07-07 07:00:00','Taken on an empty stomach.'),(6,6,10,'2025-07-07 15:00:00','20mg','2025-07-07 07:00:00','Taken before first meal.'),(7,7,10,'2025-07-07 16:30:00','50mg','2025-07-07 07:00:00','No side effects reported.'),(8,8,10,'2025-07-08 01:00:00','5mg','2025-07-07 07:00:00','INR check scheduled next week.'),(9,9,10,'2025-07-07 21:15:00','2 puffs','2025-07-07 07:00:00','Used during mild exertion.'),(10,10,10,'2025-07-07 15:45:00','25mg','2025-07-07 07:00:00','Reduced swelling.'),(11,10,10,'2025-08-03 05:21:50','10mg','2025-08-03 05:21:52',NULL),(12,10,10,'2025-07-30 22:13:37','25mg','2025-08-03 05:22:50',NULL),(13,10,10,'2025-08-03 06:14:24','1mg','2025-08-03 06:14:27',NULL),(14,10,10,'2025-08-03 06:15:22','1mg','2025-08-03 06:15:24',NULL),(15,10,10,'2025-08-03 06:15:22','1mg','2025-08-03 06:15:36',NULL),(16,10,10,'2025-08-03 06:17:22','1mg','2025-08-03 06:17:25',NULL),(17,10,10,'2025-08-03 06:17:38','1mg','2025-08-03 06:17:41',NULL),(18,10,10,'2025-08-03 06:18:23','1mg','2025-08-03 06:18:27',NULL),(19,10,10,'2025-08-03 06:29:38','25mg','2025-08-03 06:29:42',NULL),(20,10,10,'2025-08-03 06:31:14','1mg','2025-08-03 06:31:18',NULL),(21,10,10,'2025-08-03 06:31:20','10mg','2025-08-03 06:31:22',NULL),(22,10,10,'2025-08-03 06:31:37','1mg','2025-08-03 06:31:39',NULL);
 /*!40000 ALTER TABLE `medication_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,13 +137,13 @@ DROP TABLE IF EXISTS `message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `message` (
-  `message_id` int NOT NULL,
+  `message_id` int NOT NULL AUTO_INCREMENT,
   `sender_id` int DEFAULT NULL,
   `receiver_id` int DEFAULT NULL,
   `content` varchar(256) DEFAULT NULL,
   `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +227,7 @@ CREATE TABLE `patient` (
   PRIMARY KEY (`patient_id`),
   KEY `fk_user_id` (`user_id`),
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +236,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,'1990-05-15','(408) 555-1234','123 Main St, San Jose, CA 95112','Jane Liu','(408) 555-1235',2),(2,'1985-11-22','(408) 555-2345','456 Oak Ave, Santa Clara, CA 95050','Ali Hasham','(408) 555-2346',3),(3,'1992-07-01','(408) 555-3456','789 Pine Ln, Milpitas, CA 95035','Omar Hasan','(408) 555-3457',4),(4,'1978-03-20','(408) 555-4567','101 Elm Rd, Sunnyvale, CA 94087','John Madden','(408) 555-4568',5),(5,'1965-09-10','(408) 555-5678','202 Birch Ct, Cupertino, CA 95014','Robert Sanders','(408) 555-5679',6),(6,'1995-01-25','(408) 555-6789','303 Cedar Dr, Campbell, CA 95008','Maria Shaffer','(408) 555-6790',7),(7,'1980-04-03','(408) 555-7890','404 Dogwood Pl, Los Gatos, CA 95032','Sarah Stubbs','(408) 555-7891',8),(8,'1972-12-18','(408) 555-8901','505 Fir St, Saratoga, CA 95070','Lisa Louis','(408) 555-8902',9),(9,'2000-06-08','(408) 555-9012','606 Spruce Way, Mountain View, CA 94043','Robert Smith','(408) 555-9013',10),(10,'1975-08-01','(408) 555-1111','808 Maple Ave, San Jose, CA 95123','Susan Davis','(408) 555-1112',43),(15,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45),(16,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45);
+INSERT INTO `patient` VALUES (1,'1990-05-15','(408) 555-1234','123 Main St, San Jose, CA 95112','Jane Liu','(408) 555-1235',2),(2,'1985-11-22','(408) 555-2345','456 Oak Ave, Santa Clara, CA 95050','Ali Hasham','(408) 555-2346',3),(3,'1992-07-01','(408) 555-3456','789 Pine Ln, Milpitas, CA 95035','Omar Hasan','(408) 555-3457',4),(4,'1978-03-20','(408) 555-4567','101 Elm Rd, Sunnyvale, CA 94087','John Madden','(408) 555-4568',5),(5,'1965-09-10','(408) 555-5678','202 Birch Ct, Cupertino, CA 95014','Robert Sanders','(408) 555-5679',6),(6,'1995-01-25','(408) 555-6789','303 Cedar Dr, Campbell, CA 95008','Maria Shaffer','(408) 555-6790',7),(7,'1980-04-03','(408) 555-7890','404 Dogwood Pl, Los Gatos, CA 95032','Sarah Stubbs','(408) 555-7891',8),(8,'1972-12-18','(408) 555-8901','505 Fir St, Saratoga, CA 95070','Lisa Louis','(408) 555-8902',9),(9,'2000-06-08','(408) 555-9012','606 Spruce Way, Mountain View, CA 94043','Robert Smith','(408) 555-9013',10),(10,'1975-08-01','(408) 555-1111','808 Maple Ave, San Jose, CA 95123','Susan Davis','(408) 555-1112',43),(15,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45),(16,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45),(17,'2003-10-05','(408) 456-2323','(408) 456-2323','(408) 456-2323','(408) 456-2323',54);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +288,7 @@ CREATE TABLE `test_results` (
   KEY `fk_test_results_doctor` (`doctor_id`),
   CONSTRAINT `fk_test_results_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_test_results_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,7 +317,7 @@ CREATE TABLE `user` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -326,7 +326,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin@admin.com','$2a$12$0VcLk7uyA97dflWvdKDoCeyj6T1oIqJomz3k3pGHsYeeo8hIG8DkC','admin','admin','admin','2025-07-08 07:54:32','2025-07-08 07:54:32'),(2,'tommy.liu@sjsu.edu','$2b$12$wA4PrHZ5tcVHZJAxHckLj.e5cvkFL5qDDBtHY1','Tommy','Liu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(3,'fnu.hasham@sjsu.edu','$2b$12$SLjahlduI49oXt6Piah8Q.WD/ZUwsEicYHaQX/','Fnu','Hasham','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(4,'hiba.hasan@sjsu.edu','$2b$12$Xa1FKaAmoKddgOrgIelCEONF5WhU03UsKNJHqP','Hiba','Hasan','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(5,'Ching-seh.Wu@sjsu.edu','$2b$12$PN4AXNSW4p6wDr2Idv6hwevd0wbIgPmgz5/WVo','Mike','Wu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(6,'heidi-madden39@gmail.com','$2b$12$MaDAgKIzg38M.RORvTU94eQnD70XKUFjs8XtS3','Madden','Heidi','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(7,'sanders-deborah96@gmail.com','$2b$12$VqpDO3ZMexdXrQBzK3tWo.vFo.k7SQ3WtfxpLA','Deborah','Sanders','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(8,'shaffer-seamus6@gmail.com','$2b$12$CDFdd2XVNVaHSnxvKHrhaeuYmHXWnfnydbEtmG','Shaffer','Seamus','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(9,'hamilton-stubbs65@gmail.com','$2b$12$ZyXqQl3gAju7SVcvkmq.Hur1y6HJi5DNQDSPiJ','Hamilton','Stubbs','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(10,'louis_kade16@gmail.com','$2a$12$lyyE4gkgByBPQA8GI00Fge6H/7wTYzFz4HTaxMpAeUusnfncalrru','Kade','Louis','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(11,'dr.michael.chen@gmail.com','$2b$12$5BgU5wZHN9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Michael','Chen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(12,'dr.sarah.williams@gmail.com','$2b$12$QhOeX1J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Sarah','Williams','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(13,'dr.david.patel@gmail.com','$2b$12$5BgU5wDp3fFtNc4gKq1SvLbYm','David','Patel','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(14,'dr.emily.nguyen@gmail.com','$2b$12$51J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Emily','Nguyen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(15,'dr.james.rodriguez@gmail.com','$2b$12k8mR2dDp3fFtNc4gKq1SvLbYm','James','Rodriguez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(16,'dr.jessica.kim@gmail.com','$2b$12$5BJ9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Jessica','Kim','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(17,'dr.robert.wilson@gmail.com','$2b$12$5BgU2dDp3fFtNc4gKq1SvLbYm','Robert','Wilson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(18,'dr.olivia.martinez@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYw','Olivia','Martinez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(19,'dr.daniel.thompson@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOe','Daniel','Thompson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(20,'dr.sophia.garcia@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOeXm','Sophia','Garcia','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(21,'johnny-smith@gmail.com','$2b$12$5BgU5wZHYwWQhOeXm','Johnny','Smith','patient','2025-07-08 08:17:55','2025-07-08 08:17:55'),(42,'doctor@doctor.com','$2a$12$ncILeSlK1fzxp4pl2mT9Fe2hwEasOOiqWOrjSuUGca0IaB8EmrLfm','tommy','liu','doctor','2025-07-21 00:00:00','2025-07-21 00:00:00'),(43,'patient@patient.com','$2a$12$lyyE4gkgByBPQA8GI00Fge6H/7wTYzFz4HTaxMpAeUusnfncalrru','tommy','liu','patient','2025-07-21 00:00:00','2025-07-21 00:00:00'),(45,'test@test','$2a$12$sJkLI6uBJOseBXElJDCrl.V1kM.44Pv5UjV4vGaVjSBCaClnOPkXS','test','test','patient','2025-07-22 00:00:00','2025-07-22 00:00:00'),(46,'admin@admin.com','$2a$12$0VcLk7uyA97dflWvdKDoCeyj6T1oIqJomz3k3pGHsYeeo8hIG8DkC','admin','admin','patient','2025-07-29 00:00:00','2025-07-29 00:00:00'),(53,'Email@email.com','$2a$12$eU0Ddd7rIuz3QFfBfb2CMO4/8bagyOx/WKjY..0dPK.lPTm94ETc2','First','Name','doctor','2025-07-31 00:00:00','2025-07-31 00:00:00');
+INSERT INTO `user` VALUES (1,'admin@admin.com','$2a$12$0VcLk7uyA97dflWvdKDoCeyj6T1oIqJomz3k3pGHsYeeo8hIG8DkC','admin','admin','admin','2025-07-08 07:54:32','2025-07-08 07:54:32'),(2,'tommy.liu@sjsu.edu','$2b$12$wA4PrHZ5tcVHZJAxHckLj.e5cvkFL5qDDBtHY1','Tommy','Liu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(3,'fnu.hasham@sjsu.edu','$2b$12$SLjahlduI49oXt6Piah8Q.WD/ZUwsEicYHaQX/','Fnu','Hasham','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(4,'hiba.hasan@sjsu.edu','$2b$12$Xa1FKaAmoKddgOrgIelCEONF5WhU03UsKNJHqP','Hiba','Hasan','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(5,'Ching-seh.Wu@sjsu.edu','$2b$12$PN4AXNSW4p6wDr2Idv6hwevd0wbIgPmgz5/WVo','Mike','Wu','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(6,'heidi-madden39@gmail.com','$2b$12$MaDAgKIzg38M.RORvTU94eQnD70XKUFjs8XtS3','Madden','Heidi','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(7,'sanders-deborah96@gmail.com','$2b$12$VqpDO3ZMexdXrQBzK3tWo.vFo.k7SQ3WtfxpLA','Deborah','Sanders','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(8,'shaffer-seamus6@gmail.com','$2b$12$CDFdd2XVNVaHSnxvKHrhaeuYmHXWnfnydbEtmG','Shaffer','Seamus','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(9,'hamilton-stubbs65@gmail.com','$2b$12$ZyXqQl3gAju7SVcvkmq.Hur1y6HJi5DNQDSPiJ','Hamilton','Stubbs','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(10,'louis_kade16@gmail.com','$2a$12$lyyE4gkgByBPQA8GI00Fge6H/7wTYzFz4HTaxMpAeUusnfncalrru','Kade','Louis','patient','2025-07-08 07:54:32','2025-07-08 07:54:32'),(11,'dr.michael.chen@gmail.com','$2b$12$5BgU5wZHN9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Michael','Chen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(12,'dr.sarah.williams@gmail.com','$2b$12$QhOeX1J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Sarah','Williams','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(13,'dr.david.patel@gmail.com','$2b$12$5BgU5wDp3fFtNc4gKq1SvLbYm','David','Patel','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(14,'dr.emily.nguyen@gmail.com','$2b$12$51J9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Emily','Nguyen','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(15,'dr.james.rodriguez@gmail.com','$2b$12k8mR2dDp3fFtNc4gKq1SvLbYm','James','Rodriguez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(16,'dr.jessica.kim@gmail.com','$2b$12$5BJ9vLk8mR2dDp3fFtNc4gKq1SvLbYm','Jessica','Kim','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(17,'dr.robert.wilson@gmail.com','$2b$12$5BgU2dDp3fFtNc4gKq1SvLbYm','Robert','Wilson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(18,'dr.olivia.martinez@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYw','Olivia','Martinez','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(19,'dr.daniel.thompson@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOe','Daniel','Thompson','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(20,'dr.sophia.garcia@gmail.com','$2b$12$5BgU5wZHN6VZQ7zYwWQhOeXm','Sophia','Garcia','doctor','2025-07-08 08:15:58','2025-07-08 08:15:58'),(21,'johnny-smith@gmail.com','$2b$12$5BgU5wZHYwWQhOeXm','Johnny','Smith','patient','2025-07-08 08:17:55','2025-07-08 08:17:55'),(42,'doctor@doctor.com','$2a$12$ncILeSlK1fzxp4pl2mT9Fe2hwEasOOiqWOrjSuUGca0IaB8EmrLfm','tommy','liu','doctor','2025-07-21 00:00:00','2025-07-21 00:00:00'),(43,'patient@patient.com','$2a$12$lyyE4gkgByBPQA8GI00Fge6H/7wTYzFz4HTaxMpAeUusnfncalrru','tommy','liu','patient','2025-07-21 00:00:00','2025-07-21 00:00:00'),(45,'test@test','$2a$12$sJkLI6uBJOseBXElJDCrl.V1kM.44Pv5UjV4vGaVjSBCaClnOPkXS','test','test','patient','2025-07-22 00:00:00','2025-07-22 00:00:00'),(46,'admin@admin.com','$2a$12$0VcLk7uyA97dflWvdKDoCeyj6T1oIqJomz3k3pGHsYeeo8hIG8DkC','admin','admin','patient','2025-07-29 00:00:00','2025-07-29 00:00:00'),(53,'Email@email.com','$2a$12$eU0Ddd7rIuz3QFfBfb2CMO4/8bagyOx/WKjY..0dPK.lPTm94ETc2','First','Name','doctor','2025-07-31 00:00:00','2025-07-31 00:00:00'),(54,'test@test.com','$2a$12$QPU8aeuk2UfNWdNuG01vweND16cuwGUHPecF6u6kfq368k5GxfLBy','test','test','patient','2025-08-02 00:00:00','2025-08-02 00:00:00');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -339,4 +339,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-02 11:07:31
+-- Dump completed on 2025-08-02 17:20:12
