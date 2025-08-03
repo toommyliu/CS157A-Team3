@@ -412,7 +412,6 @@
           }
         });
 
-
         document.querySelector('#editPersonalBtn')?.addEventListener('click', () => toggleEdit('personal'));
         document.querySelector('#editPatientBtn')?.addEventListener('click', () => toggleEdit('patient'));
         document.querySelector('#editDoctorBtn')?.addEventListener('click', () => toggleEdit('doctor'));

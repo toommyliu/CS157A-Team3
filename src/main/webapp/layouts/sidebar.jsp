@@ -82,6 +82,13 @@
                     Doctors
                 </a>
             </li>
+            <li>
+                <a href="<%= contextPath %>/admin/system-log"
+                   class="nav-link text-white <%= currentPath.contains("/admin/system-log") ? "active" : "" %>">
+                    <i class="bi bi-clipboard2-data me-2"></i>
+                    System Logs
+                </a>
+            </li>
         <% } %>
     </ul>
     <% if (user != null) { %>
