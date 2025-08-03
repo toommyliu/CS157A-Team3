@@ -8,6 +8,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class JsonResponseUtil {
+  public static JsonObject createSuccessResponse(String message) {
+    JsonObject json = new JsonObject();
+    json.addProperty("success", true);
+
+    if (message != null && !message.isEmpty()) {
+      json.addProperty("message", message);
+    }
+
+    return json;
+  }
+
+  public static JsonObject createErrorResponse(String message) {
+    JsonObject json = new JsonObject();
+    json.addProperty("success", false);
+    json.addProperty("error", message);
+    return json;
+  }
+
   public static void sendJsonResponse(HttpServletResponse response, JsonObject data) throws IOException {
     response.setContentType("application/json");
     try (PrintWriter out = response.getWriter()) {
