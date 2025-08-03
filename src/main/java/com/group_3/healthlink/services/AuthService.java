@@ -70,6 +70,9 @@ public class AuthService {
                     int userId = generatedKeys.getInt(1);
                     generatedKeys.close();
                     stmt.close();
+
+                    SystemLogService.createNew(userId, "User Registration", "New user registered with email address: " + emailAddress);
+
                     return userId;
                 } else {
                     throw new SQLException("Inserting user failed (no ID obtained).");

@@ -24,8 +24,16 @@
       <jsp:include page="../layouts/sidebar.jsp" />
 
       <div class="main-content">
-        <% List<SystemLog> logs = (List<SystemLog>) request.getAttribute("systemLogs"); %>
         <h2 class="fw-semibold h2">System Log</h2>
+        <form method="get" class="mb-3 d-flex align-items-center" style="gap: 0.5rem;">
+          <label for="userId" class="form-label mb-0">Filter by User ID:</label>
+          <input type="text" id="userId" name="userId" class="form-control form-control-sm" style="max-width: 150px;" value="<%= request.getParameter("userId") != null ? request.getParameter("userId") : "" %>" />
+          <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+          <% if (request.getAttribute("selectedUserId") != null) { %>
+            <a href="system-log" class="btn btn-secondary btn-sm">Clear</a>
+          <% } %>
+        </form>
+
         <table class="table table-striped">
           <thead>
             <tr>
@@ -37,8 +45,9 @@
             </tr>
           </thead>
           <tbody>
-            <% if (logs != null && !logs.isEmpty()) { %>
-              <% for (SystemLog log : logs) { %>
+            <% List<SystemLog> systemLogs = (List<SystemLog>) request.getAttribute("systemLogs"); %>
+            <% if (systemLogs != null && !systemLogs.isEmpty()) {
+              for (SystemLog log : systemLogs) { %>
                 <tr>
                   <td>
                     <%= log.getLogId() %>

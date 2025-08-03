@@ -26,7 +26,20 @@ public class SystemLogServlet extends HttpServlet {
       return;
     }
 
-    List<SystemLog> systemLogs = SystemLogService.getAll();
+    String userIdParam = request.getParameter("userId");
+    List<SystemLog> systemLogs;
+    
+    if (userIdParam != null && !userIdParam.trim().isEmpty()) {
+      try {
+        int userId = Integer.parseInt(userIdParam.trim());
+        systemLogs = SystemLogService.getByUserId(userId);
+        request.setAttribute("selectedUserId", userId);
+      } catch (NumberFormatException e) {
+        systemLogs = SystemLogService.getAll();
+      }
+    } else {
+      systemLogs = SystemLogService.getAll();
+    }
     request.setAttribute("systemLogs", systemLogs);
 
     request.getRequestDispatcher("/admin/system-log.jsp").forward(request, response);
