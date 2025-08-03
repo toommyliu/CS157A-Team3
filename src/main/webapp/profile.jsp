@@ -192,8 +192,20 @@
                           </div>
                           <div class="col-md-6">
                             <div class="mb-3">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="mb-3">
                               <label for="emergencyContactInput" class="form-label fw-bold text-muted">Emergency Contact</label>
                               <input type="text" class="form-control" id="emergencyContactInput" name="emergencyContact" value="<%= patient.getEmergencyContactName() != null ? patient.getEmergencyContactName() : "" %>" disabled readonly />
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="emergencyContactPhoneInput" class="form-label fw-bold text-muted">Emergency Contact Phone</label>
+                              <input type="text" class="form-control" id="emergencyContactPhoneInput" name="emergencyContactPhone" value="<%= patient.getEmergencyContactPhoneNumber() != null ? patient.getEmergencyContactPhoneNumber() : "" %>" disabled readonly pattern="^\(\d{3}\) \d{3}-\d{4}$" placeholder="(408) 456-7890" />
                             </div>
                           </div>
                         </div>
