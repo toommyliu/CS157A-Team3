@@ -1,6 +1,9 @@
 package com.group_3.healthlink.servlets;
 
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.services.AuthService;
+import com.group_3.healthlink.services.DoctorService;
+import com.group_3.healthlink.services.PatientService;
 import com.group_3.healthlink.util.JsonResponseUtil;
 
 import jakarta.servlet.ServletException;
@@ -54,17 +57,31 @@ public class ProfileServlet extends HttpServlet {
         System.out.println("action = " + action);
 
         if (action.equals("personal")) {
-            String userId = request.getParameter("userId");
+            String userIdStr = request.getParameter("userId");
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("email");
 
-            if (userId == null || userId.isEmpty()) {
+            if (userIdStr == null || userIdStr.isEmpty()) {
+                JsonResponseUtil.sendErrorResponse(response, "userId is required", 400);
+                return;
+            }
+
+            int userId;
+            try {
+                userId = Integer.parseInt(userIdStr);
+            } catch (NumberFormatException e) {
                 JsonResponseUtil.sendErrorResponse(response, "userId is required", 400);
                 return;
             }
 
             if (fullName == null || fullName.isEmpty()) {
                 JsonResponseUtil.sendErrorResponse(response, "fullName is required", 400);
+                return;
+            }
+
+            String[] parts = fullName.split(" ");
+            if (parts.length < 2) {
+                JsonResponseUtil.sendErrorResponse(response, "fullName must contain at least first and last name", 400);
                 return;
             }
 
@@ -76,12 +93,35 @@ public class ProfileServlet extends HttpServlet {
             System.out.println("userId = " + userId);
             System.out.println("fullName = " + fullName);
             System.out.println("email = " + email);
+
+            String firstName = parts[0];
+            String lastName = parts[1];
+
+            boolean success = AuthService.updateUserProfile(userId, firstName, lastName, email);
+            JsonResponseUtil.sendJsonResponse(response, success ?
+                JsonResponseUtil.createSuccessResponse("Profile updated successfully") :
+                JsonResponseUtil.createErrorResponse("Failed to update profile")
+            );
         } else if (action.equals("patient")) {
-            String patientId = request.getParameter("patientId");
+            String patientIdStr = request.getParameter("patientId");
             String dateOfBirth = request.getParameter("dob");
             String phoneNumber = request.getParameter("phone");
-            String emergencyContactName = request.getParameter("emergencyContact");
             String address = request.getParameter("address");
+            String emergencyContactName = request.getParameter("emergencyContact");
+            String emergencyContactPhoneNumber = request.getParameter("emergencyContactPhone");
+
+            if (patientIdStr == null || patientIdStr.isEmpty()) {
+                JsonResponseUtil.sendErrorResponse(response, "patientId is required", 400);
+                return;
+            }
+
+            int patientId;
+            try {
+                patientId = Integer.parseInt(patientIdStr);
+            } catch (NumberFormatException e) {
+                JsonResponseUtil.sendErrorResponse(response, "patientId is required", 400);
+                return;
+            }
 
             if (dateOfBirth == null || dateOfBirth.isEmpty()) {
                 JsonResponseUtil.sendErrorResponse(response, "dob is required", 400);
@@ -93,27 +133,51 @@ public class ProfileServlet extends HttpServlet {
                 return;
             }
 
-            if (emergencyContactName == null || emergencyContactName.isEmpty()) {
-                JsonResponseUtil.sendErrorResponse(response, "emergencyContact is required", 400);
-                return;
-            }
-
             if (address == null || address.isEmpty()) {
                 JsonResponseUtil.sendErrorResponse(response, "address is required", 400);
                 return;
             }
 
-            System.out.println("patientId = " + patientId);
+            if (emergencyContactName == null || emergencyContactName.isEmpty()) {
+                JsonResponseUtil.sendErrorResponse(response, "emergencyContact is required", 400);
+                return;
+            }
+
+            if (emergencyContactPhoneNumber == null || emergencyContactPhoneNumber.isEmpty()) {
+                JsonResponseUtil.sendErrorResponse(response, "emergencyContactPhone is required", 400);
+                return;
+            }
+
+            System.out.println("patientId = " + patientIdStr);
             System.out.println("dateOfBirth = " + dateOfBirth);
             System.out.println("phoneNumber = " + phoneNumber);
-            System.out.println("emergencyContactName = " + emergencyContactName);
             System.out.println("address = " + address);
+            System.out.println("emergencyContactName = " + emergencyContactName);
+            System.out.println("emergencyContactPhoneNumber = " + emergencyContactPhoneNumber);
+
+            boolean success = PatientService.updatePatient(
+                    patientId, dateOfBirth, phoneNumber, address,
+                    emergencyContactName, emergencyContactPhoneNumber
+            );
+
+            JsonResponseUtil.sendJsonResponse(response, success ?
+                JsonResponseUtil.createSuccessResponse("Patient profile updated successfully") :
+                JsonResponseUtil.createErrorResponse("Failed to update patient profile")
+            );
         } else if (action.equals("doctor")) {
-            String doctorId = request.getParameter("doctorId");
+            String doctorIdStr = request.getParameter("doctorId");
             String department = request.getParameter("department");
 
-            if (doctorId == null || doctorId.isEmpty()) {
+            if (doctorIdStr == null || doctorIdStr.isEmpty()) {
                 JsonResponseUtil.sendErrorResponse(response, "doctorId is required", 400);
+                return;
+            }
+
+            int doctorId;
+            try {
+                doctorId = Integer.parseInt(doctorIdStr);
+            } catch (NumberFormatException e) {
+                JsonResponseUtil.sendErrorResponse(response, "doctorId must be a valid number", 400);
                 return;
             }
 
@@ -122,8 +186,14 @@ public class ProfileServlet extends HttpServlet {
                 return;
             }
 
-            System.out.println("doctorId = " + doctorId);
+            System.out.println("doctorId = " + doctorIdStr);
             System.out.println("department = " + department);
+
+            boolean success = DoctorService.updateDoctor(doctorId, department);
+            JsonResponseUtil.sendJsonResponse(response, success ?
+                JsonResponseUtil.createSuccessResponse("Doctor profile updated successfully") :
+                JsonResponseUtil.createErrorResponse("Failed to update doctor profile")
+            );
         }
 
         doGet(request, response);
