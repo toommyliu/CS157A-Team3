@@ -3,6 +3,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="com.group_3.healthlink.Medication" %>
 <%@ page import="com.group_3.healthlink.MedicationLog" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <html>
 <head>
@@ -80,11 +81,21 @@
                     if (med == null) continue;
                 %>
                   <tr>
-                    <td><%= log.getTakenAt() %></td>
-                    <td><%= med != null ? med.getName() : "Unknown" %></td>
-                    <td><%= log.getDosageTaken() %></td>
-                    <td><%= log.getNote() != null ? log.getNote() : "" %></td>
-                    <td><%= doctorNames != null && med != null ? doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
+                    <td>
+                      <% SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a"); %>
+                      <%= sdf.format(log.getTakenAt()) %>
+                    </td>
+                    <td>
+                      <%= med != null ? med.getName() : "Unknown" %>
+                    <td>
+                      <%= log.getDosageTaken() %>
+                    </td>
+                    <td>
+                      <%= log.getNote() != null ? log.getNote() : "" %>
+                    </td>
+                    <td>
+                      <%= doctorNames != null && med != null ? doctorNames.get(med.getDoctorId()) : "Unknown" %>
+                    </td>
                   </tr>
                 <% } %>
               </tbody>
