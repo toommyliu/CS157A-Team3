@@ -63,7 +63,7 @@ CREATE TABLE `doctor` (
 
 LOCK TABLES `doctor` WRITE;
 /*!40000 ALTER TABLE `doctor` DISABLE KEYS */;
-INSERT INTO `doctor` VALUES (1,'Cardiology',11),(2,'Dermatology',12),(3,'Endocrinology',13),(4,'Gastroenterology',14),(5,'Pediatrics',15),(6,'General Medicine',16),(7,'Oncology',17),(8,'Nephrology',18),(9,'Urology',19),(10,'Ophthalmology',20),(11,'ENT',42),(15,'Cardio',53);
+INSERT INTO `doctor` VALUES (1,'Cardiology',11),(2,'Dermatology',12),(3,'Endocrinology',13),(4,'Gastroenterology',14),(5,'Pediatrics',15),(6,'General Medicine',16),(7,'Oncology',17),(8,'Nephrology',18),(9,'Urology',19),(10,'Ophthalmology',20),(11,'General Medicine',42),(15,'Cardiology',53);
 /*!40000 ALTER TABLE `doctor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,7 +143,7 @@ CREATE TABLE `message` (
   `content` varchar(256) DEFAULT NULL,
   `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1,1,11,'Dr. Chen, I have a question about my medication dosage.','2025-07-08 09:00:00'),(2,11,1,'Hi Emily, please clarify your question. Which medication are you referring to?','2025-07-08 09:05:00'),(3,2,12,'Dr. Williams, my test results are available. Can we discuss them?','2025-07-08 09:10:00'),(4,13,3,'Fnu, your MRI results look good. No immediate concerns.','2025-07-08 09:15:00'),(5,4,14,'Dr. Nguyen, I need to reschedule my next appointment.','2025-07-08 09:20:00'),(6,15,5,'Mike, please ensure you complete your daily dosage of Levothyroxine.','2025-07-08 09:25:00'),(7,6,7,'Hi Deborah, how are you feeling today?','2025-07-08 09:30:00'),(8,16,17,'Dr. Wilson, patient 6 needs a follow-up on their CT scan.','2025-07-08 09:35:00'),(9,9,19,'Dr. Thompson, my asthma symptoms have improved significantly.','2025-07-08 09:40:00'),(10,20,10,'James, remember your next colonoscopy is due in 5 years.','2025-07-08 09:45:00');
+INSERT INTO `message` VALUES (1,1,11,'Dr. Chen, I have a question about my medication dosage.','2025-07-08 09:00:00'),(2,11,1,'Hi Emily, please clarify your question. Which medication are you referring to?','2025-07-08 09:05:00'),(3,2,12,'Dr. Williams, my test results are available. Can we discuss them?','2025-07-08 09:10:00'),(4,13,3,'Fnu, your MRI results look good. No immediate concerns.','2025-07-08 09:15:00'),(5,4,14,'Dr. Nguyen, I need to reschedule my next appointment.','2025-07-08 09:20:00'),(6,15,5,'Mike, please ensure you complete your daily dosage of Levothyroxine.','2025-07-08 09:25:00'),(7,6,7,'Hi Deborah, how are you feeling today?','2025-07-08 09:30:00'),(8,16,17,'Dr. Wilson, patient 6 needs a follow-up on their CT scan.','2025-07-08 09:35:00'),(9,9,19,'Dr. Thompson, my asthma symptoms have improved significantly.','2025-07-08 09:40:00'),(10,20,10,'James, remember your next colonoscopy is due in 5 years.','2025-07-08 09:45:00'),(11,42,43,'hello','2025-08-03 00:26:25'),(12,43,42,'i am here.','2025-08-03 00:26:42');
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +236,7 @@ CREATE TABLE `patient` (
 
 LOCK TABLES `patient` WRITE;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
-INSERT INTO `patient` VALUES (1,'1990-05-15','(408) 555-1234','123 Main St, San Jose, CA 95112','Jane Liu','(408) 555-1235',2),(2,'1985-11-22','(408) 555-2345','456 Oak Ave, Santa Clara, CA 95050','Ali Hasham','(408) 555-2346',3),(3,'1992-07-01','(408) 555-3456','789 Pine Ln, Milpitas, CA 95035','Omar Hasan','(408) 555-3457',4),(4,'1978-03-20','(408) 555-4567','101 Elm Rd, Sunnyvale, CA 94087','John Madden','(408) 555-4568',5),(5,'1965-09-10','(408) 555-5678','202 Birch Ct, Cupertino, CA 95014','Robert Sanders','(408) 555-5679',6),(6,'1995-01-25','(408) 555-6789','303 Cedar Dr, Campbell, CA 95008','Maria Shaffer','(408) 555-6790',7),(7,'1980-04-03','(408) 555-7890','404 Dogwood Pl, Los Gatos, CA 95032','Sarah Stubbs','(408) 555-7891',8),(8,'1972-12-18','(408) 555-8901','505 Fir St, Saratoga, CA 95070','Lisa Louis','(408) 555-8902',9),(9,'2000-06-08','(408) 555-9012','606 Spruce Way, Mountain View, CA 94043','Robert Smith','(408) 555-9013',10),(10,'1975-08-01','(408) 555-1111','808 Maple Ave, San Jose, CA 95123','Susan Davis','(408) 555-1112',43),(15,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45),(16,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45),(17,'2003-10-05','(408) 456-2323','(408) 456-2323','(408) 456-2323','(408) 456-2323',54);
+INSERT INTO `patient` VALUES (1,'1990-05-15','(408) 555-1234','123 Main St, San Jose, CA 95112','Jane Liu','(408) 555-1235',2),(2,'1985-11-22','(408) 555-2345','456 Oak Ave, Santa Clara, CA 95050','Ali Hasham','(408) 555-2346',3),(3,'1992-07-01','(408) 555-3456','789 Pine Ln, Milpitas, CA 95035','Omar Hasan','(408) 555-3457',4),(4,'1978-03-20','(408) 555-4567','101 Elm Rd, Sunnyvale, CA 94087','John Madden','(408) 555-4568',5),(5,'1965-09-10','(408) 555-5678','202 Birch Ct, Cupertino, CA 95014','Robert Sanders','(408) 555-5679',6),(6,'1995-01-25','(408) 555-6789','303 Cedar Dr, Campbell, CA 95008','Maria Shaffer','(408) 555-6790',7),(7,'1980-04-03','(408) 555-7890','404 Dogwood Pl, Los Gatos, CA 95032','Sarah Stubbs','(408) 555-7891',8),(8,'1972-12-18','(408) 555-8901','505 Fir St, Saratoga, CA 95070','Lisa Louis','(408) 555-8902',9),(9,'2000-06-08','(408) 555-9012','606 Spruce Way, Mountain View, CA 94043','Robert Smith','(408) 555-9013',10),(10,'2025-08-03','(408) 555-1234','808 Maple Ave, San Jose, CA 95123','Tommy Liu','(408) 555-1112',43),(15,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45),(16,'2003-10-05','(650) 878-7788','(650) 878-7788','(650) 878-7788','(650) 878-7788',45),(17,'2003-10-05','(408) 456-2323','(408) 456-2323','(408) 456-2323','(408) 456-2323',54);
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,13 +248,15 @@ DROP TABLE IF EXISTS `system_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `system_log` (
-  `log_id` int NOT NULL,
+  `log_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `action` varchar(45) DEFAULT NULL,
   `detail` varchar(128) DEFAULT NULL,
-  `timestamp` datetime DEFAULT NULL,
-  PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`log_id`),
+  KEY `system_log_user_user_id_fk` (`user_id`),
+  CONSTRAINT `system_log_user_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,7 +265,7 @@ CREATE TABLE `system_log` (
 
 LOCK TABLES `system_log` WRITE;
 /*!40000 ALTER TABLE `system_log` DISABLE KEYS */;
-INSERT INTO `system_log` VALUES (1,5,'User Login','User Tommy Liu logged in successfully.','2025-07-08 08:00:10'),(2,11,'Medication Prescribed','Dr. Michael Chen prescribed Lisinopril to Patient 1.','2025-07-08 08:05:22'),(3,1,'Profile Update','Patient Emily White updated their phone number.','2025-07-08 08:10:45'),(4,15,'Appointment Scheduled','Dr. James Rodriguez scheduled an appointment with Patient 5.','2025-07-08 08:15:30'),(5,2,'Medication Logged','Patient John Smith logged Metformin intake.','2025-07-08 08:20:15'),(6,18,'Data Access','Dr. Olivia Martinez accessed Patient 8 records.','2025-07-08 08:25:05'),(7,7,'Password Reset','Patient Sarah Stubbs initiated password reset.','2025-07-08 08:30:50'),(8,13,'System Alert','Low stock alert for Atorvastatin.','2025-07-08 08:35:10'),(9,9,'Feedback Submitted','Patient Robert Smith submitted feedback on app usability.','2025-07-08 08:40:00'),(10,20,'User Logout','Dr. Sophia Garcia logged out.','2025-07-08 08:45:20');
+INSERT INTO `system_log` VALUES (1,5,'User Login','User Tommy Liu logged in successfully.','2025-07-08 15:00:10'),(2,11,'Medication Prescribed','Dr. Michael Chen prescribed Lisinopril to Patient 1.','2025-07-08 15:05:22'),(3,1,'Profile Update','Patient Emily White updated their phone number.','2025-07-08 15:10:45'),(4,15,'Appointment Scheduled','Dr. James Rodriguez scheduled an appointment with Patient 5.','2025-07-08 15:15:30'),(5,2,'Medication Logged','Patient John Smith logged Metformin intake.','2025-07-08 15:20:15'),(6,18,'Data Access','Dr. Olivia Martinez accessed Patient 8 records.','2025-07-08 15:25:05'),(7,7,'Password Reset','Patient Sarah Stubbs initiated password reset.','2025-07-08 15:30:50'),(8,13,'System Alert','Low stock alert for Atorvastatin.','2025-07-08 15:35:10'),(9,9,'Feedback Submitted','Patient Robert Smith submitted feedback on app usability.','2025-07-08 15:40:00'),(10,20,'User Logout','Dr. Sophia Garcia logged out.','2025-07-08 15:45:20');
 /*!40000 ALTER TABLE `system_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,8 +288,8 @@ CREATE TABLE `test_results` (
   PRIMARY KEY (`result_id`),
   KEY `fk_test_results_patient` (`patient_id`),
   KEY `fk_test_results_doctor` (`doctor_id`),
-  CONSTRAINT `fk_test_results_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctor` (`doctor_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_test_results_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`) ON DELETE CASCADE
+  CONSTRAINT `fk_test_results_doctor` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`doctor_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_test_results_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -339,4 +341,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-02 17:20:12
+-- Dump completed on 2025-08-03 15:57:08
