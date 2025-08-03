@@ -48,7 +48,9 @@
                   </button>
                 </div>
                 <div class="card-body" id="personalInfo">
-                  <form id="personalEditForm">
+                  <form id="personalEditForm" action="<%= request.getContextPath() %>/profile" method="POST">
+                    <input type="hidden" name="action" value="personal" />
+                    <input type="hidden" name="userId" value="<%= user.getUserId() %>" />
                     <div class="row">
                       <div class="col-md-6">
                         <div class="mb-3">
@@ -114,7 +116,9 @@
                   </div>
                   <div class="card-body" id="doctorInfo">
                     <% if (doctor != null) { %>
-                      <form id="doctorEditForm">
+                      <form id="doctorEditForm" action="<%= request.getContextPath() %>/profile" method="POST">
+                        <input type="hidden" name="action" value="doctor" />
+                        <input type="hidden" name="doctorId" value="<%= doctor.getDoctorId() %>" />
                         <div class="row">
                           <div class="col-md-6">
                             <div class="mb-3">
@@ -159,7 +163,9 @@
                   </div>
                   <div class="card-body" id="patientInfo">
                     <% if (patient != null) { %>
-                      <form id="patientEditForm">
+                      <form id="patientEditForm" action="<%= request.getContextPath() %>/profile" method="POST">
+                        <input type="hidden" name="action" value="patient" />
+                        <input type="hidden" name="patientId" value="<%= patient.getPatientId() %>" />
                         <div class="row">
                           <div class="col-md-6">
                             <div class="mb-3">
@@ -302,10 +308,14 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
+        const personalEditForm = document.querySelector('#personalEditForm');
+        const patientEditForm = document.querySelector('#patientEditForm');
+        const doctorEditForm = document.querySelector('#doctorEditForm');
+
         // Preserve default form values if the user cancels editing
-        setDefaultDataAttributes(document.querySelector('#personalEditForm'));
-        setDefaultDataAttributes(document.querySelector('#patientEditForm'));
-        setDefaultDataAttributes(document.querySelector('#doctorEditForm'));
+        setDefaultDataAttributes(personalEditForm);
+        setDefaultDataAttributes(patientEditForm);
+        setDefaultDataAttributes(doctorEditForm);
 
         document.querySelector('#editPersonalBtn')?.addEventListener('click', () => toggleEdit('personal'));
         document.querySelector('#editPatientBtn')?.addEventListener('click', () => toggleEdit('patient'));
