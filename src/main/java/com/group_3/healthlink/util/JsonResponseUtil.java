@@ -12,16 +12,19 @@ public class JsonResponseUtil {
     JsonObject json = new JsonObject();
     json.addProperty("success", true);
 
-    if (message != null && !message.isEmpty()) {
+    if (message != null && !message.isEmpty())
       json.addProperty("message", message);
-    }
-
+    
     return json;
   }
 
   public static JsonObject createErrorResponse(String message) {
     JsonObject json = new JsonObject();
     json.addProperty("success", false);
+
+    if (message == null || message.isEmpty())
+      message = "An error occurred";
+
     json.addProperty("error", message);
     return json;
   }
