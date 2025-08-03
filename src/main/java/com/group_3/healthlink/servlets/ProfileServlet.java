@@ -98,10 +98,9 @@ public class ProfileServlet extends HttpServlet {
             String lastName = parts[1];
 
             boolean success = AuthService.updateUserProfile(userId, firstName, lastName, email);
-            JsonResponseUtil.sendJsonResponse(response, success ?
-                JsonResponseUtil.createSuccessResponse("Profile updated successfully") :
-                JsonResponseUtil.createErrorResponse("Failed to update profile")
-            );
+            JsonResponseUtil.sendJsonResponse(response,
+                    success ? JsonResponseUtil.createSuccessResponse("Profile updated successfully")
+                            : JsonResponseUtil.createErrorResponse("Failed to update profile"));
         } else if (action.equals("patient")) {
             String patientIdStr = request.getParameter("patientId");
             String dateOfBirth = request.getParameter("dob");
@@ -143,6 +142,13 @@ public class ProfileServlet extends HttpServlet {
                 return;
             }
 
+            String[] parts = emergencyContactName.split(" ");
+            if (parts.length < 2) {
+                JsonResponseUtil.sendErrorResponse(response,
+                        "emergencyContact must contain at least first and last name", 400);
+                return;
+            }
+
             if (emergencyContactPhoneNumber == null || emergencyContactPhoneNumber.isEmpty()) {
                 JsonResponseUtil.sendErrorResponse(response, "emergencyContactPhone is required", 400);
                 return;
@@ -157,13 +163,11 @@ public class ProfileServlet extends HttpServlet {
 
             boolean success = PatientService.updatePatient(
                     patientId, dateOfBirth, phoneNumber, address,
-                    emergencyContactName, emergencyContactPhoneNumber
-            );
+                    emergencyContactName, emergencyContactPhoneNumber);
 
-            JsonResponseUtil.sendJsonResponse(response, success ?
-                JsonResponseUtil.createSuccessResponse("Patient profile updated successfully") :
-                JsonResponseUtil.createErrorResponse("Failed to update patient profile")
-            );
+            JsonResponseUtil.sendJsonResponse(response,
+                    success ? JsonResponseUtil.createSuccessResponse("Patient profile updated successfully")
+                            : JsonResponseUtil.createErrorResponse("Failed to update patient profile"));
         } else if (action.equals("doctor")) {
             String doctorIdStr = request.getParameter("doctorId");
             String department = request.getParameter("department");
@@ -190,10 +194,9 @@ public class ProfileServlet extends HttpServlet {
             System.out.println("department = " + department);
 
             boolean success = DoctorService.updateDoctor(doctorId, department);
-            JsonResponseUtil.sendJsonResponse(response, success ?
-                JsonResponseUtil.createSuccessResponse("Doctor profile updated successfully") :
-                JsonResponseUtil.createErrorResponse("Failed to update doctor profile")
-            );
+            JsonResponseUtil.sendJsonResponse(response,
+                    success ? JsonResponseUtil.createSuccessResponse("Doctor profile updated successfully")
+                            : JsonResponseUtil.createErrorResponse("Failed to update doctor profile"));
         }
 
         doGet(request, response);
