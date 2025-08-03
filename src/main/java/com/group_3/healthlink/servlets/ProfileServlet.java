@@ -70,7 +70,7 @@ public class ProfileServlet extends HttpServlet {
             try {
                 userId = Integer.parseInt(userIdStr);
             } catch (NumberFormatException e) {
-                JsonResponseUtil.sendErrorResponse(response, "userId is required", 400);
+                JsonResponseUtil.sendErrorResponse(response, "userId must be a valid number", 400);
                 return;
             }
 
@@ -119,7 +119,7 @@ public class ProfileServlet extends HttpServlet {
             try {
                 patientId = Integer.parseInt(patientIdStr);
             } catch (NumberFormatException e) {
-                JsonResponseUtil.sendErrorResponse(response, "patientId is required", 400);
+                JsonResponseUtil.sendErrorResponse(response, "patientId must be a valid number", 400);
                 return;
             }
 
