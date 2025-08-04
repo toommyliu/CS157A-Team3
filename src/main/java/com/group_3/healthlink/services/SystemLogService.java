@@ -30,7 +30,11 @@ public class SystemLogService {
       PreparedStatement stmt = con.prepareStatement(query);
       stmt.setInt(1, userId);
       stmt.setInt(2, action.getCode());
-      stmt.setString(3, detail);
+      if (detail == null) {
+        stmt.setNull(3, java.sql.Types.VARCHAR);
+      } else {
+        stmt.setString(3, detail);
+      }
       stmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
 
       int rowsAffected = stmt.executeUpdate();

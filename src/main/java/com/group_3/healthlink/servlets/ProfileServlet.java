@@ -1,9 +1,11 @@
 package com.group_3.healthlink.servlets;
 
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.AuthService;
 import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.PatientService;
+import com.group_3.healthlink.services.SystemLogService;
 import com.group_3.healthlink.util.JsonResponseUtil;
 
 import jakarta.servlet.ServletException;
@@ -70,6 +72,8 @@ public class ProfileServlet extends HttpServlet {
 
         System.out.println("action = " + action);
 
+        boolean success = false;
+
         if (action.equals("personal")) {
             String userIdStr = request.getParameter("userId");
             String fullName = request.getParameter("fullName");
@@ -111,7 +115,7 @@ public class ProfileServlet extends HttpServlet {
             String firstName = parts[0];
             String lastName = parts[1];
 
-            boolean success = AuthService.updateUserProfile(userId, firstName, lastName, email);
+            success = AuthService.updateUserProfile(userId, firstName, lastName, email);
             JsonResponseUtil.sendJsonResponse(response,
                     success ? JsonResponseUtil.createSuccessResponse("Profile updated successfully")
                             : JsonResponseUtil.createErrorResponse("Failed to update profile"));
@@ -182,7 +186,7 @@ public class ProfileServlet extends HttpServlet {
             System.out.println("emergencyContactName = " + emergencyContactName);
             System.out.println("emergencyContactPhoneNumber = " + emergencyContactPhoneNumber);
 
-            boolean success = PatientService.updatePatient(
+            success = PatientService.updatePatient(
                     patientId, dateOfBirth, phoneNumber, address,
                     emergencyContactName, emergencyContactPhoneNumber);
 
@@ -214,10 +218,14 @@ public class ProfileServlet extends HttpServlet {
             System.out.println("doctorId = " + doctorIdStr);
             System.out.println("department = " + department);
 
-            boolean success = DoctorService.updateDoctor(doctorId, department);
+            success = DoctorService.updateDoctor(doctorId, department);
             JsonResponseUtil.sendJsonResponse(response,
                     success ? JsonResponseUtil.createSuccessResponse("Doctor profile updated successfully")
                             : JsonResponseUtil.createErrorResponse("Failed to update doctor profile"));
+        }
+
+        if (success) {
+            SystemLogService.createNew(user.getUserId(), SystemLogAction.UPDATE_PROFILE, null);
         }
 
         doGet(request, response);
