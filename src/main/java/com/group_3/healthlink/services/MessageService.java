@@ -96,6 +96,7 @@ public class MessageService {
                 message.setReceiverId(rs.getInt("receiver_id"));
                 message.setContent(rs.getString("content"));
                 message.setTimestamp(rs.getTimestamp("timestamp"));
+                message.setRead(rs.getBoolean("is_read"));
                 messages.add(message);
             }
             
@@ -159,6 +160,7 @@ public class MessageService {
                 message.setReceiverId(rs.getInt("receiver_id"));
                 message.setContent(rs.getString("content"));
                 message.setTimestamp(rs.getTimestamp("timestamp"));
+                message.setRead(rs.getBoolean("is_read"));
                 rs.close();
                 stmt.close();
                 return message;
@@ -181,7 +183,7 @@ public class MessageService {
         Connection con = DatabaseMgr.getInstance().getConnection();
         
         try {
-            String query = "SELECT COUNT(*) FROM message WHERE receiver_id = ?";
+            String query = "SELECT COUNT(*) FROM message WHERE receiver_id = ? AND is_read = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
@@ -198,6 +200,94 @@ public class MessageService {
             
         } catch (SQLException e) {
             System.err.println("Error getting unread count: " + e.getMessage());
+        }
+        
+        return 0;
+    }
+
+    /**
+     * Get unread message count for a specific chat thread
+     */
+    public static int getUnreadCountForChat(int userId, int otherUserId) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        
+        try {
+            String query = "SELECT COUNT(*) FROM message WHERE receiver_id = ? AND sender_id = ? AND is_read = 0";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, userId);
+            stmt.setInt(2, otherUserId);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                rs.close();
+                stmt.close();
+                return count;
+            }
+            
+            rs.close();
+            stmt.close();
+            
+        } catch (SQLException e) {
+            System.err.println("Error getting unread count for chat: " + e.getMessage());
+        }
+        
+        return 0;
+    }
+
+    /**
+     * Mark all messages from a specific sender as read for a receiver
+     */
+    public static boolean markMessagesAsRead(int receiverId, int senderId) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        
+        try {
+            String query = "UPDATE message SET is_read = 1 WHERE receiver_id = ? AND sender_id = ? AND is_read = 0";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, receiverId);
+            stmt.setInt(2, senderId);
+            
+            int rowsAffected = stmt.executeUpdate();
+            stmt.close();
+            
+            return rowsAffected >= 0; // Return true even if no rows were updated
+        } catch (SQLException e) {
+            System.err.println("Error marking messages as read: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Check if a user has unread messages from a specific sender
+     */
+    public static boolean hasUnreadMessages(int receiverId, int senderId) {
+        return getUnreadCountForChat(receiverId, senderId) > 0;
+    }
+
+    /**
+     * Get count of unique conversations with unread messages
+     */
+    public static int getUnreadConversationCount(int userId) {
+        Connection con = DatabaseMgr.getInstance().getConnection();
+        
+        try {
+            String query = "SELECT COUNT(DISTINCT sender_id) FROM message WHERE receiver_id = ? AND is_read = 0";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                rs.close();
+                stmt.close();
+                return count;
+            }
+            
+            rs.close();
+            stmt.close();
+            
+        } catch (SQLException e) {
+            System.err.println("Error getting unread conversation count: " + e.getMessage());
         }
         
         return 0;
