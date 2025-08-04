@@ -1,9 +1,6 @@
 package com.group_3.healthlink.servlets.medication;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
-import org.json.JSONObject;
 
 import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Patient;
@@ -11,6 +8,9 @@ import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.MedicationService;
 import com.group_3.healthlink.services.PatientService;
+import com.group_3.healthlink.services.SystemLogService;
+import com.group_3.healthlink.util.JsonResponseUtil;
+import com.group_3.healthlink.util.HttpServletRequestUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,14 +26,13 @@ public class CreateMedicationServlet extends HttpServlet {
 
     User user = (User) request.getSession().getAttribute("user");
 
-    JSONObject json = new JSONObject();
-    PrintWriter out = response.getWriter();
-    response.setContentType("application/json");
-
     if (user == null) {
       response.setStatus(401);
-      json.put("error", "unauthorized");
-      out.print(json);
+      JsonResponseUtil.sendJsonResponse(
+        response,
+        JsonResponseUtil.createErrorResponse("Unauthorized")
+      );
+
       return;
     }
 
@@ -43,47 +42,36 @@ public class CreateMedicationServlet extends HttpServlet {
     if (user.isDoctor()) {
       String patientIdParam = request.getParameter("patientId");
       if (patientIdParam != null && !patientIdParam.isEmpty()) {
-        patientId = Integer.parseInt(patientIdParam);
+        try {
+          patientId = Integer.parseInt(patientIdParam);
+        } catch (NumberFormatException e) {
+          response.setStatus(400);
+          JsonResponseUtil.sendJsonResponse(
+            response,
+            JsonResponseUtil.createErrorResponse("Invalid patientId")
+          );
+
+          return;
+        }
       }
 
       Doctor doctor = DoctorService.getByUserId(user.getUserId());
-      if (doctor != null) {
+      if (doctor != null)
         doctorId = doctor.getDoctorId();
-      }
     } else {
       Patient patient = PatientService.getByUserId(user.getUserId());
-      if (patient != null) {
+      if (patient != null)
         patientId = patient.getPatientId();
-      }
     }
 
     String medicationName = request.getParameter("medicationName");
     String dosage = request.getParameter("dosage");
     String frequency = request.getParameter("frequency");
-    String noteContent = request.getParameter("noteContent");
+    String noteContent = request.getParameter("noteContent"); // Optional so we don't validate it
 
-    if (medicationName == null || medicationName.isEmpty()) {
-      response.setStatus(400);
-      json.put("error", "medicationName is required");
-      out.print(json);
-      return;
-    }
-
-    if (dosage == null || dosage.isEmpty()) {
-      response.setStatus(400);
-      json.put("error", "dosage is required");
-      out.print(json);
-      return;
-    }
-
-    if (frequency == null || frequency.isEmpty()) {
-      response.setStatus(400);
-      json.put("error", "frequency is required");
-      out.print(json);
-      return;
-    }
-
-    // noteContent is optional, so we don't validate it
+    if (!HttpServletRequestUtil.validateParameter(medicationName, "medicationName", response)) return;
+    if (!HttpServletRequestUtil.validateParameter(dosage, "dosage", response)) return;
+    if (!HttpServletRequestUtil.validateParameter(frequency, "frequency", response)) return;
 
     boolean success = MedicationService.createMedication(
         patientId,
@@ -91,16 +79,24 @@ public class CreateMedicationServlet extends HttpServlet {
         medicationName,
         dosage,
         frequency,
-        noteContent);
+        noteContent
+    );
     System.out.println("Medication created: " + success);
 
     if (success) {
+      SystemLogService.createNew(user.getUserId(), "Create Medication", "For patient: " + patientId);
+
       response.setStatus(200);
-      json.put("success", true);
+      JsonResponseUtil.sendJsonResponse(
+        response,
+        JsonResponseUtil.createSuccessResponse("Medication created successfully")
+      );
     } else {
       response.setStatus(500);
-      json.put("success", false);
+      JsonResponseUtil.sendJsonResponse(
+        response,
+        JsonResponseUtil.createErrorResponse("Failed to create medication")
+      );
     }
-    out.print(json);
   }
 }
