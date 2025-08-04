@@ -63,7 +63,8 @@
                                     <%= log.getActionName() %>
                                 </td>
                                 <td>
-                                    <%= log.getDetail() %>
+                                    <% String logDetail = log.getDetail(); %>
+                                    <%= logDetail != null ? logDetail : "" %>
                                 </td>
                                 <td>
                                     <% SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a"); %>

@@ -50,40 +50,7 @@ public class SystemLog {
   }
 
   public String getActionName() {
-    switch (this.action) {
-
-      case LOGIN -> {
-        return "Login";
-      }
-      case LOGOUT -> {
-        return "Logout";
-      }
-
-      case ASSIGN_PATIENT_TO_DOCTOR -> {
-        return "Assign Doctor";
-      }
-      case REMOVE_PATIENT_FROM_DOCTOR -> {
-        return "Remove Doctor";
-      }
-
-      case CREATE_MEDICATION -> {
-        return "Create Medication";
-      }
-      case DELETE_MEDICATION -> {
-        return "Delete Medication";
-      }
-
-      case CREATE_DOCTOR -> {
-        return "Create Doctor";
-      }
-      case UPDATE_DOCTOR -> {
-        return "Update Doctor";
-      }
-
-      default -> {
-        return "Unknown Action";
-      }
-    }
+    return this.action != null ? this.action.getDisplayName() : "Unknown Action";
   }
 
   public String getDetail() {
