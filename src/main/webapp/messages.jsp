@@ -54,6 +54,7 @@
       border-bottom: 1px solid #dee2e6;
       cursor: pointer;
       transition: background-color 0.2s;
+      position: relative;
     }
     
     .contact-item:hover {
@@ -63,6 +64,21 @@
     .contact-item.active {
       background-color: #007bff;
       color: white;
+    }
+    
+    .unread-indicator {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      width: 8px;
+      height: 8px;
+      background-color: #007bff;
+      border-radius: 50%;
+      display: none;
+    }
+    
+    .contact-item.has-unread .unread-indicator {
+      display: block;
     }
     
     .message {
@@ -109,6 +125,21 @@
       color: #6c757d;
       font-size: 1.1rem;
     }
+    
+    .unread-indicator {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      width: 8px;
+      height: 8px;
+      background-color: #007bff;
+      border-radius: 50%;
+      display: none;
+    }
+    
+    .contact-item.has-unread .unread-indicator {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -118,10 +149,10 @@
       window.location.href = '<%= request.getContextPath() %>/login';
     </script>
   <% } else { %>
-    <div class="app-container">
-      <jsp:include page="layouts/sidebar.jsp" />
+<div class="app-container">
+  <jsp:include page="layouts/sidebar.jsp" />
 
-      <div class="main-content">
+  <div class="main-content">
         <div class="d-flex justify-content-between align-items-center border-bottom mb-4 pb-2">
           <h2 class="h2 fw-semibold mb-0">Messages</h2>
         </div>
@@ -168,8 +199,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
+  </div>
+</div>
 
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
     <script>
@@ -210,6 +241,40 @@
         }
       });
 
+      // Mark messages as read
+      async function markMessagesAsRead(otherUserId) {
+        try {
+          const response = await fetch('${pageContext.request.contextPath}/messages/api/mark-read/' + otherUserId, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+          if (response.ok) {
+            console.log('Messages marked as read');
+          }
+        } catch (error) {
+          console.error('Error marking messages as read:', error);
+        }
+      }
+
+      // Check if a contact has unread messages
+      async function checkUnreadMessages(otherUserId) {
+        try {
+          const response = await fetch('${pageContext.request.contextPath}/messages/api/history/' + otherUserId);
+          if (response.ok) {
+            const messages = await response.json();
+            // Check if there are any unread messages from this user
+            return messages.some(message => 
+              message.receiverId === currentUser.userId && !message.isRead
+            );
+          }
+        } catch (error) {
+          console.error('Error checking unread messages:', error);
+        }
+        return false;
+      }
+
       // Load contacts from API
       async function loadContacts() {
         try {
@@ -234,7 +299,7 @@
       }
 
       // Display contacts in sidebar
-      function displayContacts(contacts) {
+      async function displayContacts(contacts) {
         const contactsList = document.getElementById('contactsList');
         contactsList.innerHTML = '';
 
@@ -243,7 +308,7 @@
           return;
         }
 
-        contacts.forEach(contact => {
+        for (const contact of contacts) {
           const contactItem = document.createElement('div');
           contactItem.className = 'contact-item';
           contactItem.onclick = () => selectContact(contact);
@@ -252,12 +317,22 @@
           const fullName = (contact.firstName || '') + ' ' + (contact.lastName || '').trim();
           const displayName = fullName.trim() || 'Unknown';
           
+          // Check if this contact has unread messages
+          const hasUnread = await checkUnreadMessages(contact.userId);
+          if (hasUnread) {
+            contactItem.classList.add('has-unread');
+          }
+          
+          // Add data attribute for easy selection
+          contactItem.setAttribute('data-user-id', contact.userId);
+          
           contactItem.innerHTML = 
             '<div class="fw-semibold">' + displayName + '</div>' +
-            '<div class="small text-muted">' + (contact.emailAddress || '') + '</div>';
+            '<div class="small text-muted">' + (contact.emailAddress || '') + '</div>' +
+            '<div class="unread-indicator"></div>';
           
           contactsList.appendChild(contactItem);
-        });
+        }
       }
 
       // Select a contact and load chat
@@ -294,6 +369,15 @@
         
         // Load chat history
         await loadChatHistory(contact.userId);
+        
+        // Mark messages as read when chat is opened
+        await markMessagesAsRead(contact.userId);
+        
+        // Remove unread indicator from this contact
+        const contactItem = document.querySelector(`.contact-item[data-user-id="${contact.userId}"]`);
+        if (contactItem) {
+          contactItem.classList.remove('has-unread');
+        }
       }
 
       // Load chat history
@@ -395,6 +479,8 @@
         if (currentChatUserId) {
           await checkForNewMessages();
         }
+        // Update unread count in sidebar
+        await updateSidebarUnreadCount();
       }, 3000);
       
       // Check for new messages without full reload
@@ -438,6 +524,37 @@
          setTimeout(() => {
            chatMessages.style.backgroundColor = '#fff';
          }, 500);
+       }
+       
+       // Update unread count in sidebar
+       async function updateSidebarUnreadCount() {
+         try {
+           const response = await fetch('${pageContext.request.contextPath}/messages/api/unread-conversations');
+           if (response.ok) {
+             const data = await response.json();
+             const unreadCount = data.unreadConversations;
+             
+             // Find the Messages link in sidebar and update badge
+             const messagesLink = document.querySelector('a[href*="/messages"]');
+             if (messagesLink) {
+               let badge = messagesLink.querySelector('.badge');
+               if (unreadCount > 0) {
+                 if (!badge) {
+                   badge = document.createElement('span');
+                   badge.className = 'badge bg-primary ms-2';
+                   messagesLink.appendChild(badge);
+                 }
+                 badge.textContent = unreadCount;
+               } else {
+                 if (badge) {
+                   badge.remove();
+                 }
+               }
+             }
+           }
+         } catch (error) {
+           console.error('Error updating sidebar unread count:', error);
+         }
        }
     </script>
   <% } %>
