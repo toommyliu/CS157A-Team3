@@ -73,7 +73,11 @@ public class DeleteMedicationServlet extends HttpServlet {
     System.out.println("Medication deleted: " + success);
 
     if (success) {
-      SystemLogService.createNew(doctor.getUserId(), SystemLogAction.DELETE_MEDICATION, "For patient " + existingMedication.getPatientId());
+      SystemLogService.createNew(
+        doctor.getUserId(),
+        SystemLogAction.DELETE_MEDICATION,
+        "For patient: " + existingMedication.getPatientId() + ", Medication ID: " + medicationId
+      );
 
       response.setStatus(200);
       JsonResponseUtil.sendJsonResponse(
