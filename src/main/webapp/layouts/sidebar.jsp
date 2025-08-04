@@ -1,4 +1,5 @@
 <%@ page import="com.group_3.healthlink.User" %>
+<%@ page import="com.group_3.healthlink.services.MessageService" %>
 <%
     String requestUrl = request.getRequestURL().toString(); // http://localhost:8080/healthlink_war_exploded/notes.jsp
     String contextPath = request.getContextPath(); // /healthlink_war_exploded
@@ -7,6 +8,12 @@
             .replace(".jsp", ""); // /notes
 
     User user = (User) session.getAttribute("user");
+    
+    // Get unread conversation count
+    int unreadCount = 0;
+    if (user != null) {
+        unreadCount = MessageService.getUnreadConversationCount(user.getUserId());
+    }
 %>
 <div
         class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark min-vh-100 sidebar"
@@ -70,6 +77,9 @@
             <a href="<%= contextPath %>/messages"
                class="nav-link text-white <%= currentPath.contains("/messages")  ? "active" : "" %>">
                 <i class="bi bi-chat-dots me-2"></i> Messages
+                <% if (unreadCount > 0) { %>
+                    <span class="badge bg-primary ms-2"><%= unreadCount %></span>
+                <% } %>
             </a>
         </li>
         <% if (user.isAdmin()) { %>
