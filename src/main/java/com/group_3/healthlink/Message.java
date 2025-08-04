@@ -8,17 +8,19 @@ public class Message {
     private int receiverId;
     private String content;
     private Timestamp timestamp;
+    private boolean isRead;
 
     // Default constructor
     public Message() {}
 
     // Constructor with all fields
-    public Message(int messageId, int senderId, int receiverId, String content, Timestamp timestamp) {
+    public Message(int messageId, int senderId, int receiverId, String content, Timestamp timestamp, boolean isRead) {
         this.messageId = messageId;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
         this.timestamp = timestamp;
+        this.isRead = isRead;
     }
 
     // Constructor without messageId (for creating new messages)
@@ -27,6 +29,7 @@ public class Message {
         this.receiverId = receiverId;
         this.content = content;
         this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.isRead = false; // New messages are unread by default
     }
 
     // Getters and Setters
@@ -70,6 +73,14 @@ public class Message {
         this.timestamp = timestamp;
     }
 
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -78,6 +89,7 @@ public class Message {
                 ", receiverId=" + receiverId +
                 ", content='" + content + '\'' +
                 ", timestamp=" + timestamp +
+                ", isRead=" + isRead +
                 '}';
     }
 } 
