@@ -26,7 +26,7 @@ public class CreateMedicationServlet extends HttpServlet {
 
     User user = (User) request.getSession().getAttribute("user");
 
-    if (user == null) {
+    if (user == null || !user.isDoctor()) {
       response.setStatus(401);
       JsonResponseUtil.sendJsonResponse(
         response,
