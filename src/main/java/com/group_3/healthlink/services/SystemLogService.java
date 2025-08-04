@@ -2,6 +2,7 @@ package com.group_3.healthlink.services;
 
 import com.group_3.healthlink.DatabaseMgr;
 import com.group_3.healthlink.SystemLog;
+import com.group_3.healthlink.SystemLogAction;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ public class SystemLogService {
    * @param detail additional details about the action
    * @return true if the log entry was created successfully, false otherwise
    */
-  public static boolean createNew(int userId, String action, String detail) {
+  public static boolean createNew(int userId, SystemLogAction action, String detail) {
     Connection con = DatabaseMgr.getInstance().getConnection();
 
     String query = "INSERT INTO system_log (user_id, action, detail, timestamp) VALUES (?, ?, ?, ?)";
@@ -28,7 +29,7 @@ public class SystemLogService {
     try {
       PreparedStatement stmt = con.prepareStatement(query);
       stmt.setInt(1, userId);
-      stmt.setString(2, action);
+      stmt.setInt(2, action.getCode());
       stmt.setString(3, detail);
       stmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
 
@@ -101,7 +102,9 @@ public class SystemLogService {
     SystemLog log = new SystemLog();
     log.setLogId(rs.getInt("log_id"));
     log.setUserId(rs.getInt("user_id"));
-    log.setAction(rs.getString("action"));
+    log.setAction(
+      SystemLogAction.fromCode(rs.getInt("action"))
+    );
     log.setDetail(rs.getString("detail"));
     log.setTimestamp(rs.getTimestamp("timestamp"));
     return log;

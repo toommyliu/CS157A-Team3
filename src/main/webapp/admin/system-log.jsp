@@ -60,7 +60,7 @@
                                     <%= log.getUserId() %>
                                 </td>
                                 <td>
-                                    <%= log.getAction() %>
+                                    <%= log.getActionName() %>
                                 </td>
                                 <td>
                                     <%= log.getDetail() %>

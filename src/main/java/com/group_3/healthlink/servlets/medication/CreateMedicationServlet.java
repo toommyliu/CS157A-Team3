@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Patient;
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.MedicationService;
@@ -84,7 +85,7 @@ public class CreateMedicationServlet extends HttpServlet {
     System.out.println("Medication created: " + success);
 
     if (success) {
-      SystemLogService.createNew(user.getUserId(), "Create Medication", "For patient: " + patientId);
+      SystemLogService.createNew(user.getUserId(), SystemLogAction.CREATE_MEDICATION, "For patient: " + patientId);
 
       response.setStatus(200);
       JsonResponseUtil.sendJsonResponse(

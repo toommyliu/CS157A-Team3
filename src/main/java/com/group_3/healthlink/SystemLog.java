@@ -8,7 +8,7 @@ public class SystemLog {
    */
   private int userId;
 
-  private String action;
+  private SystemLogAction action;
 
   private String detail;
 
@@ -17,7 +17,7 @@ public class SystemLog {
   public SystemLog() {
   }
 
-  public SystemLog(int logId, int userId, String action, String detail, java.sql.Timestamp timestamp) {
+  public SystemLog(int logId, int userId, SystemLogAction action, String detail, java.sql.Timestamp timestamp) {
     this.logId = logId;
     this.userId = userId;
     this.action = action;
@@ -41,12 +41,49 @@ public class SystemLog {
     this.userId = userId;
   }
 
-  public String getAction() {
+  public SystemLogAction getAction() {
     return action;
   }
 
-  public void setAction(String action) {
+  public void setAction(SystemLogAction action) {
     this.action = action;
+  }
+
+  public String getActionName() {
+    switch (this.action) {
+
+      case LOGIN -> {
+        return "Login";
+      }
+      case LOGOUT -> {
+        return "Logout";
+      }
+
+      case ASSIGN_PATIENT_TO_DOCTOR -> {
+        return "Assign Doctor";
+      }
+      case REMOVE_PATIENT_FROM_DOCTOR -> {
+        return "Remove Doctor";
+      }
+
+      case CREATE_MEDICATION -> {
+        return "Create Medication";
+      }
+      case DELETE_MEDICATION -> {
+        return "Delete Medication";
+      }
+
+      case CREATE_DOCTOR -> {
+        return "Create Doctor";
+      }
+      case UPDATE_DOCTOR -> {
+        return "Update Doctor";
+      }
+
+      default -> {
+        return "Unknown Action";
+      }
+    }
   }
 
   public String getDetail() {

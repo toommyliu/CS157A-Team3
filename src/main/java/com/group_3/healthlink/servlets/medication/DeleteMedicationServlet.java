@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.Medication;
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.MedicationService;
@@ -72,7 +73,7 @@ public class DeleteMedicationServlet extends HttpServlet {
     System.out.println("Medication deleted: " + success);
 
     if (success) {
-      SystemLogService.createNew(doctor.getUserId(), "Delete Medication", "For patient " + existingMedication.getPatientId());
+      SystemLogService.createNew(doctor.getUserId(), SystemLogAction.DELETE_MEDICATION, "For patient " + existingMedication.getPatientId());
 
       response.setStatus(200);
       JsonResponseUtil.sendJsonResponse(

@@ -1,6 +1,7 @@
 package com.group_3.healthlink.servlets.admin;
 
 import com.group_3.healthlink.Doctor;
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.AuthService;
 import com.group_3.healthlink.services.DoctorService;
@@ -77,7 +78,7 @@ public class DoctorsServlet extends HttpServlet {
       boolean doctorSuccess = DoctorService.createNew(userId, department);
       if (doctorSuccess) {
         User authedUser = (User) request.getSession().getAttribute("user");
-        SystemLogService.createNew(authedUser.getUserId(), "Create New Doctor", "Dr. " + firstName + " " + lastName + " (ID: " + userId + ")");
+        SystemLogService.createNew(authedUser.getUserId(), SystemLogAction.NEW_USER, "Dr. " + firstName + " " + lastName + " (ID: " + userId + ")");
         response.setStatus(200);
         response.sendRedirect(request.getContextPath() + "/admin/doctors");
         return;
@@ -122,7 +123,7 @@ public class DoctorsServlet extends HttpServlet {
 
     if (userSuccess && doctorSuccess) {
       User authedUser = (User) request.getSession().getAttribute("user");
-      SystemLogService.createNew(authedUser.getUserId(), "Update Doctor", "Updated doctor with ID: " + doctorId);
+      SystemLogService.createNew(authedUser.getUserId(), SystemLogAction.UPDATE_DOCTOR, "Updated doctor with ID: " + doctorId);
 
       response.setStatus(200);
       response.sendRedirect(request.getContextPath() + "/admin/doctors");

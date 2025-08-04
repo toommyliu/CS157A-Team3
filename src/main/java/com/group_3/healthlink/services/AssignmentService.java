@@ -1,6 +1,7 @@
 package com.group_3.healthlink.services;
 
 import com.group_3.healthlink.DatabaseMgr;
+import com.group_3.healthlink.SystemLogAction;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +23,7 @@ public class AssignmentService {
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
 
-            SystemLogService.createNew(patientId, "Assigned Doctor", "Assigned doctorId " + doctorId);
+            SystemLogService.createNew(patientId, SystemLogAction.ASSIGN_PATIENT_TO_DOCTOR, "Assigned doctorId " + doctorId);
 
             System.out.println("Successfully assigned patient " + patientId + " to doctor " + doctorId);
             return rowsAffected > 0;
@@ -44,7 +45,7 @@ public class AssignmentService {
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
 
-            SystemLogService.createNew(patientId, "Removed Doctor Assignment", "Unassigned doctorId " + doctorId);
+            SystemLogService.createNew(patientId, SystemLogAction.REMOVE_PATIENT_FROM_DOCTOR, "Unassigned doctorId " + doctorId);
 
             return rowsAffected > 0;
         } catch (SQLException e) {
