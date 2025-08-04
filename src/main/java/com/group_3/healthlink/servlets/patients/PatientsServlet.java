@@ -11,8 +11,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import com.group_3.healthlink.User;
+import com.group_3.healthlink.Doctor;
 import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.AssignmentService;
+import com.group_3.healthlink.services.SystemLogService;
+import com.group_3.healthlink.SystemLogAction;
+
 import com.google.gson.JsonObject;
 
 @WebServlet(name = "patientsServlet", urlPatterns = { "/patients", "/remove-patient" })
@@ -60,7 +64,7 @@ public class PatientsServlet extends HttpServlet {
       int patientId = Integer.parseInt(patientIdStr);
       
       // Get the doctor object
-      com.group_3.healthlink.Doctor doctor = DoctorService.getByUserId(user.getUserId());
+      Doctor doctor = DoctorService.getByUserId(user.getUserId());
       if (doctor == null) {
         sendErrorResponse(response, "Doctor not found", 404);
         return;
@@ -70,6 +74,12 @@ public class PatientsServlet extends HttpServlet {
       boolean success = AssignmentService.removeAssignment(patientId, doctor.getDoctorId());
       
       if (success) {
+        SystemLogService.createNew(
+          user.getUserId(),
+          SystemLogAction.REMOVE_PATIENT,
+          "Patient ID: " + patientId
+        );
+
         JsonObject result = new JsonObject();
         result.addProperty("success", true);
         result.addProperty("message", "Patient removed successfully");

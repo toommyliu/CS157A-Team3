@@ -23,7 +23,7 @@ public class AssignmentService {
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
 
-            SystemLogService.createNew(patientId, SystemLogAction.ASSIGN_PATIENT_TO_DOCTOR, "Assigned doctorId " + doctorId);
+            SystemLogService.createNew(patientId, SystemLogAction.ASSIGN_PATIENT_TO_DOCTOR, "Doctor ID: " + doctorId);
 
             System.out.println("Successfully assigned patient " + patientId + " to doctor " + doctorId);
             return rowsAffected > 0;
@@ -44,8 +44,6 @@ public class AssignmentService {
 
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
-
-            SystemLogService.createNew(patientId, SystemLogAction.REMOVE_PATIENT_FROM_DOCTOR, "Unassigned doctorId " + doctorId);
 
             return rowsAffected > 0;
         } catch (SQLException e) {

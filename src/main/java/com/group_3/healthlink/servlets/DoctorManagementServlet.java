@@ -1,14 +1,16 @@
 package com.group_3.healthlink.servlets;
 
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import com.group_3.healthlink.User;
-import com.group_3.healthlink.Doctor;
-import com.group_3.healthlink.services.DoctorService;
+import com.group_3.healthlink.SystemLogAction;
+import com.group_3.healthlink.services.SystemLogService;
 import com.group_3.healthlink.services.PatientService;
 import com.group_3.healthlink.services.AssignmentService;
 import com.google.gson.Gson;
@@ -171,6 +173,12 @@ public class DoctorManagementServlet extends HttpServlet {
             boolean success = AssignmentService.removeAssignment(patient.getPatientId(), doctorId);
             
             if (success) {
+                SystemLogService.createNew(
+                    user.getUserId(),
+                    SystemLogAction.REMOVE_PATIENT_FROM_DOCTOR,
+                    "Doctor ID: " + doctorId
+                );
+
                 JsonObject result = new JsonObject();
                 result.addProperty("success", true);
                 result.addProperty("message", "Doctor removed successfully");
