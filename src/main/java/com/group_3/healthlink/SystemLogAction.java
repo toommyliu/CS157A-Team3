@@ -10,6 +10,7 @@ public enum SystemLogAction {
   // Patient actions (100-199)
   ASSIGN_PATIENT_TO_DOCTOR(100, "Assign Doctor"),
   REMOVE_PATIENT_FROM_DOCTOR(101, "Remove Doctor"),
+  CREATE_MEDICATION_LOG(102, "Take Medication"),
 
   // Doctor actions (200-299)
   CREATE_MEDICATION(200, "Create Medication"),
