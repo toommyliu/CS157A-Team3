@@ -2,7 +2,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="com.group_3.healthlink.Medication" %>
-<%@ page import="com.group_3.healthlink.MedicationLog" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 
 <html>
@@ -55,53 +54,6 @@
           </table>
         <% } else { %>
           <p>No medications found.</p>
-        <% } %>
-      </div>
-      <div class="overflow-y-scroll">
-          <h3>Your Medication Log History</h3>
-          <%
-            List<MedicationLog> medicationLogs = (List<MedicationLog>) request.getAttribute("medicationLogs");
-            Map<Integer, String> doctorNames = (Map<Integer, String>) request.getAttribute("doctorNames");
-            Map<Integer, Medication> medicationMap = (Map<Integer, Medication>) request.getAttribute("medicationMap");
-            if (medicationLogs != null && !medicationLogs.isEmpty()) {
-           %>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Date/Time Taken</th>
-                  <th>Medication Name</th>
-                  <th>Dosage Taken</th>
-                  <th>Note</th>
-                  <th>Prescribed By</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% for (MedicationLog log : medicationLogs) {
-                    Medication med = medicationMap != null ? medicationMap.get(log.getMedicationId()) : null;
-                    if (med == null) continue;
-                %>
-                  <tr>
-                    <td>
-                      <% SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a"); %>
-                      <%= sdf.format(log.getTakenAt()) %>
-                    </td>
-                    <td>
-                      <%= med != null ? med.getName() : "Unknown" %>
-                    <td>
-                      <%= log.getDosageTaken() %>
-                    </td>
-                    <td>
-                      <%= log.getNote() != null ? log.getNote() : "" %>
-                    </td>
-                    <td>
-                      <%= doctorNames != null && med != null ? doctorNames.get(med.getDoctorId()) : "Unknown" %>
-                    </td>
-                  </tr>
-                <% } %>
-              </tbody>
-            </table>
-        <% } else { %>
-          <p>No medication log history found.</p>
         <% } %>
       </div>
     </div>

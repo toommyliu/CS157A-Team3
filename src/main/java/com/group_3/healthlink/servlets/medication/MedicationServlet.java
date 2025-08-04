@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.group_3.healthlink.services.DoctorService;
-import com.group_3.healthlink.services.MedicationLogService;
 import com.group_3.healthlink.services.MedicationService;
 import com.group_3.healthlink.services.PatientService;
-import com.group_3.healthlink.MedicationLog;
 import com.group_3.healthlink.Medication;
 import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
@@ -32,7 +30,6 @@ public class MedicationServlet extends HttpServlet {
             if (patient != null) {
                 int patientId = patient.getPatientId();
                 List<Medication> medications = MedicationService.getMedicationsByPatientId(patientId);
-                List<MedicationLog> medicationLogs = MedicationLogService.getMedicationLogsByPatientId(patientId);
 
                 Map<Integer, Medication> medicationMap = new HashMap<>();
                 for (Medication med : medications) {
@@ -40,7 +37,6 @@ public class MedicationServlet extends HttpServlet {
                 }
 
                 request.setAttribute("medicationMap", medicationMap);
-                request.setAttribute("medicationLogs", medicationLogs);
                 request.setAttribute("medications", medications);
                 request.setAttribute("patientId", patientId);
 

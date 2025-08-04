@@ -376,57 +376,6 @@
                   </div>
                 </div>
                 <% } %>
-
-                <!-- Medication Logs -->
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5 class="mb-0">Medication Logs</h5>
-                      </div>
-                      <div class="card-body">
-                        <% List<MedicationLog> medicationLogs = (List<MedicationLog>) request.getAttribute("medicationLogs"); %>
-                        <% if (medicationLogs != null && !medicationLogs.isEmpty()) { %>
-                          <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead>
-                                <tr>
-                                  <th>Date Taken</th>
-                                  <th>Medication</th>
-                                  <th>Dosage</th>
-                                  <th>Note</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <% HashMap<Integer, Medication> medicationMap = (HashMap<Integer, Medication>) request.getAttribute("medicationMap"); %>
-                                <% for (MedicationLog log : medicationLogs) { %>
-                                  <% if (medicationMap == null || medicationMap.get(log.getMedicationId()) == null) continue; %>
-                                  <% Medication medication = medicationMap.get(log.getMedicationId()); %>
-                                  <tr>
-                                    <td>
-                                      <%= log.getTakenAt().toString() %>
-                                    </td>
-                                    <td>
-                                      <%= medication.getName() %>
-                                    </td>
-                                    <td>
-                                      <%= log.getDosageTaken() %> / <%= medication.getDosage() %>
-                                    </td>
-                                    <td>
-                                      <%= log.getNote() != null ? log.getNote() : "" %>
-                                    </td>
-                                  </tr>
-                                <% } %>
-                              </tbody>
-                            </table>
-                          </div>
-                        <% } else { %>
-                          <div class="alert alert-info">No medication logs found for this patient.</div>
-                        <% } %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             <% } else { %>
               <div class="main-content">
