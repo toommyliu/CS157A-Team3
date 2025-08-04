@@ -1,8 +1,10 @@
 package com.group_3.healthlink.servlets.TestResults;
 
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.UserRole;
 import com.group_3.healthlink.TestResult;
+import com.group_3.healthlink.services.SystemLogService;
 import com.group_3.healthlink.services.TestResultService;
 
 import jakarta.servlet.ServletException;
@@ -64,6 +66,11 @@ public class DownloadTestResultServlet extends HttpServlet {
                 out.flush();
             }
 
+            SystemLogService.createNew(
+                user.getUserId(),
+                SystemLogAction.DOWNLOAD_TEST_RESULT,
+                "Test Result ID: " + resultId
+            );
         } catch (NumberFormatException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Invalid result ID");

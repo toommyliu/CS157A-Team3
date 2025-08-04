@@ -1,7 +1,9 @@
 package com.group_3.healthlink.servlets.TestResults;
 
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.UserRole;
+import com.group_3.healthlink.services.SystemLogService;
 import com.group_3.healthlink.services.TestResultService;
 import com.group_3.healthlink.services.PatientService;
 import com.group_3.healthlink.Patient;
@@ -112,6 +114,12 @@ public class UploadTestResultServlet extends HttpServlet {
             );
 
             if (success) {
+                SystemLogService.createNew(
+                    user.getUserId(),
+                    SystemLogAction.UPLOAD_TEST_RESULT,
+                    null
+                );
+
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.getWriter().write("Test result uploaded successfully");
             } else {

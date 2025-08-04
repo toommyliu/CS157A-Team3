@@ -11,7 +11,12 @@ public enum SystemLogAction {
   ASSIGN_PATIENT_TO_DOCTOR(100, "Assign Doctor"),
   REMOVE_PATIENT_FROM_DOCTOR(101, "Remove Doctor"),
   CREATE_MEDICATION_LOG(102, "Take Medication"),
+  UPLOAD_TEST_RESULT(103, "Upload Test Result"),
+  DELETE_TEST_RESULT(104, "Delete Test Result"),
 
+  // Patient OR Doctor actions (150-199)
+  DOWNLOAD_TEST_RESULT(150, "Download Test Result"),
+  
   // Doctor actions (200-299)
   CREATE_MEDICATION(200, "Create Medication"), // Create a new medication for a patient
   DELETE_MEDICATION(201, "Delete Medication"), // Delete an existing medication for a patient

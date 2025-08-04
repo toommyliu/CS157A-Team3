@@ -1,7 +1,9 @@
 package com.group_3.healthlink.servlets.TestResults;
 
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.UserRole;
+import com.group_3.healthlink.services.SystemLogService;
 import com.group_3.healthlink.services.TestResultService;
 
 import jakarta.servlet.ServletException;
@@ -46,6 +48,11 @@ public class DeleteTestResultServlet extends HttpServlet {
             boolean success = TestResultService.deleteTestResult(resultId);
 
             if (success) {
+                SystemLogService.createNew(
+                    user.getUserId(),
+                    SystemLogAction.DELETE_TEST_RESULT, "Test Result ID: " + resultId
+                );
+
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.getWriter().write("Test result deleted successfully");
             } else {
