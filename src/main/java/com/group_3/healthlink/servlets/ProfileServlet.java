@@ -32,7 +32,7 @@ public class ProfileServlet extends HttpServlet {
         String userIdParam = request.getParameter("userId");
         User viewedUser = currentUser;
 
-        if (currentUser.isAdmin() && (userIdParam != null || !userIdParam.isEmpty())) {
+        if (currentUser.isAdmin() && userIdParam != null) {
             try {
                 int userId = Integer.parseInt(userIdParam);
                 User user = AuthService.getUserById(userId);

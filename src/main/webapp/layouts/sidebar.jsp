@@ -85,7 +85,7 @@
             <li>
                 <a href="<%= contextPath %>/admin/system-log"
                    class="nav-link text-white <%= currentPath.contains("/admin/system-log") ? "active" : "" %>">
-                    <i class="bi bi-clipboard2-data me-2"></i>
+                    <i class="bi bi-heart-pulse-fill me-2"></i>
                     System Logs
                 </a>
             </li>
