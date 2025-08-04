@@ -78,7 +78,7 @@ public class DoctorsServlet extends HttpServlet {
       boolean doctorSuccess = DoctorService.createNew(userId, department);
       if (doctorSuccess) {
         User authedUser = (User) request.getSession().getAttribute("user");
-        SystemLogService.createNew(authedUser.getUserId(), SystemLogAction.NEW_USER, "Dr. " + firstName + " " + lastName + " (ID: " + userId + ")");
+        SystemLogService.createNew(authedUser.getUserId(), SystemLogAction.CREATE_DOCTOR, "Dr. " + firstName + " " + lastName + " (ID: " + userId + ")");
         response.setStatus(200);
         response.sendRedirect(request.getContextPath() + "/admin/doctors");
         return;
