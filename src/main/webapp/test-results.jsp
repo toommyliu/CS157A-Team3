@@ -362,7 +362,7 @@
                     const resultId = this.getAttribute('data-result-id');
                     const fileName = this.getAttribute('data-file-name');
                     
-                    if (confirm(`Are you sure you want to delete "${fileName}"?`)) {
+                    if (confirm('Are you sure you want to delete "' + fileName + '"?')) {
                         try {
                             const formData = new URLSearchParams();
                             formData.append('resultId', resultId);
