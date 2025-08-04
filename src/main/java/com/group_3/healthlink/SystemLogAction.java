@@ -6,6 +6,7 @@ public enum SystemLogAction {
   LOGOUT(2, "Logout"),
   NEW_USER(3, "New User"),
   UPDATE_PROFILE(4, "Update Profile"),
+  ONBOARDING_COMPLETE(5, "Onboarding Complete"),
 
   // Patient actions (100-199)
   ASSIGN_PATIENT_TO_DOCTOR(100, "Assign Doctor"),
@@ -16,7 +17,7 @@ public enum SystemLogAction {
 
   // Patient OR Doctor actions (150-199)
   DOWNLOAD_TEST_RESULT(150, "Download Test Result"),
-  
+
   // Doctor actions (200-299)
   CREATE_MEDICATION(200, "Create Medication"), // Create a new medication for a patient
   DELETE_MEDICATION(201, "Delete Medication"), // Delete an existing medication for a patient

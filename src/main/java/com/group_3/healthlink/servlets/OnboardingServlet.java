@@ -2,9 +2,11 @@ package com.group_3.healthlink.servlets;
 
 import java.io.IOException;
 
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 
 import com.group_3.healthlink.services.PatientService;
+import com.group_3.healthlink.services.SystemLogService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -36,6 +38,12 @@ public class OnboardingServlet extends HttpServlet {
     System.out.println("Onboarding success: " + success);
 
     if (success) {
+      SystemLogService.createNew(
+        user.getUserId(),
+        SystemLogAction.ONBOARDING_COMPLETE,
+        null
+      );
+
       response.sendRedirect(request.getContextPath() + "/dashboard");
     } else {
       request.setAttribute("error", true);

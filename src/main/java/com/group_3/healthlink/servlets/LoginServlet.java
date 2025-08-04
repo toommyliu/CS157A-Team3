@@ -2,8 +2,10 @@ package com.group_3.healthlink.servlets;
 
 import java.io.IOException;
 
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.AuthService;
+import com.group_3.healthlink.services.SystemLogService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -49,6 +51,8 @@ public class LoginServlet extends HttpServlet {
       String hashedPassword = user.getPasswordHashed();
 
       if (AuthService.verifyPassword(password, hashedPassword)) {
+        SystemLogService.createNew(user.getUserId(), SystemLogAction.LOGIN, null);
+        
         System.out.println("Password matches for user ID: " + userId);
 
         request.getSession().setAttribute("user", user);

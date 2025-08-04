@@ -2,9 +2,11 @@ package com.group_3.healthlink.servlets;
 
 import java.io.IOException;
 
+import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.UserRole;
 import com.group_3.healthlink.services.AuthService;
+import com.group_3.healthlink.services.SystemLogService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -48,10 +50,16 @@ public class RegisterServlet extends HttpServlet {
         lastName,
         emailAddress,
         password,
-        UserRole.Patient.toString()
+        UserRole.Patient.toString().toLowerCase()
     );
 
     if (userId != -1) {
+      SystemLogService.createNew(
+        userId,
+        SystemLogAction.NEW_USER,
+        null
+      );
+
       System.out.println("User registered successfully with userId: " + userId);
 
       User newUser = AuthService.getUserById(userId);

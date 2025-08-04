@@ -2,6 +2,10 @@ package com.group_3.healthlink.servlets;
 
 import java.io.IOException;
 
+import com.group_3.healthlink.SystemLogAction;
+import com.group_3.healthlink.User;
+import com.group_3.healthlink.services.SystemLogService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -27,6 +31,9 @@ public class LogoutServlet extends HttpServlet {
 
   private void handleLogout(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
+    User user = (User) request.getSession().getAttribute("user");
+    SystemLogService.createNew(user.getUserId(), SystemLogAction.LOGOUT, null);
+
     HttpSession session = request.getSession(false);
     if (session != null) {
       session.invalidate();
