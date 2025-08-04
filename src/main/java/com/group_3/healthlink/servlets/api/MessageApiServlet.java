@@ -52,6 +52,12 @@ public class MessageApiServlet extends HttpServlet {
                 String userIdStr = pathInfo.substring(9); // Remove "/history/"
                 int otherUserId = Integer.parseInt(userIdStr);
                 handleGetHistory(request, response, currentUser, otherUserId);
+            } else if (pathInfo.equals("/unread-count")) {
+                // GET /messages/api/unread-count - Get total unread count
+                handleGetUnreadCount(request, response, currentUser);
+            } else if (pathInfo.equals("/unread-conversations")) {
+                // GET /messages/api/unread-conversations - Get unread conversation count
+                handleGetUnreadConversations(request, response, currentUser);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
@@ -88,6 +94,11 @@ public class MessageApiServlet extends HttpServlet {
             if (pathInfo.equals("/send")) {
                 // POST /messages/api/send - Send a message
                 handleSendMessage(request, response, currentUser);
+            } else if (pathInfo.startsWith("/mark-read/")) {
+                // POST /messages/api/mark-read/{userId} - Mark messages as read
+                String userIdStr = pathInfo.substring(11); // Remove "/mark-read/"
+                int otherUserId = Integer.parseInt(userIdStr);
+                handleMarkAsRead(request, response, currentUser, otherUserId);
             } else {
                 response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
@@ -155,6 +166,45 @@ public class MessageApiServlet extends HttpServlet {
             result.addProperty("success", false);
             result.addProperty("message", "Failed to send message");
         }
+        
+        response.getWriter().write(gson.toJson(result));
+    }
+
+    private void handleMarkAsRead(HttpServletRequest request, HttpServletResponse response, 
+                                 User currentUser, int otherUserId) throws IOException {
+        
+        boolean success = MessageService.markMessagesAsRead(currentUser.getUserId(), otherUserId);
+        
+        JsonObject result = new JsonObject();
+        if (success) {
+            result.addProperty("success", true);
+            result.addProperty("message", "Messages marked as read");
+        } else {
+            result.addProperty("success", false);
+            result.addProperty("message", "Failed to mark messages as read");
+        }
+        
+        response.getWriter().write(gson.toJson(result));
+    }
+
+    private void handleGetUnreadCount(HttpServletRequest request, HttpServletResponse response, User currentUser) 
+            throws IOException {
+        
+        int unreadCount = MessageService.getUnreadCount(currentUser.getUserId());
+        
+        JsonObject result = new JsonObject();
+        result.addProperty("unreadCount", unreadCount);
+        
+        response.getWriter().write(gson.toJson(result));
+    }
+
+    private void handleGetUnreadConversations(HttpServletRequest request, HttpServletResponse response, User currentUser) 
+            throws IOException {
+        
+        int unreadConversations = MessageService.getUnreadConversationCount(currentUser.getUserId());
+        
+        JsonObject result = new JsonObject();
+        result.addProperty("unreadConversations", unreadConversations);
         
         response.getWriter().write(gson.toJson(result));
     }
