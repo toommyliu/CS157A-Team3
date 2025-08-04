@@ -13,6 +13,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class SystemLogService {
+  /**
+   * Create a new system log entry.
+   * @param userId the ID of the user who performed the action
+   * @param action the action performed by the user
+   * @param detail additional details about the action
+   * @return true if the log entry was created successfully, false otherwise
+   */
   public static boolean createNew(int userId, String action, String detail) {
     Connection con = DatabaseMgr.getInstance().getConnection();
 

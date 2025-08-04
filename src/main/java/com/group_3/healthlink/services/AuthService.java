@@ -14,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthService {
     private static final int BCRYPT_ROUNDS = 12;
@@ -70,8 +72,6 @@ public class AuthService {
                     int userId = generatedKeys.getInt(1);
                     generatedKeys.close();
                     stmt.close();
-
-                    SystemLogService.createNew(userId, "User Registration", "New user registered with email address: " + emailAddress);
 
                     return userId;
                 } else {
@@ -190,20 +190,55 @@ public class AuthService {
         }
     }
 
+    // Admin updating a Doctor's User entity
     public static boolean updateUser(int userId, String firstName, String lastName, String emailAddress, String password) {
         Connection con = DatabaseMgr.getInstance().getConnection();
 
+        StringBuilder queryBuilder = new StringBuilder("UPDATE user SET ");
+        List<Object> parameters = new ArrayList<>();
+
+        boolean hasUpdates = false;
+
         try {
-            String query = "UPDATE user SET first_name = ?, last_name = ?, email_address = ?, password = ? WHERE user_id = ?";
-            PreparedStatement stmt = con.prepareStatement(query);
+            if (firstName != null) {
+                queryBuilder.append("first_name = ?");
+                parameters.add(firstName);
+                hasUpdates = true;
+            }
 
-            String hashedPassword = hashPassword(password);
+            if (lastName != null) {
+                if (hasUpdates) queryBuilder.append(", ");
+                queryBuilder.append("last_name = ?");
+                parameters.add(lastName);
+                hasUpdates = true;
+            }
 
-            stmt.setString(1, firstName);
-            stmt.setString(2, lastName);
-            stmt.setString(3, emailAddress);
-            stmt.setString(4, hashedPassword);
-            stmt.setInt(5, userId);
+            if (emailAddress != null) {
+                if (hasUpdates) queryBuilder.append(", ");
+                queryBuilder.append("email_address = ?");
+                parameters.add(emailAddress);
+                hasUpdates = true;
+            }
+
+            if (password != null) {
+                if (hasUpdates) queryBuilder.append(", ");
+                queryBuilder.append("password_hashed = ?");
+                parameters.add(hashPassword(password));
+                hasUpdates = true;
+            }
+
+            if (!hasUpdates) {
+                System.out.println("updateUser: no fields to update");
+                return false;
+            }
+
+            queryBuilder.append(" WHERE user_id = ?");
+            parameters.add(userId);
+
+            PreparedStatement stmt = con.prepareStatement(queryBuilder.toString());
+
+            for (int i = 0; i < parameters.size(); i++)
+                stmt.setObject(i + 1, parameters.get(i));
 
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
@@ -227,6 +262,7 @@ public class AuthService {
 
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
+
             return rowsAffected > 0;
         } catch (Exception e) {
             System.err.println("Error updateUserProfile: " + e.getMessage());
