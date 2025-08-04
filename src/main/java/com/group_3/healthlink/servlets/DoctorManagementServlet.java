@@ -120,6 +120,8 @@ public class DoctorManagementServlet extends HttpServlet {
             boolean success = AssignmentService.assignPatientToDoctor(patient.getPatientId(), doctorId);
             
             if (success) {
+                SystemLogService.createNew(user.getUserId(), SystemLogAction.ASSIGN_PATIENT_TO_DOCTOR, "Doctor ID: " + doctorId);
+
                 JsonObject result = new JsonObject();
                 result.addProperty("success", true);
                 result.addProperty("message", "Doctor assigned successfully");

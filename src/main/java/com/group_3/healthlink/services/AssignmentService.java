@@ -1,7 +1,6 @@
 package com.group_3.healthlink.services;
 
 import com.group_3.healthlink.DatabaseMgr;
-import com.group_3.healthlink.SystemLogAction;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,8 +21,6 @@ public class AssignmentService {
 
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
-
-            SystemLogService.createNew(patientId, SystemLogAction.ASSIGN_PATIENT_TO_DOCTOR, "Doctor ID: " + doctorId);
 
             System.out.println("Successfully assigned patient " + patientId + " to doctor " + doctorId);
             return rowsAffected > 0;
