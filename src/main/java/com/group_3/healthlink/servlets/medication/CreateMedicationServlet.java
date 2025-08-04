@@ -85,7 +85,7 @@ public class CreateMedicationServlet extends HttpServlet {
     System.out.println("Medication created: " + success);
 
     if (success) {
-      SystemLogService.createNew(user.getUserId(), SystemLogAction.CREATE_MEDICATION, "For patient: " + patientId);
+      SystemLogService.createNew(user.getUserId(), SystemLogAction.CREATE_MEDICATION, "Patient ID: " + patientId);
 
       response.setStatus(200);
       JsonResponseUtil.sendJsonResponse(

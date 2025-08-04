@@ -76,7 +76,7 @@ public class DeleteMedicationServlet extends HttpServlet {
       SystemLogService.createNew(
         doctor.getUserId(),
         SystemLogAction.DELETE_MEDICATION,
-        "For patient: " + existingMedication.getPatientId() + ", Medication ID: " + medicationId
+        "Patient ID: " + existingMedication.getPatientId() + ", Medication ID: " + medicationId
       );
 
       response.setStatus(200);

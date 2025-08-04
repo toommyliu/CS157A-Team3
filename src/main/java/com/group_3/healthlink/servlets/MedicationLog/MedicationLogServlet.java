@@ -89,7 +89,7 @@ public class MedicationLogServlet extends HttpServlet {
       SystemLogService.createNew(
         user.getUserId(),
         SystemLogAction.CREATE_MEDICATION_LOG,
-  null
+        "Patient ID: " + patientId + ", Medication ID: " + medicationId
       );
 
       response.setStatus(200);

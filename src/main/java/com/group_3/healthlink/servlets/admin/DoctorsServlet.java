@@ -123,7 +123,7 @@ public class DoctorsServlet extends HttpServlet {
 
     if (userSuccess && doctorSuccess) {
       User authedUser = (User) request.getSession().getAttribute("user");
-      SystemLogService.createNew(authedUser.getUserId(), SystemLogAction.UPDATE_DOCTOR, "Updated doctor with ID: " + doctorId);
+      SystemLogService.createNew(authedUser.getUserId(), SystemLogAction.UPDATE_DOCTOR, "Doctor ID: " + doctorId);
 
       response.setStatus(200);
       response.sendRedirect(request.getContextPath() + "/admin/doctors");

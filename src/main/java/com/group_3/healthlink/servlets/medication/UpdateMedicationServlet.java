@@ -91,7 +91,7 @@ public class UpdateMedicationServlet extends HttpServlet {
       SystemLogService.createNew(
         user.getUserId(),
         SystemLogAction.UPDATE_MEDICATION,
-        "For patient: " + existingMedication.getPatientId() + ", Medication ID: " + medicationId
+        "Patient ID: " + existingMedication.getPatientId() + ", Medication ID: " + medicationId
       );
 
       response.setStatus(200);

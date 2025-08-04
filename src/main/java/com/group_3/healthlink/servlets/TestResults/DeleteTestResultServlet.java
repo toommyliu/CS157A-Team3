@@ -50,7 +50,8 @@ public class DeleteTestResultServlet extends HttpServlet {
             if (success) {
                 SystemLogService.createNew(
                     user.getUserId(),
-                    SystemLogAction.DELETE_TEST_RESULT, "Test Result ID: " + resultId
+                    SystemLogAction.DELETE_TEST_RESULT,
+                    "Test Result ID: " + resultId
                 );
 
                 resp.setStatus(HttpServletResponse.SC_OK);
@@ -69,4 +70,4 @@ public class DeleteTestResultServlet extends HttpServlet {
             resp.getWriter().write("Error deleting test result: " + e.getMessage());
         }
     }
-} 
+}
