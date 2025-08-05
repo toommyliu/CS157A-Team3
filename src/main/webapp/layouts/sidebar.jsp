@@ -1,5 +1,6 @@
 <%@ page import="com.group_3.healthlink.User" %>
 <%@ page import="com.group_3.healthlink.services.MessageService" %>
+<%@ page import="com.group_3.healthlink.services.NotificationService" %>
 <%
     String requestUrl = request.getRequestURL().toString(); // http://localhost:8080/healthlink_war_exploded/notes.jsp
     String contextPath = request.getContextPath(); // /healthlink_war_exploded
@@ -11,8 +12,10 @@
     
     // Get unread conversation count
     int unreadCount = 0;
+    int unreadNotificationCount = 0;
     if (user != null) {
         unreadCount = MessageService.getUnreadConversationCount(user.getUserId());
+        unreadNotificationCount = NotificationService.getUnreadNotificationCount(user.getUserId());
     }
 %>
 <div
@@ -31,13 +34,6 @@
             <a href="<%= contextPath %>"
                class="nav-link text-white <%= currentPath.contains("/dashboard") ? "active" : "" %>">
                 <i class="bi bi-house me-2"></i> Dashboard
-            </a>
-        </li>
-        <li>
-            <a href="<%= contextPath %>/notes"
-               class="nav-link text-white <%= currentPath.contains("/notes") ? "active" : "" %>">
-                <i class="bi bi-journal-text me-2"></i>
-                Notes
             </a>
         </li>
         <% if (user != null) { %>
@@ -73,15 +69,35 @@
                 </li>
             <% } %>
         <% } %>
-        <li>
-            <a href="<%= contextPath %>/messages"
-               class="nav-link text-white <%= currentPath.contains("/messages")  ? "active" : "" %>">
-                <i class="bi bi-chat-dots me-2"></i> Messages
-                <% if (unreadCount > 0) { %>
-                    <span class="badge bg-primary ms-2"><%= unreadCount %></span>
-                <% } %>
-            </a>
-        </li>
+        <% if (!user.isAdmin()) { %>
+            <li>
+                <a href="<%= contextPath %>/notes"
+                   class="nav-link text-white <%= currentPath.contains("/notes") ? "active" : "" %>">
+                    <i class="bi bi-journal-text me-2"></i>
+                    Notes
+                </a>
+            </li>
+        <% } %>
+        <% if (!user.isAdmin()) { %>
+            <li>
+                <a href="<%= contextPath %>/messages"
+                   class="nav-link text-white <%= currentPath.contains("/messages")  ? "active" : "" %>">
+                    <i class="bi bi-chat-dots me-2"></i> Messages
+                    <% if (unreadCount > 0) { %>
+                        <span class="badge bg-primary ms-2"><%= unreadCount %></span>
+                    <% } %>
+                </a>
+            </li>
+            <li>
+                <a href="<%= contextPath %>/notifications"
+                   class="nav-link text-white <%= currentPath.contains("/notifications")  ? "active" : "" %>">
+                    <i class="bi bi-bell me-2"></i> Notifications
+                    <% if (unreadNotificationCount > 0) { %>
+                        <span class="badge bg-warning ms-2"><%= unreadNotificationCount %></span>
+                    <% } %>
+                </a>
+            </li>
+        <% } %>
         <% if (user.isAdmin()) { %>
             <div class="border-top my-2"></div>
 
