@@ -10,6 +10,7 @@ import com.group_3.healthlink.services.DoctorService;
 import com.group_3.healthlink.services.MedicationService;
 import com.group_3.healthlink.services.PatientService;
 import com.group_3.healthlink.services.SystemLogService;
+import com.group_3.healthlink.services.NotificationService;
 import com.group_3.healthlink.util.JsonResponseUtil;
 import com.group_3.healthlink.util.HttpServletRequestUtil;
 
@@ -86,6 +87,13 @@ public class CreateMedicationServlet extends HttpServlet {
 
     if (success) {
       SystemLogService.createNew(user.getUserId(), SystemLogAction.CREATE_MEDICATION, "Patient ID: " + patientId);
+
+      // Create notification for the patient
+      NotificationService.createMedicationNotification(
+        doctorId,
+        patientId,
+        medicationName
+      );
 
       response.setStatus(200);
       JsonResponseUtil.sendJsonResponse(
