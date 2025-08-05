@@ -64,7 +64,7 @@
                     <a href="<%= contextPath %>/patients"
                        class="nav-link text-white <%= currentPath.contains("/patients") ? "active" : "" %>">
                         <i class="bi bi-person me-2"></i>
-                        Patients
+                        My Patients
                     </a>
                 </li>
             <% } %>
