@@ -115,16 +115,6 @@ CREATE TABLE `message` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `message`
---
-
-LOCK TABLES `message` WRITE;
-/*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (1,1,11,'Dr. Chen, I have a question about my medication dosage.','2025-07-08 09:00:00'),(2,11,1,'Hi Emily, please clarify your question. Which medication are you referring to?','2025-07-08 09:05:00'),(3,2,12,'Dr. Williams, my test results are available. Can we discuss them?','2025-07-08 09:10:00'),(4,13,3,'Fnu, your MRI results look good. No immediate concerns.','2025-07-08 09:15:00'),(5,4,14,'Dr. Nguyen, I need to reschedule my next appointment.','2025-07-08 09:20:00'),(6,15,5,'Mike, please ensure you complete your daily dosage of Levothyroxine.','2025-07-08 09:25:00'),(7,6,7,'Hi Deborah, how are you feeling today?','2025-07-08 09:30:00'),(8,16,17,'Dr. Wilson, patient 6 needs a follow-up on their CT scan.','2025-07-08 09:35:00'),(9,9,19,'Dr. Thompson, my asthma symptoms have improved significantly.','2025-07-08 09:40:00'),(10,20,10,'James, remember your next colonoscopy is due in 5 years.','2025-07-08 09:45:00'),(11,42,43,'hello','2025-08-03 00:26:25'),(12,43,42,'i am here.','2025-08-03 00:26:42');
-/*!40000 ALTER TABLE `message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `note`
 --
 
