@@ -156,10 +156,13 @@ DROP TABLE IF EXISTS `notification`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notification` (
-  `notification_id` int NOT NULL,
-  `patient_id` int DEFAULT NULL,
+  `notification_id` int NOT NULL AUTO_INCREMENT,
+  `sender_id` int DEFAULT NULL,
+  `receiver_id` int DEFAULT NULL,
   `message` varchar(256) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
+  `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
+  `is_read` tinyint(1) DEFAULT 0,
+  `type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`notification_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -170,7 +173,12 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (1,1,'Your blood work results are now available. Please review them.','2025-07-08 10:00:00'),(2,2,'Reminder: Your next appointment is scheduled for July 15th at 10 AM.','2025-07-08 10:05:00'),(3,3,'New medication prescription has been sent to your pharmacy.','2025-07-08 10:10:00'),(4,4,'Please complete the pre-visit questionnaire before your next appointment.','2025-07-08 10:15:00'),(5,5,'Your recent ECG results have been reviewed by Dr. Rodriguez.','2025-07-08 10:20:00'),(6,6,'Action required: Please confirm your medication intake for today.','2025-07-08 10:25:00'),(7,7,'Your doctor has sent you a new message. Check your inbox.','2025-07-08 10:30:00'),(8,8,'Important update regarding your recent lab tests.','2025-07-08 10:35:00'),(9,9,'Your feedback on the app has been received. Thank you!','2025-07-08 10:40:00'),(10,10,'A new educational resource about your condition is available.','2025-07-08 10:45:00');
+INSERT INTO `notification` VALUES 
+(1,1,1,'Your blood work results are now available. Please review them.','2025-07-08 10:00:00',0,'test_result'),
+(2,1,3,'New medication prescription has been sent to your pharmacy.','2025-07-08 10:10:00',0,'medication'),
+(3,1,5,'Your recent ECG results have been reviewed by Dr. Rodriguez.','2025-07-08 10:20:00',0,'test_result'),
+(4,1,6,'Action required: Please confirm your medication intake for today.','2025-07-08 10:25:00',0,'medication'),
+(5,1,8,'Important update regarding your recent lab tests.','2025-07-08 10:35:00',0,'test_result');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
