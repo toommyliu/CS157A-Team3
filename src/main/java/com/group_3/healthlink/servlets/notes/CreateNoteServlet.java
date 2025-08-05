@@ -1,14 +1,11 @@
 package com.group_3.healthlink.servlets.notes;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import org.json.JSONObject;
-
-import com.group_3.healthlink.Patient;
 import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.NotesService;
-import com.group_3.healthlink.services.PatientService;
+import com.group_3.healthlink.util.JsonResponseUtil;
+import com.group_3.healthlink.util.HttpServletRequestUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,59 +17,30 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CreateNoteServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    System.out.println("POST /notes/create");
-
-    JSONObject json = new JSONObject();
-    PrintWriter out = response.getWriter();
-    response.setContentType("application/json");
-
     User user = (User) request.getSession().getAttribute("user");
-    if (user == null) {
-      response.setStatus(401);
-      json.put("error", "unauthorized");
-      out.print(json);
-      return;
-    }
-
-    Patient patient = PatientService.getByUserId(user.getUserId());
-
-    if (patient == null) {
-      response.setStatus(404);
-      json.put("error", "patient not found");
-      out.print(json);
+    if (user == null || (!user.isPatient() && !user.isDoctor())) {
+      JsonResponseUtil.sendErrorResponse(response, "Unauthorized", 401);
       return;
     }
 
     String noteContent = request.getParameter("noteContent");
-    String doctorId = request.getParameter("doctorId");
-
-    if (noteContent == null || noteContent.isEmpty()) {
-      response.setStatus(400);
-      json.put("error", "noteContent is required");
-      out.print(json);
+    if (!HttpServletRequestUtil.validateParameter(noteContent, "noteContent", response))
       return;
-    }
 
-    if (doctorId == null || doctorId.isEmpty()) {
-      response.setStatus(400);
-      json.put("error", "doctorId is required");
-      out.print(json);
-      return;
-    }
+    if (noteContent.length() > 255)
+      noteContent = noteContent.substring(0, 255);
 
     boolean success = NotesService.createNote(
         noteContent,
-        patient.getPatientId(),
-        doctorId != null && !doctorId.isEmpty() ? Integer.parseInt(doctorId) : -1);
+        user.getUserId()
+    );
+
     System.out.println("Note created: " + success);
 
-    if (success) {
-      response.setStatus(200);
-    } else {
-      response.setStatus(500);
-    }
-
-    json.put("success", success);
-    out.print(json);
+    JsonResponseUtil.sendJsonResponse(
+      response,
+      success ? JsonResponseUtil.createSuccessResponse("Success") :
+        JsonResponseUtil.createErrorResponse("Failed to create note")
+    );
   }
 }

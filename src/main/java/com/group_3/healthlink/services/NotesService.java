@@ -7,28 +7,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.sql.Types;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class NotesService {
-  public static boolean createNote(String content, int patientId, int doctorId) {
-    String query = "INSERT INTO note (content, patient_id, doctor_id, created_at) VALUES (?, ?, ?, ?)";
+  public static boolean createNote(String content, int userId) {
+    String query = "INSERT INTO note (content, user_id, timestamp) VALUES (?, ?, ?)";
     Connection con = DatabaseMgr.getInstance().getConnection();
 
     try {
       PreparedStatement stmt = con.prepareStatement(query);
       stmt.setString(1, content);
-      stmt.setInt(2, patientId);
-
-      if (doctorId != -1) {
-        stmt.setInt(3, doctorId);
-      } else {
-        stmt.setNull(3, Types.INTEGER);
-      }
-
-      stmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+      stmt.setInt(2, userId);
+      stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
 
       int rowsAffected = stmt.executeUpdate();
       stmt.close();
@@ -39,23 +31,22 @@ public class NotesService {
     }
   }
 
-  public static Note[] getNotesByPatientId(int patientId) {
-    String query = "SELECT * FROM note WHERE patient_id = ?";
+  public static Note[] getUserNotes(int userId) {
+    String query = "SELECT * FROM note WHERE user_id = ?";
     Connection con = DatabaseMgr.getInstance().getConnection();
 
     try {
       PreparedStatement stmt = con.prepareStatement(query);
-      stmt.setInt(1, patientId);
+      stmt.setInt(1, userId);
       ResultSet rs = stmt.executeQuery();
 
       List<Note> notesList = new ArrayList<>();
       while (rs.next()) {
         Note note = new Note();
         note.setId(rs.getInt("note_id"));
-        note.setPatientId(rs.getInt("patient_id"));
-        note.setDoctorId(rs.getInt("doctor_id"));
+        note.setUserId(rs.getInt("user_id"));
         note.setContent(rs.getString("content"));
-        note.setCreatedAt(rs.getTimestamp("created_at"));
+        note.setTimestamp(rs.getTimestamp("timestamp"));
         notesList.add(note);
       }
 

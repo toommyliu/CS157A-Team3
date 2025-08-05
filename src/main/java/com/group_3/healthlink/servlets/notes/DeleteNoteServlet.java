@@ -1,11 +1,11 @@
 package com.group_3.healthlink.servlets.notes;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
-import org.json.JSONObject;
-
+import com.group_3.healthlink.User;
 import com.group_3.healthlink.services.NotesService;
+import com.group_3.healthlink.util.JsonResponseUtil;
+import com.group_3.healthlink.util.HttpServletRequestUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,25 +17,20 @@ import jakarta.servlet.http.HttpServletResponse;
 public class DeleteNoteServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    JSONObject json = new JSONObject();
-    PrintWriter out = response.getWriter();
-    response.setContentType("application/json");
-
-    String noteIdParam = request.getParameter("noteId");
-    if (noteIdParam == null || noteIdParam.isEmpty()) {
-      response.setStatus(400);
-      json.put("error", "noteId is required");
-      out.print(json);
+    User user = (User) request.getSession().getAttribute("user");
+    if (user == null || (!user.isPatient() && !user.isDoctor())) {
+      JsonResponseUtil.sendErrorResponse(response, "Unauthorized", 401);
       return;
     }
 
-    int noteId = -1;
+    String noteIdParam = request.getParameter("noteId");
+    if (!HttpServletRequestUtil.validateParameter(noteIdParam, "noteId", response)) return;
+    
+    int noteId;
     try {
       noteId = Integer.parseInt(noteIdParam);
     } catch (NumberFormatException e) {
-      response.setStatus(400);
-      json.put("error", "invalid noteId");
-      out.print(json);
+      JsonResponseUtil.sendErrorResponse(response, "Invalid noteId", 400);
       return;
     }
 
@@ -44,13 +39,10 @@ public class DeleteNoteServlet extends HttpServlet {
     boolean success = NotesService.deleteNote(noteId);
     System.out.println("Delete note: " + success);
 
-    if (success) {
-      response.setStatus(200);
-    } else {
-      response.setStatus(500);
-    }
-
-    json.put("success", success);
-    out.print(json);
+    JsonResponseUtil.sendJsonResponse(
+      response,
+      success ? JsonResponseUtil.createSuccessResponse("Note deleted successfully") :
+        JsonResponseUtil.createErrorResponse("Failed to delete note")
+    );
   }
 }

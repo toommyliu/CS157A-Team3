@@ -33,6 +33,13 @@
                 <i class="bi bi-house me-2"></i> Dashboard
             </a>
         </li>
+        <li>
+            <a href="<%= contextPath %>/notes"
+               class="nav-link text-white <%= currentPath.contains("/notes") ? "active" : "" %>">
+                <i class="bi bi-journal-text me-2"></i>
+                Notes
+            </a>
+        </li>
         <% if (user != null) { %>
             <% if (user.isPatient()) { %>
                 <li>
@@ -40,13 +47,6 @@
                        class="nav-link text-white <%= currentPath.contains("/doctors") ? "active" : "" %>">
                         <i class="bi bi-person-vcard me-2"></i>
                         My Doctors
-                    </a>
-                </li>
-                <li>
-                    <a href="<%= contextPath %>/notes"
-                       class="nav-link text-white <%= currentPath.contains("/notes") ? "active" : "" %>">
-                        <i class="bi bi-journal-text me-2"></i>
-                        Notes
                     </a>
                 </li>
                 <li>

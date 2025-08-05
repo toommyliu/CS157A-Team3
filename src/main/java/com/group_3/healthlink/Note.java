@@ -1,23 +1,19 @@
 package com.group_3.healthlink;
 
-import java.util.Date;
-
 public class Note {
     private int id;
-    private int patientId;
-    private int doctorId;
+    private int userId;
     private String content;
-    private Date createdAt;
+    private java.sql.Timestamp timestamp;
 
     public Note() {
     }
 
-    public Note(int id, int patientId, int doctorId, String content, Date createdAt) {
+    public Note(int id, int userId, String content, java.sql.Timestamp timestamp) {
         this.id = id;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
+        this.userId = userId;
         this.content = content;
-        this.createdAt = createdAt;
+        this.timestamp = timestamp;
     }
 
     public int getId() {
@@ -28,20 +24,12 @@ public class Note {
         this.id = id;
     }
 
-    public int getPatientId() {
-        return patientId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setPatientId(int patientId) {
-        this.patientId = patientId;
-    }
-
-    public int getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getContent() {
@@ -52,11 +40,11 @@ public class Note {
         this.content = content;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public java.sql.Timestamp getTimestamp() {
+        return timestamp;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setTimestamp(java.sql.Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

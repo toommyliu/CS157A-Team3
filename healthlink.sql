@@ -111,7 +111,7 @@ CREATE TABLE `message` (
   `timestamp` datetime DEFAULT CURRENT_TIMESTAMP,
   `is_read` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`message_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,8 +123,7 @@ DROP TABLE IF EXISTS `note`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `note` (
   `note_id` int NOT NULL AUTO_INCREMENT,
-  `doctor_id` int DEFAULT NULL,
-  `patient_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
   `content` varchar(256) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`note_id`)
@@ -137,7 +136,6 @@ CREATE TABLE `note` (
 
 LOCK TABLES `note` WRITE;
 /*!40000 ALTER TABLE `note` DISABLE KEYS */;
-INSERT INTO `note` VALUES (5,NULL,10,'1234567890','2025-07-21 21:08:34'),(6,NULL,10,'asdad','2025-07-21 21:10:38'),(7,NULL,10,'asdasd','2025-07-21 21:11:18'),(8,NULL,10,'asdad','2025-07-21 21:11:27'),(9,NULL,10,'sdasd','2025-07-21 21:12:43'),(10,NULL,10,'tommy was here','2025-07-21 21:14:42'),(11,19,10,'asdasdasd','2025-07-21 22:17:55'),(12,20,10,'asdasdasd','2025-07-22 17:24:15');
 /*!40000 ALTER TABLE `note` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +212,7 @@ CREATE TABLE `system_log` (
   PRIMARY KEY (`log_id`),
   KEY `system_log_user_user_id_fk` (`user_id`),
   CONSTRAINT `system_log_user_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +221,7 @@ CREATE TABLE `system_log` (
 
 LOCK TABLES `system_log` WRITE;
 /*!40000 ALTER TABLE `system_log` DISABLE KEYS */;
-INSERT INTO `system_log` VALUES (66,42,200,'For patient: 10','2025-08-04 11:18:28'),(67,42,201,'For patient 10','2025-08-04 11:24:09'),(68,42,201,'For patient 10','2025-08-04 11:24:11'),(69,42,201,'For patient 10','2025-08-04 11:24:14'),(70,42,4,NULL,'2025-08-04 11:29:43'),(71,42,4,NULL,'2025-08-04 11:33:22'),(72,42,200,'For patient: 10','2025-08-04 11:39:02'),(73,42,202,'For patient: 10, Medication ID: 22','2025-08-04 11:39:10'),(74,42,201,'For patient 10','2025-08-04 11:39:17'),(75,42,4,NULL,'2025-08-04 11:44:44'),(76,43,102,NULL,'2025-08-04 11:44:54'),(77,43,102,NULL,'2025-08-04 11:45:03'),(78,10,101,'Unassigned doctorId 11','2025-08-04 11:51:06'),(79,42,203,'Patient ID: 10','2025-08-04 11:51:06'),(80,10,100,'Assigned doctorId 15','2025-08-04 11:53:51'),(81,43,101,'Doctor ID: 15','2025-08-04 11:53:57'),(82,10,100,'Doctor ID: 11','2025-08-04 12:00:47'),(83,18,100,'Doctor ID: 11','2025-08-04 12:04:13'),(84,43,1,NULL,'2025-08-05 00:55:50');
+INSERT INTO `system_log` VALUES (66,42,200,'For patient: 10','2025-08-04 11:18:28'),(67,42,201,'For patient 10','2025-08-04 11:24:09'),(68,42,201,'For patient 10','2025-08-04 11:24:11'),(69,42,201,'For patient 10','2025-08-04 11:24:14'),(70,42,4,NULL,'2025-08-04 11:29:43'),(71,42,4,NULL,'2025-08-04 11:33:22'),(72,42,200,'For patient: 10','2025-08-04 11:39:02'),(73,42,202,'For patient: 10, Medication ID: 22','2025-08-04 11:39:10'),(74,42,201,'For patient 10','2025-08-04 11:39:17'),(75,42,4,NULL,'2025-08-04 11:44:44'),(76,43,102,NULL,'2025-08-04 11:44:54'),(77,43,102,NULL,'2025-08-04 11:45:03'),(78,10,101,'Unassigned doctorId 11','2025-08-04 11:51:06'),(79,42,203,'Patient ID: 10','2025-08-04 11:51:06'),(80,10,100,'Assigned doctorId 15','2025-08-04 11:53:51'),(81,43,101,'Doctor ID: 15','2025-08-04 11:53:57'),(82,10,100,'Doctor ID: 11','2025-08-04 12:00:47'),(83,18,100,'Doctor ID: 11','2025-08-04 12:04:13'),(84,43,1,NULL,'2025-08-05 00:55:50'),(85,43,1,NULL,'2025-08-05 05:02:42'),(86,42,1,NULL,'2025-08-05 05:02:46'),(87,43,1,NULL,'2025-08-05 05:58:14');
 /*!40000 ALTER TABLE `system_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,4 +298,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-08-04 11:00:21
+-- Dump completed on 2025-08-04 16:03:35

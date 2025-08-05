@@ -325,9 +325,8 @@ public class DoctorService {
                 Note note = new Note();
                 note.setId(rs.getInt("note_id"));
                 note.setContent(rs.getString("note_content"));
-                note.setPatientId(rs.getInt("patient_id"));
-                note.setDoctorId(rs.getInt("doctor_id"));
-                note.setCreatedAt(rs.getTimestamp("created_at"));
+                note.setUserId(rs.getInt("user_id"));
+                note.setTimestamp(rs.getTimestamp("created_at"));
                 notes.add(note);
             }
 
