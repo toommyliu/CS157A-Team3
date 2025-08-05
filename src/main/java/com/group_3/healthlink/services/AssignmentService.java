@@ -1,6 +1,8 @@
 package com.group_3.healthlink.services;
 
 import com.group_3.healthlink.DatabaseMgr;
+import com.group_3.healthlink.Doctor;
+import com.group_3.healthlink.Patient;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,7 +24,18 @@ public class AssignmentService {
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
 
-            System.out.println("Successfully assigned patient " + patientId + " to doctor " + doctorId);
+            if (rowsAffected > 0) {
+                // Create notification for doctor assignment
+                Patient patient = PatientService.getByPatientId(patientId);
+                Doctor doctor = DoctorService.getByDoctorId(doctorId);
+                
+                if (patient != null && doctor != null) {
+                    NotificationService.createDoctorAssignmentNotification(patient.getUserId(), doctor.getUserId(), true);
+                }
+                
+                System.out.println("Successfully assigned patient " + patientId + " to doctor " + doctorId);
+            }
+            
             return rowsAffected > 0;
         } catch (SQLException e) {
             System.err.println("Error assigning patient to doctor: " + e.getMessage());
@@ -41,6 +54,16 @@ public class AssignmentService {
 
             int rowsAffected = stmt.executeUpdate();
             stmt.close();
+
+            if (rowsAffected > 0) {
+                // Create notification for doctor removal
+                Patient patient = PatientService.getByPatientId(patientId);
+                Doctor doctor = DoctorService.getByDoctorId(doctorId);
+                
+                if (patient != null && doctor != null) {
+                    NotificationService.createDoctorAssignmentNotification(patient.getUserId(), doctor.getUserId(), false);
+                }
+            }
 
             return rowsAffected > 0;
         } catch (SQLException e) {
