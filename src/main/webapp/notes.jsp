@@ -188,7 +188,7 @@
             alert(
               result.success
                 ? 'Successfully created note'
-                : json?.error || 'Failed to create note'
+                : result?.error || 'Failed to create note'
             );
             if (result.success) location.reload();
           } catch (err) {
