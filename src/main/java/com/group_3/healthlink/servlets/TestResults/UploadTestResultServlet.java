@@ -6,6 +6,7 @@ import com.group_3.healthlink.UserRole;
 import com.group_3.healthlink.services.SystemLogService;
 import com.group_3.healthlink.services.TestResultService;
 import com.group_3.healthlink.services.PatientService;
+import com.group_3.healthlink.services.NotificationService;
 import com.group_3.healthlink.Patient;
 
 import jakarta.servlet.ServletException;
@@ -118,6 +119,13 @@ public class UploadTestResultServlet extends HttpServlet {
                     user.getUserId(),
                     SystemLogAction.UPLOAD_TEST_RESULT,
                     null
+                );
+
+                // Create notification for the doctor
+                NotificationService.createTestResultNotification(
+                    patient.getPatientId(),
+                    doctorId,
+                    fileName
                 );
 
                 resp.setStatus(HttpServletResponse.SC_OK);
