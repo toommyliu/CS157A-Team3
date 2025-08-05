@@ -7,6 +7,67 @@
 <head>
   <title>Healthlink - Patients</title>
   <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet" />
+  <style>
+    /* Enhanced tab styling */
+    .nav-tabs .nav-link {
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: #6c757d;
+      font-weight: 500;
+      padding: 0.75rem 1.5rem;
+      transition: all 0.2s ease;
+    }
+    
+    .nav-tabs .nav-link:hover {
+      border-color: transparent;
+      color: #495057;
+      background-color: rgba(0, 123, 255, 0.05);
+    }
+    
+    .nav-tabs .nav-link.active {
+      border-bottom: 2px solid #0d6efd;
+      color: #0d6efd;
+      background-color: transparent;
+    }
+    
+    .nav-tabs .nav-link.active:hover {
+      border-bottom: 2px solid #0d6efd;
+      color: #0d6efd;
+    }
+    
+    /* Card styling for medications */
+    .medication-card {
+      transition: all 0.2s ease;
+      border: 1px solid #dee2e6;
+    }
+    
+    .medication-card:hover {
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+      border-color: #adb5bd;
+    }
+    
+    /* Tab content animation */
+    .tab-pane {
+      transition: opacity 0.15s linear;
+    }
+    
+    .tab-pane.fade {
+      opacity: 0;
+    }
+    
+    .tab-pane.fade.show {
+      opacity: 1;
+    }
+    
+    /* Empty state styling */
+    .empty-state {
+      padding: 3rem 1rem;
+    }
+    
+    .empty-state i {
+      opacity: 0.5;
+    }
+  </style>
 </head>
 <body>
   <% User user = (User)session.getAttribute("user"); %>
@@ -146,7 +207,8 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-8">
+                  <!-- Personal Information Card -->
+                  <div class="col-10">
                     <div class="card mb-4">
                       <div class="card-header">
                         <h5 class="card-title mb-0">Personal Information</h5>
@@ -158,22 +220,20 @@
                             <p><strong>User ID:</strong> <%= patient.getUserId() %></p>
                             <p><strong>Full Name:</strong> <%= patient.getFullName() != null ? patient.getFullName() : "N/A" %></p>
                             <p><strong>Email:</strong> <%= patient.getEmailAddress() != null ? patient.getEmailAddress() : "N/A" %></p>
-                            <p><strong>Date of Birth:</strong> <%= patient.getDateOfBirth() != null ? patient.getDateOfBirth() : "N/A" %></p>
                           </div>
                           <div class="col-md-6">
                             <p><strong>Phone Number:</strong> <%= patient.getPhoneNumber() != null ? patient.getPhoneNumber() : "N/A" %></p>
                             <p><strong>Address:</strong> <%= patient.getAddress() != null ? patient.getAddress() : "N/A" %></p>
+                            <p><strong>Date of Birth:</strong> <%= patient.getDateOfBirth() != null ? patient.getDateOfBirth() : "N/A" %></p>
                             <p><strong>Member Since:</strong> <%= patient.getCreatedAt() != null ? patient.getCreatedAt() : "N/A" %></p>
                           </div>
                         </div>
-                      </div>
-                    </div>
-
-                    <div class="card mb-4">
-                      <div class="card-header">
-                        <h5 class="card-title mb-0">Emergency Contact</h5>
-                      </div>
-                      <div class="card-body">
+                        
+                        <!-- Emergency Contact Section -->
+                        <hr class="my-4">
+                        <h6 class="text-muted mb-3">
+                          <i class="bi bi-exclamation-triangle me-2"></i>Emergency Contact
+                        </h6>
                         <div class="row">
                           <div class="col-md-6">
                             <p><strong>Name:</strong> <%= patient.getEmergencyContactName() != null ? patient.getEmergencyContactName() : "N/A" %></p>
@@ -186,50 +246,146 @@
                     </div>
                   </div>
 
-                  <div class="col-md-4">
+                  <!-- Tabbed Content Section -->
+                  <div class="col-10">
                     <div class="card">
-                      <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">Medications</h5>
-                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMedicationModal">
-                          Add Medication
-                        </button>
+                      <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="patientTabs" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="medications-tab" data-bs-toggle="tab" data-bs-target="#medications" type="button" role="tab" aria-controls="medications" aria-selected="true">
+                              <i class="bi bi-capsule-pill me-2"></i>Medications
+                            </button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="test-results-tab" data-bs-toggle="tab" data-bs-target="#test-results" type="button" role="tab" aria-controls="test-results" aria-selected="false">
+                              <i class="bi bi-file-earmark-medical me-2"></i>Test Results
+                            </button>
+                          </li>
+                        </ul>
                       </div>
                       <div class="card-body">
-                        <% if (medications != null && !medications.isEmpty()) { %>
-                          <% for (Medication medication : medications) { %>
-                            <div class="border-bottom pb-2 mb-2">
-                              <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                  <p class="mb-1"><strong><%= medication.getName() %></strong></p>
-                                  <p class="text-muted small mb-1">Dosage: <%= medication.getDosage() %></p>
-                                  <p class="text-muted small mb-1">Frequency: <%= medication.getFrequency() %></p>
-                                  <% if (medication.getNotes() != null && !medication.getNotes().trim().isEmpty()) { %>
-                                    <p class="text-muted small mb-0">Notes: <%= medication.getNotes() %></p>
-                                  <% } %>
-                                </div>
-                                <div class="btn-group btn-group-sm">
-                                  <button class="btn btn-outline-primary edit-medication-btn"
-                                          data-id="<%= medication.getId() %>"
-                                          data-name="<%= medication.getName() %>"
-                                          data-dosage="<%= medication.getDosage() %>"
-                                          data-frequency="<%= medication.getFrequency() %>"
-                                          data-notes="<%= medication.getNotes() != null ? medication.getNotes() : "" %>"
-                                          data-bs-toggle="modal"
-                                          data-bs-target="#editMedicationModal">
-                                    Edit
-                                  </button>
-                                  <button class="btn btn-outline-danger delete-medication-btn"
-                                          data-id="<%= medication.getId() %>"
-                                          data-name="<%= medication.getName() %>">
-                                    Delete
-                                  </button>
-                                </div>
-                              </div>
+                        <div class="tab-content" id="patientTabsContent">
+                          <!-- Medications Tab -->
+                          <div class="tab-pane fade show active" id="medications" role="tabpanel" aria-labelledby="medications-tab">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                              <h6 class="mb-0">Patient Medications</h6>
+                              <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMedicationModal">
+                                <i class="bi bi-plus-circle me-1"></i>Add Medication
+                              </button>
                             </div>
-                          <% } %>
-                        <% } else { %>
-                          <p class="text-muted">No medications prescribed for this patient.</p>
-                        <% } %>
+                            <% if (medications != null && !medications.isEmpty()) { %>
+                              <div class="medication-list">
+                                <% for (Medication medication : medications) { %>
+                                  <div class="card border mb-3">
+                                    <div class="card-body">
+                                      <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                          <h6 class="card-title mb-2"><%= medication.getName() %></h6>
+                                          <p class="text-muted small mb-1">
+                                            <i class="bi bi-capsule me-1"></i>Dosage: <%= medication.getDosage() %>
+                                          </p>
+                                          <p class="text-muted small mb-1">
+                                            <i class="bi bi-clock me-1"></i>Frequency: <%= medication.getFrequency() %>
+                                          </p>
+                                          <% if (medication.getNotes() != null && !medication.getNotes().trim().isEmpty()) { %>
+                                            <p class="text-muted small mb-0">
+                                              <i class="bi bi-sticky me-1"></i>Notes: <%= medication.getNotes() %>
+                                            </p>
+                                          <% } %>
+                                        </div>
+                                        <div class="btn-group ms-2">
+                                          <button class="btn btn-outline-primary edit-medication-btn"
+                                                  data-id="<%= medication.getId() %>"
+                                                  data-name="<%= medication.getName() %>"
+                                                  data-dosage="<%= medication.getDosage() %>"
+                                                  data-frequency="<%= medication.getFrequency() %>"
+                                                  data-notes="<%= medication.getNotes() != null ? medication.getNotes() : "" %>"
+                                                  data-bs-toggle="modal"
+                                                  data-bs-target="#editMedicationModal"
+                                                  title="Edit Medication">
+                                            <i class="bi bi-pencil me-1"></i>
+                                          </button>
+                                          <button class="btn btn-outline-danger delete-medication-btn"
+                                                  data-id="<%= medication.getId() %>"
+                                                  data-name="<%= medication.getName() %>"
+                                                  title="Delete Medication">
+                                            <i class="bi bi-trash me-1"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                <% } %>
+                              </div>
+                            <% } else { %>
+                              <div class="text-center py-4">
+                                <i class="bi bi-capsule-pill text-muted" style="font-size: 3rem;"></i>
+                                <h6 class="text-muted mt-3">No medications prescribed</h6>
+                                <p class="text-muted small">This patient hasn't been prescribed any medications yet.</p>
+                              </div>
+                            <% } %>
+                          </div>
+
+                          <!-- Test Results Tab -->
+                          <div class="tab-pane fade" id="test-results" role="tabpanel" aria-labelledby="test-results-tab">
+                            <%
+                            List<TestResult> testResults = (List<TestResult>) request.getAttribute("testResults");
+                            %>
+                            <% if (testResults != null && !testResults.isEmpty()) { %>
+                              <div class="table-responsive">
+                                <table class="table table-hover">
+                                  <thead class="table-light">
+                                    <tr>
+                                      <th>File Name</th>
+                                      <th>Type</th>
+                                      <th>Description</th>
+                                      <th>Upload Date</th>
+                                      <th>Actions</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <% for (TestResult result : testResults) { %>
+                                      <tr>
+                                        <td>
+                                          <div class="d-flex align-items-center">
+                                            <i class="bi bi-file-earmark-<%= result.isPdf() ? "pdf" : "image" %> text-<%= result.isPdf() ? "danger" : "info" %> me-2"></i>
+                                            <span class="fw-medium"><%= result.getFileName() %></span>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <span class="badge bg-<%= result.isPdf() ? "danger" : "info" %>">
+                                            <%= result.getFileType().toUpperCase() %>
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <% if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) { %>
+                                            <%= result.getDescription() %>
+                                          <% } else { %>
+                                            <span class="text-muted fst-italic">No description</span>
+                                          <% } %>
+                                        </td>
+                                        <td><%= result.getUploadDate() %></td>
+                                        <td>
+                                          <a href="<%= request.getContextPath() %>/test-results/download/<%= result.getResultId() %>"
+                                             class="btn btn-outline-primary btn-sm"
+                                             title="Download Test Result">
+                                            <i class="bi bi-download"></i>
+                                          </a>
+                                        </td>
+                                      </tr>
+                                    <% } %>
+                                  </tbody>
+                                </table>
+                              </div>
+                            <% } else { %>
+                              <div class="text-center py-4">
+                                <i class="bi bi-file-earmark-medical text-muted" style="font-size: 3rem;"></i>
+                                <h6 class="text-muted mt-3">No test results found</h6>
+                                <p class="text-muted small">This patient hasn't uploaded any test results yet.</p>
+                              </div>
+                            <% } %>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -307,75 +463,7 @@
                   </div>
                 </div>
 
-                <!-- Test Results Section -->
-                <%
-                List<TestResult> testResults = (List<TestResult>) request.getAttribute("testResults");
-                if (patient != null) {
-                %>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5 class="card-title mb-0">
-                          <i class="bi bi-file-earmark-medical"></i> Test Results
-                        </h5>
-                      </div>
-                      <div class="card-body">
-                        <% if (testResults != null && !testResults.isEmpty()) { %>
-                          <div class="table-responsive">
-                            <table class="table table-striped">
-                              <thead>
-                                <tr>
-                                  <th>File Name</th>
-                                  <th>Type</th>
-                                  <th>Description</th>
-                                  <th>Upload Date</th>
-                                  <th>Actions</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <% for (TestResult result : testResults) { %>
-                                  <tr>
-                                    <td>
-                                      <i class="bi bi-file-earmark-<%= result.isPdf() ? "pdf" : "image" %> text-<%= result.isPdf() ? "danger" : "info" %> me-2"></i>
-                                      <%= result.getFileName() %>
-                                    </td>
-                                    <td>
-                                      <span class="badge bg-<%= result.isPdf() ? "danger" : "info" %>">
-                                        <%= result.getFileType().toUpperCase() %>
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <% if (result.getDescription() != null && !result.getDescription().trim().isEmpty()) { %>
-                                        <%= result.getDescription() %>
-                                      <% } else { %>
-                                        <span class="text-muted">No description</span>
-                                      <% } %>
-                                    </td>
-                                    <td><%= result.getUploadDate() %></td>
-                                    <td>
-                                      <a href="<%= request.getContextPath() %>/test-results/download/<%= result.getResultId() %>"
-                                         class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-download"></i> Download
-                                      </a>
-                                    </td>
-                                  </tr>
-                                <% } %>
-                              </tbody>
-                            </table>
-                          </div>
-                        <% } else { %>
-                          <div class="text-center py-4">
-                            <i class="bi bi-file-earmark-medical text-muted" style="font-size: 3rem;"></i>
-                            <h6 class="text-muted mt-3">No test results found</h6>
-                            <p class="text-muted small">This patient hasn't uploaded any test results yet.</p>
-                          </div>
-                        <% } %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <% } %>
+
               </div>
             <% } else { %>
               <div class="main-content">
@@ -398,6 +486,36 @@
         console.warn('Bootstrap is not loaded');
         return;
       }
+
+      // Enhanced tab functionality
+      const tabButtons = document.querySelectorAll('#patientTabs .nav-link');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          // Remove active class from all tabs
+          tabButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-selected', 'false');
+          });
+          
+          // Add active class to clicked tab
+          this.classList.add('active');
+          this.setAttribute('aria-selected', 'true');
+          
+          // Hide all tab panes
+          tabPanes.forEach(pane => {
+            pane.classList.remove('show', 'active');
+          });
+          
+          // Show the target tab pane
+          const targetId = this.getAttribute('data-bs-target');
+          const targetPane = document.querySelector(targetId);
+          if (targetPane) {
+            targetPane.classList.add('show', 'active');
+          }
+        });
+      });
 
       const addMedicationForm = document.querySelector('#addMedicationForm');
       const addMedicationModalElement = document.getElementById('addMedicationModal');
