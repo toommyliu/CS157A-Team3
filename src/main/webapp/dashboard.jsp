@@ -59,7 +59,7 @@
                 <div class="card">
                   <div class="card-body text-center">
                     <h5 class="card-title">View Notes</h5>
-                    <p class="card-text">Read and write patient notes</p>
+                    <p class="card-text">Read your private notes</p>
                     <a href="<%= request.getContextPath() %>/notes" class="btn btn-primary">View Notes</a>
                   </div>
                 </div>
@@ -91,7 +91,7 @@
                 <div class="card">
                   <div class="card-body text-center">
                     <h5 class="card-title">View Notes</h5>
-                    <p class="card-text">Read notes from your doctors</p>
+                    <p class="card-text">Read your private notes</p>
                     <a href="<%= request.getContextPath() %>/notes" class="btn btn-primary">View Notes</a>
                   </div>
                 </div>
