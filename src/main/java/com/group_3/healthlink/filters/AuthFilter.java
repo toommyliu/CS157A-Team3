@@ -42,7 +42,7 @@ public class AuthFilter implements Filter {
     }
 
     // Require patients to fill out additional
-    // onboarding informatino before continuing authentication flow
+    // onboarding information before continuing authentication flow
     boolean isOnboarded = AuthService.isUserOnboarded(user.getUserId()) || user.isAdmin();
     if (!isOnboarded) {
       httpRequest.setAttribute("user", user);
