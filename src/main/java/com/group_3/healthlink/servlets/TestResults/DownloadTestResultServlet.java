@@ -2,7 +2,6 @@ package com.group_3.healthlink.servlets.TestResults;
 
 import com.group_3.healthlink.SystemLogAction;
 import com.group_3.healthlink.User;
-import com.group_3.healthlink.UserRole;
 import com.group_3.healthlink.TestResult;
 import com.group_3.healthlink.services.SystemLogService;
 import com.group_3.healthlink.services.TestResultService;
@@ -39,7 +38,7 @@ public class DownloadTestResultServlet extends HttpServlet {
             }
 
             int resultId = Integer.parseInt(pathInfo.substring(1));
-            
+
             // Get the test result
             TestResult result = TestResultService.getTestResultById(resultId);
             if (result == null) {
@@ -67,10 +66,9 @@ public class DownloadTestResultServlet extends HttpServlet {
             }
 
             SystemLogService.createNew(
-                user.getUserId(),
-                SystemLogAction.DOWNLOAD_TEST_RESULT,
-                "Test Result ID: " + resultId
-            );
+                    user.getUserId(),
+                    SystemLogAction.DOWNLOAD_TEST_RESULT,
+                    "Test Result ID: " + resultId);
         } catch (NumberFormatException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             resp.getWriter().write("Invalid result ID");
@@ -96,4 +94,4 @@ public class DownloadTestResultServlet extends HttpServlet {
                 return "application/octet-stream";
         }
     }
-} 
+}

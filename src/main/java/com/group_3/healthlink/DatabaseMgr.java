@@ -13,7 +13,6 @@ public class DatabaseMgr {
 
     public DatabaseMgr() {
         try {
-            // Use the new MySQL driver
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             System.out.println("Could not load JDBC driver. Is it in the classpath?");
@@ -21,18 +20,21 @@ public class DatabaseMgr {
         }
     }
 
-    // Connects to the database.
+    /**
+     * Creates a new database connection.
+     */
     private void createDbConnection() {
         try {
             if (this.connection != null && !this.connection.isClosed()) {
                 this.connection.close();
             }
-            
+
             this.connection = DriverManager.getConnection(
-                    String.format("jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC", DB_NAME),
+                    String.format(
+                            "jdbc:mysql://localhost:3306/%s?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
+                            DB_NAME),
                     DB_USERNAME,
-                    DB_PASSWORD
-            );
+                    DB_PASSWORD);
             System.out.println("Connected to the database successfully!");
         } catch (Exception e) {
             System.err.println("Could not connect to the database.");
@@ -40,7 +42,11 @@ public class DatabaseMgr {
         }
     }
 
-    // Returns the database connection.
+    /**
+     * Retrieves the current database connection.
+     *
+     * @return the current database connection
+     */
     public java.sql.Connection getConnection() {
         try {
             // Check if connection is null, closed, or invalid
@@ -52,19 +58,27 @@ public class DatabaseMgr {
             System.err.println("Error checking connection validity: " + e.getMessage());
             createDbConnection();
         }
-        
+
         return this.connection;
     }
 
-    // Returns the singleton instance of DatabaseMgr.
+    /**
+     * Gets the singleton instance of DatabaseMgr.
+     *
+     * @return the singleton instance of DatabaseMgr
+     */
     public static DatabaseMgr getInstance() {
         if (instance == null) {
             instance = new DatabaseMgr();
         }
         return instance;
     }
-    
-    // Close the connection (useful for cleanup)
+
+    /**
+     * Closes the current database connection.
+     *
+     * @return void
+     */
     public void closeConnection() {
         try {
             if (this.connection != null && !this.connection.isClosed()) {

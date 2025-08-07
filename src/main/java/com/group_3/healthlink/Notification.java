@@ -10,17 +10,15 @@ public class Notification {
     private Timestamp timestamp;
     private boolean isRead;
     private String type;
-    
-    // Additional fields for display
+
     private String senderName;
     private String receiverName;
 
-    // Default constructor
-    public Notification() {}
+    public Notification() {
+    }
 
-    // Constructor with all fields
-    public Notification(int notificationId, int senderId, int receiverId, String message, 
-                       Timestamp timestamp, boolean isRead, String type) {
+    public Notification(int notificationId, int senderId, int receiverId, String message,
+            Timestamp timestamp, boolean isRead, String type) {
         this.notificationId = notificationId;
         this.senderId = senderId;
         this.receiverId = receiverId;
@@ -40,7 +38,6 @@ public class Notification {
         this.isRead = false; // New notifications are unread by default
     }
 
-    // Getters and Setters
     public int getNotificationId() {
         return notificationId;
     }
@@ -125,4 +122,4 @@ public class Notification {
                 ", type='" + type + '\'' +
                 '}';
     }
-} 
+}

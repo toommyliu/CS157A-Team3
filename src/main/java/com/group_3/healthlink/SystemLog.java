@@ -3,9 +3,6 @@ package com.group_3.healthlink;
 public class SystemLog {
   private int logId;
 
-  /**
-   * The userId of the user who performed the action.
-   */
   private int userId;
 
   private SystemLogAction action;

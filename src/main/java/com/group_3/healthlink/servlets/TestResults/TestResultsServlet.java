@@ -36,7 +36,7 @@ public class TestResultsServlet extends HttpServlet {
             // Check if a specific patient is requested (for doctors)
             String patientIdParam = req.getParameter("patientId");
             Integer selectedPatientId = null;
-            
+
             if (patientIdParam != null && !patientIdParam.trim().isEmpty()) {
                 try {
                     selectedPatientId = Integer.parseInt(patientIdParam);
@@ -45,11 +45,11 @@ public class TestResultsServlet extends HttpServlet {
                     // Invalid patient ID, ignore
                 }
             }
-            
+
             // Check if a specific doctor is requested (for patients)
             String doctorIdParam = req.getParameter("doctorId");
             Integer selectedDoctorId = null;
-            
+
             if (doctorIdParam != null && !doctorIdParam.trim().isEmpty()) {
                 try {
                     selectedDoctorId = Integer.parseInt(doctorIdParam);
@@ -58,11 +58,11 @@ public class TestResultsServlet extends HttpServlet {
                     // Invalid doctor ID, ignore
                 }
             }
-            
+
             if (userRole == UserRole.Patient) {
                 // Get patient's own test results
                 int patientId = PatientService.getByUserId(user.getUserId()).getPatientId();
-                
+
                 if (selectedDoctorId != null) {
                     // Get test results for specific doctor
                     testResults = TestResultService.getTestResultsByPatientAndDoctor(patientId, selectedDoctorId);
@@ -72,7 +72,7 @@ public class TestResultsServlet extends HttpServlet {
                 }
             } else if (userRole == UserRole.Doctor) {
                 int doctorId = DoctorService.getByUserId(user.getUserId()).getDoctorId();
-                
+
                 if (selectedPatientId != null) {
                     // Get test results for specific patient
                     testResults = TestResultService.getTestResultsByPatientId(selectedPatientId);
@@ -80,13 +80,11 @@ public class TestResultsServlet extends HttpServlet {
                     // Get all test results for doctor's patients
                     testResults = TestResultService.getTestResultsByDoctorId(doctorId);
                 }
-                
+
                 // Get patient summary for doctor overview
                 List<TestResultService.PatientTestSummary> patientSummaries = TestResultService.getPatientTestSummaryForDoctor(doctorId);
                 req.setAttribute("patientSummaries", patientSummaries);
             } else if (userRole == UserRole.Admin) {
-                // Admin can see all test results (we'll implement this later)
-                // For now, redirect to dashboard
                 resp.sendRedirect(req.getContextPath() + "/dashboard");
                 return;
             }
@@ -101,4 +99,4 @@ public class TestResultsServlet extends HttpServlet {
             req.getRequestDispatcher("/test-results.jsp").forward(req, resp);
         }
     }
-} 
+}

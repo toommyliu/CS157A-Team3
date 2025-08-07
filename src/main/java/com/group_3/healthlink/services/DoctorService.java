@@ -15,6 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoctorService {
+    /**
+     * Gets a Doctor by their user ID.
+     *
+     * @param userId the user ID
+     * @return the Doctor object, or null if not found
+     */
     public static Doctor getByUserId(int userId) {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT d.doctor_id, d.department, d.user_id, " +
@@ -43,6 +49,12 @@ public class DoctorService {
         }
     }
 
+    /**
+     * Gets a Doctor by their doctor ID.
+     *
+     * @param doctorId the doctor ID
+     * @return the Doctor object, or null if not found
+     */
     public static Doctor getByDoctorId(int doctorId) {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT d.doctor_id, d.department, d.user_id, " +
@@ -72,6 +84,12 @@ public class DoctorService {
         }
     }
 
+    /**
+     * Gets a list of patients assigned to a doctor.
+     *
+     * @param doctorId the doctor ID
+     * @return an array of Patient objects
+     */
     public static Patient[] getPatients(int doctorId) {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT p.patient_id, p.date_of_birth, p.phone_number, p.address, " +
@@ -115,6 +133,11 @@ public class DoctorService {
         }
     }
 
+    /**
+     * Gets all doctors in the system.
+     *
+     * @return an array of Doctor objects
+     */
     public static Doctor[] getAll() {
         Connection con = DatabaseMgr.getInstance().getConnection();
 
@@ -142,6 +165,12 @@ public class DoctorService {
         }
     }
 
+    /***
+     * Gets a list of doctors by their department.
+     *
+     * @param department the department to filter by
+     * @return an array of Doctor objects
+     */
     public static Doctor[] getByDepartment(String department) {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "SELECT d.doctor_id, d.department, d.user_id, " +
@@ -170,6 +199,13 @@ public class DoctorService {
         }
     }
 
+    /**
+     * Creates a new Doctor in the database.
+     *
+     * @param userId     the user ID of the doctor
+     * @param department the department of the doctor
+     * @return true if the doctor was created successfully, false otherwise
+     */
     public static boolean createNew(int userId, String department) {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query = "INSERT INTO doctor (department, user_id) VALUES (?, ?)";
@@ -190,8 +226,9 @@ public class DoctorService {
     }
 
     /**
-     * Updates the record of a doctor in the database.
-     * @param doctorId The doctor id
+     * Updates a Doctor in the database.
+     *
+     * @param doctorId   The doctor id
      * @param department The new department of the doctor
      * @return Whether the update was successful or not.
      */
@@ -216,17 +253,18 @@ public class DoctorService {
 
     /**
      * Updates the user information for a doctor.
-     * @param userId The user id
+     *
+     * @param userId    The user id
      * @param firstName The new first name
-     * @param lastName The new last name
-     * @param email The new email
-     * @param password The new password (optional, only if not null/empty)
+     * @param lastName  The new last name
+     * @param email     The new email
+     * @param password  The new password (optional, only if not null/empty)
      * @return Whether the update was successful or not.
      */
     public static boolean updateUser(int userId, String firstName, String lastName, String email, String password) {
         Connection con = DatabaseMgr.getInstance().getConnection();
         String query;
-        
+
         if (password != null && !password.trim().isEmpty()) {
             query = "UPDATE user SET first_name = ?, last_name = ?, email_address = ?, password = ? WHERE user_id = ?";
         } else {
@@ -238,7 +276,7 @@ public class DoctorService {
             stmt.setString(1, firstName);
             stmt.setString(2, lastName);
             stmt.setString(3, email);
-            
+
             if (password != null && !password.trim().isEmpty()) {
                 stmt.setString(4, password);
                 stmt.setInt(5, userId);
@@ -258,33 +296,34 @@ public class DoctorService {
 
     /**
      * Deletes a doctor and their associated user account.
+     *
      * @param doctorId The doctor id
-     * @param userId The user id
+     * @param userId   The user id
      * @return Whether the deletion was successful or not.
      */
     public static boolean deleteDoctor(int doctorId, int userId) {
         Connection con = DatabaseMgr.getInstance().getConnection();
-        
+
         try {
             con.setAutoCommit(false);
-            
+
             // First delete the doctor record
             String deleteDoctorQuery = "DELETE FROM doctor WHERE doctor_id = ?";
             PreparedStatement deleteDoctorStmt = con.prepareStatement(deleteDoctorQuery);
             deleteDoctorStmt.setInt(1, doctorId);
             int doctorRowsAffected = deleteDoctorStmt.executeUpdate();
             deleteDoctorStmt.close();
-            
+
             // Then delete the user record
             String deleteUserQuery = "DELETE FROM user WHERE user_id = ?";
             PreparedStatement deleteUserStmt = con.prepareStatement(deleteUserQuery);
             deleteUserStmt.setInt(1, userId);
             int userRowsAffected = deleteUserStmt.executeUpdate();
             deleteUserStmt.close();
-            
+
             con.commit();
             con.setAutoCommit(true);
-            
+
             return doctorRowsAffected > 0 && userRowsAffected > 0;
         } catch (SQLException e) {
             try {
@@ -298,6 +337,13 @@ public class DoctorService {
         }
     }
 
+    /**
+     * Helper method to get a Doctor object from a ResultSet.
+     *
+     * @param rs the ResultSet to extract data from
+     * @return a Doctor object populated with data from the ResultSet
+     * @throws SQLException if an SQL error occurs
+     */
     private static Doctor getDoctor(ResultSet rs) throws SQLException {
         Doctor doctor = new Doctor();
         doctor.setDoctorId(rs.getInt("doctor_id"));

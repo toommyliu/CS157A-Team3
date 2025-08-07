@@ -7,7 +7,6 @@
 <head>
     <title>Healthlink - Notifications</title>
     <link href="css/styles.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
 <body>
     <%
@@ -172,7 +171,6 @@
                         }
                     });
                     
-                    // Update notification count in sidebar
                     updateNotificationCount();
                     
                     // Hide the "Mark All as Read" button
@@ -214,7 +212,6 @@
                         location.reload(); // Reload to show "No notifications" message
                     }
                     
-                    // Update notification count in sidebar
                     updateNotificationCount();
                 } else {
                     alert('Error: ' + (data.error || 'Failed to delete notification'));
@@ -227,9 +224,6 @@
         }
         
         function updateNotificationCount() {
-            // This function would update the notification count in the sidebar
-            // For now, we'll just reload the page to update the count
-            // In a real implementation, you might want to make an AJAX call to get the updated count
             setTimeout(() => {
                 location.reload();
             }, 1000);

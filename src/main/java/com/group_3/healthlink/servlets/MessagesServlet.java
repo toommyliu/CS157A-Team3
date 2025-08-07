@@ -13,7 +13,7 @@ public class MessagesServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pathInfo = request.getPathInfo();
-        
+
         if (pathInfo != null && pathInfo.length() > 1) {
             // Extract user ID from URL like /messages/123
             String userIdStr = pathInfo.substring(1); // Remove the leading "/"
@@ -24,7 +24,7 @@ public class MessagesServlet extends HttpServlet {
                 // Invalid user ID, ignore and show default messages page
             }
         }
-        
+
         request.getRequestDispatcher("/messages.jsp").forward(request, response);
     }
 }

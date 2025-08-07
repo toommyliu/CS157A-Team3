@@ -30,6 +30,13 @@ public class AuthService {
         return BCrypt.withDefaults().hashToString(BCRYPT_ROUNDS, password.toCharArray());
     }
 
+    /**
+     * Verifies a password against a hashed password.
+     *
+     * @param password       the password to verify
+     * @param hashedPassword the hashed password to verify against
+     * @return true if the password is valid, false otherwise
+     */
     public static boolean verifyPassword(String password, String hashedPassword) {
         BCrypt.Result result = BCrypt.verifyer().verify(
                 password.toCharArray(),
@@ -37,6 +44,16 @@ public class AuthService {
         return result.verified;
     }
 
+    /**
+     * Registers a new user.
+     *
+     * @param firstName    the user's first name
+     * @param lastName     the user's last name
+     * @param emailAddress the user's email address
+     * @param password     the user's password
+     * @param role         the user's role
+     * @return the ID of the newly registered user, or -1 if registration failed
+     */
     public static int registerUser(
             String firstName,
             String lastName,
@@ -140,6 +157,12 @@ public class AuthService {
         }
     }
 
+    /**
+     * Whether a user has completed the onboarding process.
+     *
+     * @param userId the user's ID
+     * @return true if the user is onboarded, false otherwise
+     */
     public static boolean isUserOnboarded(int userId) {
         Connection con = DatabaseMgr.getInstance().getConnection();
 
@@ -165,6 +188,12 @@ public class AuthService {
         }
     }
 
+    /**
+     * Checks if an email address is already registered.
+     *
+     * @param email the email address to check
+     * @return true if the email is registered, false otherwise
+     */
     public static boolean isEmailRegistered(String email) {
         Connection con = DatabaseMgr.getInstance().getConnection();
 
@@ -190,8 +219,23 @@ public class AuthService {
         }
     }
 
-    // Admin updating a Doctor's User entity
-    public static boolean updateUser(int userId, String firstName, String lastName, String emailAddress, String password) {
+    /**
+     * Updates a user's information. This method is specific for Admin updating a
+     * Doctor's User model.
+     *
+     * @param userId       the ID of the user to update
+     * @param firstName    the user's first name to update to. If null, the field
+     *                     will not be updated.
+     * @param lastName     the user's last name to update to. If null, the field
+     *                     will not be updated.
+     * @param emailAddress the user's email address to update to. If null, the field
+     *                     will not be updated.
+     * @param password     the user's password to update to. If null, the field will
+     *                     not be updated.
+     * @return true if the update was successful, false otherwise
+     */
+    public static boolean updateUser(int userId, String firstName, String lastName, String emailAddress,
+            String password) {
         Connection con = DatabaseMgr.getInstance().getConnection();
 
         StringBuilder queryBuilder = new StringBuilder("UPDATE user SET ");
@@ -207,21 +251,24 @@ public class AuthService {
             }
 
             if (lastName != null) {
-                if (hasUpdates) queryBuilder.append(", ");
+                if (hasUpdates)
+                    queryBuilder.append(", ");
                 queryBuilder.append("last_name = ?");
                 parameters.add(lastName);
                 hasUpdates = true;
             }
 
             if (emailAddress != null) {
-                if (hasUpdates) queryBuilder.append(", ");
+                if (hasUpdates)
+                    queryBuilder.append(", ");
                 queryBuilder.append("email_address = ?");
                 parameters.add(emailAddress);
                 hasUpdates = true;
             }
 
             if (password != null) {
-                if (hasUpdates) queryBuilder.append(", ");
+                if (hasUpdates)
+                    queryBuilder.append(", ");
                 queryBuilder.append("password_hashed = ?");
                 parameters.add(hashPassword(password));
                 hasUpdates = true;
@@ -249,6 +296,15 @@ public class AuthService {
         }
     }
 
+    /**
+     * Updates a user's profile information.
+     *
+     * @param userId       the ID of the user to update
+     * @param firstName    the user's new first name
+     * @param lastName     the user's new last name
+     * @param emailAddress the user's new email address
+     * @return true if the update was successful, false otherwise
+     */
     public static boolean updateUserProfile(int userId, String firstName, String lastName, String emailAddress) {
         Connection con = DatabaseMgr.getInstance().getConnection();
 
@@ -270,6 +326,15 @@ public class AuthService {
         }
     }
 
+    /**
+     * Helper method to build a User object from a ResultSet.
+     *
+     * @param stmt the PreparedStatement
+     * @param rs   the ResultSet
+     * @param id   the ID of the user
+     * @return the User object
+     * @throws SQLException if an error occurs while accessing the database
+     */
     private static User getUser(PreparedStatement stmt, ResultSet rs, int id) throws SQLException {
         String emailAddress = rs.getString("email_address");
         String passwordHashed = rs.getString("password_hashed");
@@ -310,6 +375,12 @@ public class AuthService {
         return user;
     }
 
+    /**
+     * Ensures that the user is authenticated for the request.
+     *
+     * @param request the HTTP request
+     * @return the authenticated User object, or null if authentication fails
+     */
     public static User ensureAuthenticated(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         if (user != null)
@@ -332,6 +403,12 @@ public class AuthService {
         return null;
     }
 
+    /**
+     * Helper method to get the user ID from a cookie in the request.
+     *
+     * @param request the HTTP request
+     * @return the user ID as a String, or null if not found
+     */
     private static String getUserIdFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

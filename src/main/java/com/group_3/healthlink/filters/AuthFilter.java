@@ -41,6 +41,8 @@ public class AuthFilter implements Filter {
       return;
     }
 
+    // Require patients to fill out additional
+    // onboarding informatino before continuing authentication flow
     boolean isOnboarded = AuthService.isUserOnboarded(user.getUserId()) || user.isAdmin();
     if (!isOnboarded) {
       httpRequest.setAttribute("user", user);
@@ -54,10 +56,22 @@ public class AuthFilter implements Filter {
     chain.doFilter(request, response);
   }
 
+  /**
+   * Checks if the route is public and does not require authentication.
+   *
+   * @param pathToRoute the path to the route
+   * @return true if the route is public, false otherwise
+   */
   private boolean isPublicRoute(String pathToRoute) {
     return PUBLIC_ROUTES.contains(pathToRoute) || pathToRoute.isEmpty();
   }
 
+  /**
+   * Checks if the route is a static resource that does not require authentication
+   *
+   * @param pathToRoute the path to the route
+   * @return true if the route is a static resource, false otherwise
+   */
   private boolean isStaticResource(String pathToRoute) {
     return pathToRoute.startsWith("/css/") ||
         pathToRoute.startsWith("/js/") ||

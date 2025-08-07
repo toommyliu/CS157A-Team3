@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class SystemLogService {
   /**
    * Create a new system log entry.
+   *
    * @param userId the ID of the user who performed the action
    * @param action the action performed by the user
    * @param detail additional details about the action
@@ -53,6 +54,12 @@ public class SystemLogService {
     }
   }
 
+  /**
+   * Retrieves a SystemLog by its ID.
+   *
+   * @param systemLogId the ID of the system log to retrieve
+   * @return the SystemLog object if found, null otherwise
+   */
   public static SystemLog getById(int systemLogId) {
     Connection con = DatabaseMgr.getInstance().getConnection();
     String query = "SELECT * FROM system_log WHERE log_id = ?";
@@ -79,6 +86,11 @@ public class SystemLogService {
     }
   }
 
+  /**
+   * Retrieves all system logs from the database.
+   *
+   * @return a list of SystemLog objects, or an empty list if no logs are found
+   */
   public static List<SystemLog> getAll() {
     Connection con = DatabaseMgr.getInstance().getConnection();
     String query = "SELECT * FROM system_log ORDER BY timestamp DESC";
@@ -102,18 +114,31 @@ public class SystemLogService {
     }
   }
 
+  /**
+   * Retrieves a SystemLog object from the ResultSet.
+   *
+   * @param rs the ResultSet containing system log data
+   * @return a SystemLog object populated with data from the ResultSet
+   * @throws SQLException if an error occurs while accessing the ResultSet
+   */
   private static SystemLog getSystemLog(ResultSet rs) throws SQLException {
     SystemLog log = new SystemLog();
     log.setLogId(rs.getInt("log_id"));
     log.setUserId(rs.getInt("user_id"));
     log.setAction(
-      SystemLogAction.fromCode(rs.getInt("action"))
-    );
+        SystemLogAction.fromCode(rs.getInt("action")));
     log.setDetail(rs.getString("detail"));
     log.setTimestamp(rs.getTimestamp("timestamp"));
     return log;
   }
 
+  /**
+   * Retrieves a list of system logs for a specific user.
+   *
+   * @param userId the ID of the user whose logs to retrieve
+   * @return a list of SystemLog objects for the specified user, or an empty list
+   *         if no logs are found
+   */
   public static List<SystemLog> getByUserId(int userId) {
     Connection con = DatabaseMgr.getInstance().getConnection();
     String query = "SELECT * FROM system_log WHERE user_id = ? ORDER BY timestamp DESC";

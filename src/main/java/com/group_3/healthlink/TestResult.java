@@ -11,15 +11,16 @@ public class TestResult {
     private String fileType;
     private Timestamp uploadDate;
     private String description;
-    
-    // Patient and Doctor names for display
+
     private String patientName;
     private String doctorName;
 
     // Constructors
-    public TestResult() {}
+    public TestResult() {
+    }
 
-    public TestResult(int patientId, int doctorId, String fileName, byte[] fileData, String fileType, String description) {
+    public TestResult(int patientId, int doctorId, String fileName, byte[] fileData, String fileType,
+            String description) {
         this.patientId = patientId;
         this.doctorId = doctorId;
         this.fileName = fileName;
@@ -28,7 +29,6 @@ public class TestResult {
         this.description = description;
     }
 
-    // Getters and Setters
     public int getResultId() {
         return resultId;
     }
@@ -109,7 +109,6 @@ public class TestResult {
         this.doctorName = doctorName;
     }
 
-    // Helper method to get file extension
     public String getFileExtension() {
         if (fileName != null && fileName.contains(".")) {
             return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
@@ -117,14 +116,12 @@ public class TestResult {
         return "";
     }
 
-    // Helper method to check if file is image
     public boolean isImage() {
         String ext = getFileExtension();
         return ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png") || ext.equals("gif");
     }
 
-    // Helper method to check if file is PDF
     public boolean isPdf() {
         return getFileExtension().equals("pdf");
     }
-} 
+}

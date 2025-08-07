@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class NotesService {
+  /**
+   * Creates a new Note in the database.
+   *
+   * @param content the content of the note
+   * @param userId  the ID of the user creating the note
+   * @return true if the note was created successfully, false otherwise
+   */
   public static boolean createNote(String content, int userId) {
     String query = "INSERT INTO note (content, user_id, timestamp) VALUES (?, ?, ?)";
     Connection con = DatabaseMgr.getInstance().getConnection();
@@ -31,6 +38,12 @@ public class NotesService {
     }
   }
 
+  /**
+   * Retrieves a list of Notes for a user.
+   *
+   * @param userId the ID of the user
+   * @return an array of Notes for the user
+   */
   public static Note[] getUserNotes(int userId) {
     String query = "SELECT * FROM note WHERE user_id = ?";
     Connection con = DatabaseMgr.getInstance().getConnection();
@@ -60,6 +73,12 @@ public class NotesService {
     }
   }
 
+  /**
+   * Deletes a Note by its ID.
+   *
+   * @param noteId the ID of the note to delete
+   * @return true if the note was deleted successfully, false otherwise
+   */
   public static boolean deleteNote(int noteId) {
     String query = "DELETE FROM note WHERE note_id = ?";
     Connection con = DatabaseMgr.getInstance().getConnection();
@@ -76,6 +95,13 @@ public class NotesService {
     }
   }
 
+  /**
+   * Updates the content of a Note.
+   *
+   * @param noteId      the ID of the note to update
+   * @param noteContent the new content for the note
+   * @return true if the note was updated successfully, false otherwise
+   */
   public static boolean updateNote(int noteId, String noteContent) {
     String query = "UPDATE note SET content = ? WHERE note_id = ?";
     Connection con = DatabaseMgr.getInstance().getConnection();

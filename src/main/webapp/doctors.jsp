@@ -288,12 +288,9 @@
               <h6 class="mb-3">Step 2: Choose a Doctor</h6>
               <p class="text-muted mb-4">Select a doctor from the <span id="selectedDepartment"></span> department.</p>
               
-              <div id="doctorsList">
-                <!-- Doctors will be loaded here -->
-              </div>
+              <div id="doctorsList"></div>
             </div>
 
-            <!-- Loading State -->
             <div id="loadingState" style="display: none;">
               <div class="text-center">
                 <div class="spinner-border" role="status">
@@ -342,7 +339,6 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
-        // Handle remove doctor buttons
         for (const btn of document.querySelectorAll('.remove-doctor-btn')) {
           btn.addEventListener('click', () => {
             const doctorId = btn.getAttribute('data-doctor-id');
@@ -351,7 +347,6 @@
           });
         }
 
-        // Modal functionality
         const modal = document.getElementById('addDoctorModal');
         const departmentStep = document.getElementById('departmentStep');
         const doctorStep = document.getElementById('doctorStep');
@@ -364,12 +359,10 @@
         let selectedDepartment = '';
         let selectedDoctorId = '';
 
-        // Reset modal when it's closed
         modal.addEventListener('hidden.bs.modal', () => {
           resetModal();
         });
 
-        // Next button (department selection)
         nextBtn.addEventListener('click', () => {
           const selectedDept = document.querySelector('input[name="department"]:checked');
           if (!selectedDept) {
@@ -380,16 +373,13 @@
           selectedDepartment = selectedDept.value;
           selectedDepartmentSpan.textContent = selectedDepartment;
           
-          // Show loading state
           departmentStep.style.display = 'none';
           loadingState.style.display = 'block';
           nextBtn.style.display = 'none';
           
-          // Load doctors for the selected department
           loadDoctors(selectedDepartment);
         });
 
-        // Back button
         backBtn.addEventListener('click', () => {
           doctorStep.style.display = 'none';
           selectDoctorBtn.style.display = 'none';
@@ -398,7 +388,6 @@
           nextBtn.style.display = 'inline-block';
         });
 
-        // Select doctor button
         selectDoctorBtn.addEventListener('click', () => {
           if (!selectedDoctorId) {
             alert('Please select a doctor first.');
@@ -412,17 +401,17 @@
           fetch('<%= request.getContextPath() %>/api/doctors?department=' + encodeURIComponent(department))
             .then(response => response.json())
             .then(data => {
-              console.log('API Response:', data); // Debug log
+              console.log('API Response:', data); 
               loadingState.style.display = 'none';
               
               if (data.success && data.doctors && data.doctors.length > 0) {
-                console.log('Doctors found:', data.doctors); // Debug log
+                console.log('Doctors found:', data.doctors); 
                 displayDoctors(data.doctors);
                 doctorStep.style.display = 'block';
                 selectDoctorBtn.style.display = 'inline-block';
                 backBtn.style.display = 'inline-block';
               } else {
-                console.log('No doctors found for department:', department); // Debug log
+                console.log('No doctors found for department:', department); 
                 alert('No doctors available in the ' + department + ' department. Please try a different department.');
                 resetModal();
               }
@@ -439,12 +428,11 @@
           doctorsList.innerHTML = '';
           
           doctors.forEach(doctor => {
-            console.log('Processing doctor:', doctor); // Debug each doctor object
+            console.log('Processing doctor:', doctor);
             
             const doctorDiv = document.createElement('div');
             doctorDiv.className = 'col-md-6 mb-3';
             
-            // Create the HTML structure manually to avoid template literal issues
             const radioId = 'doctor' + doctor.doctorId;
             const doctorName = 'Dr. ' + doctor.firstName + ' ' + doctor.lastName;
             const department = doctor.department;
@@ -467,7 +455,6 @@
             doctorsList.appendChild(doctorDiv);
           });
 
-          // Add event listeners to doctor radio buttons
           document.querySelectorAll('input[name="doctorId"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
               selectedDoctorId = e.target.value;
@@ -508,7 +495,6 @@
           selectedDepartment = '';
           selectedDoctorId = '';
           
-          // Clear selections
           document.querySelectorAll('input[name="department"]').forEach(radio => radio.checked = false);
           document.querySelectorAll('input[name="doctorId"]').forEach(radio => radio.checked = false);
         }

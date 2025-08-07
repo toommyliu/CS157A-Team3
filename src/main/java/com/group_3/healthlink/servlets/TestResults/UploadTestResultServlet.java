@@ -50,7 +50,7 @@ public class UploadTestResultServlet extends HttpServlet {
             // Get form data
             String description = req.getParameter("description");
             String doctorIdStr = req.getParameter("doctorId");
-            
+
             if (doctorIdStr == null || doctorIdStr.trim().isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 resp.getWriter().write("Doctor ID is required");
@@ -58,7 +58,7 @@ public class UploadTestResultServlet extends HttpServlet {
             }
 
             int doctorId = Integer.parseInt(doctorIdStr);
-            
+
             // Get the uploaded file
             Part filePart = req.getPart("file");
             if (filePart == null) {
@@ -106,11 +106,11 @@ public class UploadTestResultServlet extends HttpServlet {
 
             // Upload the test result
             boolean success = TestResultService.uploadTestResult(
-                patient.getPatientId(), 
-                doctorId, 
-                fileName, 
-                fileData, 
-                fileType, 
+                patient.getPatientId(),
+                doctorId,
+                fileName,
+                fileData,
+                fileType,
                 description
             );
 
@@ -153,10 +153,10 @@ public class UploadTestResultServlet extends HttpServlet {
     }
 
     private boolean isValidFileType(String fileType) {
-        return fileType.equals("pdf") || 
-               fileType.equals("jpg") || 
-               fileType.equals("jpeg") || 
-               fileType.equals("png") || 
+        return fileType.equals("pdf") ||
+               fileType.equals("jpg") ||
+               fileType.equals("jpeg") ||
+               fileType.equals("png") ||
                fileType.equals("gif");
     }
-} 
+}

@@ -10,10 +10,9 @@ public class Message {
     private Timestamp timestamp;
     private boolean isRead;
 
-    // Default constructor
-    public Message() {}
+    public Message() {
+    }
 
-    // Constructor with all fields
     public Message(int messageId, int senderId, int receiverId, String content, Timestamp timestamp, boolean isRead) {
         this.messageId = messageId;
         this.senderId = senderId;
@@ -32,7 +31,6 @@ public class Message {
         this.isRead = false; // New messages are unread by default
     }
 
-    // Getters and Setters
     public int getMessageId() {
         return messageId;
     }
@@ -92,4 +90,4 @@ public class Message {
                 ", isRead=" + isRead +
                 '}';
     }
-} 
+}

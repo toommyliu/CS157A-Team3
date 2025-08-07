@@ -40,14 +40,6 @@
                   <td><%= med.getFrequency() %></td>
                   <td><%= med.getNotes() != null ? med.getNotes() : "" %></td>
                   <td><%= doctorNames != null ? doctorNames.get(med.getDoctorId()) : "Unknown" %></td>
-                  <!-- <td>
-                    <button type="button" class="btn btn-outline-primary btn-sm" title="Make log entry" data-bs-toggle="modal" data-bs-target="#logMedicationModal"
-                      data-medname="<%= med.getName() %>"
-                      data-dosage="<%= med.getDosage() %>"
-                      data-medid="<%= med.getId() %>">
-                      <i class="bi bi-journal-plus"></i>
-                    </button>
-                  </td> -->
                 </tr>
                 <% } %>
             </tbody>

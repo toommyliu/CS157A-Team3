@@ -8,7 +8,12 @@ import com.group_3.healthlink.User;
 import java.sql.*;
 
 public class PatientService {
-  // Get a Patient by foreign key userId
+  /**
+   * Get a patient by their userId.
+   *
+   * @param userId the ID of the user
+   * @return the Patient object if found, null otherwise
+   */
   public static Patient getByUserId(int userId) {
     Patient patient = null;
     String query = "SELECT * FROM patient WHERE user_id = ?";
@@ -37,7 +42,12 @@ public class PatientService {
     }
   }
 
-  // Get a patient by primary key patientId
+  /**
+   * Get a patient by their patientId.
+   *
+   * @param patientId the ID of the patient
+   * @return the Patient object if found, null otherwise
+   */
   public static Patient getByPatientId(int patientId) {
     Patient patient = null;
     String query = "SELECT * FROM patient WHERE patient_id = ?";
@@ -66,7 +76,12 @@ public class PatientService {
     }
   }
 
-  // Get doctors assigned to a patient
+  /**
+   * Get a list of Doctors assigned to a patient.
+   *
+   * @param patientId the ID of the patient
+   * @return an array of Doctor objects assigned to the patient
+   */
   public static Doctor[] getDoctors(int patientId) {
     java.sql.Connection con = DatabaseMgr.getInstance().getConnection();
 
@@ -99,11 +114,22 @@ public class PatientService {
     }
   }
 
+  /**
+   * Creates a new Patient in the database.
+   *
+   * @param userId                      the ID of the user
+   * @param dateOfBirth                 the date of birth of the patient
+   * @param phoneNumber                 the phone number of the patient
+   * @param address                     the address of the patient
+   * @param emergencyContactName        the name of the emergency contact
+   * @param emergencyContactPhoneNumber the phone number of the emergency contact
+   * @return true if the patient was created successfully, false otherwise
+   */
   public static boolean createNew(int userId, String dateOfBirth, String phoneNumber, String address,
-                                  String emergencyContactName, String emergencyContactPhoneNumber) {
+      String emergencyContactName, String emergencyContactPhoneNumber) {
     Connection con = DatabaseMgr.getInstance().getConnection();
     String query = "INSERT INTO patient (date_of_birth, phone_number, address, emergency_contact_name, " +
-            "emergency_contact_phone_number, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+        "emergency_contact_phone_number, user_id) VALUES (?, ?, ?, ?, ?, ?)";
 
     try {
       PreparedStatement stmt = con.prepareStatement(query);
@@ -124,13 +150,24 @@ public class PatientService {
     }
   }
 
+  /**
+   * Updates an existing Patient's information in the database.
+   *
+   * @param patientId                   the ID of the patient to update
+   * @param dateOfBirth                 the new date of birth of the patient
+   * @param phoneNumber                 the new phone number of the patient
+   * @param address                     the new address of the patient
+   * @param emergencyContactName        the new name of the emergency contact
+   * @param emergencyContactPhoneNumber the new phone number of the emergency
+   *                                    contact
+   * @return true if the patient was updated successfully, false otherwise
+   */
   public static boolean updatePatient(int patientId,
-    String dateOfBirth, String phoneNumber, String address,
-    String emergencyContactName, String emergencyContactPhoneNumber
-  ) {
+      String dateOfBirth, String phoneNumber, String address,
+      String emergencyContactName, String emergencyContactPhoneNumber) {
     Connection con = DatabaseMgr.getInstance().getConnection();
     String query = "UPDATE patient SET date_of_birth = ?, phone_number = ?, address = ?, " +
-            "emergency_contact_name = ?, emergency_contact_phone_number = ? WHERE patient_id = ?";
+        "emergency_contact_name = ?, emergency_contact_phone_number = ? WHERE patient_id = ?";
 
     try {
       PreparedStatement stmt = con.prepareStatement(query);
@@ -151,6 +188,13 @@ public class PatientService {
     }
   }
 
+  /**
+   * Retrieves a Patient object from the ResultSet.
+   *
+   * @param rs the ResultSet containing patient data
+   * @return a Patient object populated with data from the ResultSet
+   * @throws SQLException if an error occurs while accessing the ResultSet
+   **/
   private static Patient getPatient(ResultSet rs) throws SQLException {
     Patient patient;
     patient = new Patient();

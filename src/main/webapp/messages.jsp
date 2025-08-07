@@ -7,7 +7,6 @@
 <head>
   <title>Healthlink - Messages</title>
   <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     .chat-container {
       display: flex;
@@ -158,7 +157,6 @@
         </div>
 
         <div class="chat-container">
-          <!-- Contacts Sidebar -->
           <div class="contacts-sidebar">
             <div class="p-3 border-bottom">
               <h5 class="mb-0">
@@ -169,12 +167,9 @@
                 <% } %>
               </h5>
             </div>
-            <div id="contactsList">
-              <!-- Contacts will be loaded here via JavaScript -->
-            </div>
+            <div id="contactsList"></div>
           </div>
 
-          <!-- Chat Area -->
           <div class="chat-area">
             <div id="chatHeader" class="chat-header" style="display: none;">
               <h5 class="mb-0" id="chatTitle">Select a contact to start chatting</h5>
@@ -210,7 +205,6 @@
         role: '<%= currentUser.getRole() %>'
       };
       
-      // Check if there's a selected user from URL
       <% Integer selectedUserId = (Integer) request.getAttribute("selectedUserId"); %>
       <% if (selectedUserId != null) { %>
         let initialSelectedUserId = <%= selectedUserId %>;
@@ -218,17 +212,14 @@
         let initialSelectedUserId = null;
       <% } %>
 
-      // Load contacts on page load
       document.addEventListener('DOMContentLoaded', function() {
         loadContacts();
       });
       
-      // Handle browser back/forward buttons
       window.addEventListener('popstate', function(event) {
         if (event.state && event.state.userId) {
           // User navigated to a specific chat
           const userId = event.state.userId;
-          // Reload contacts and find the contact
           loadContacts();
         } else {
           // User navigated to main messages page
@@ -264,7 +255,6 @@
           const response = await fetch('${pageContext.request.contextPath}/messages/api/history/' + otherUserId);
           if (response.ok) {
             const messages = await response.json();
-            // Check if there are any unread messages from this user
             return messages.some(message => 
               message.receiverId === currentUser.userId && !message.isRead
             );
@@ -323,7 +313,6 @@
             contactItem.classList.add('has-unread');
           }
           
-          // Add data attribute for easy selection
           contactItem.setAttribute('data-user-id', contact.userId);
           
           contactItem.innerHTML = 
@@ -356,7 +345,7 @@
         // Show chat interface
         document.getElementById('chatHeader').style.display = 'block';
         document.getElementById('chatInput').style.display = 'block';
-        // Construct full name from firstName and lastName
+        
         const fullName = (contact.firstName || '') + ' ' + (contact.lastName || '').trim();
         const displayName = fullName.trim() || 'Unknown';
         document.getElementById('chatTitle').textContent = displayName;
@@ -387,7 +376,7 @@
           if (response.ok) {
             const messages = await response.json();
             displayMessages(messages);
-            updateMessageCount(messages); // Track message count for real-time updates
+            updateMessageCount(messages); 
           } else {
             console.error('Failed to load chat history');
           }
@@ -456,7 +445,6 @@
             const result = await response.json();
             if (result.success) {
               messageInput.value = '';
-              // Immediately check for new messages
               await checkForNewMessages();
             } else {
               alert('Failed to send message');
@@ -470,7 +458,6 @@
         }
       });
 
-      // Smart real-time updates
       let lastMessageCount = 0;
       let lastMessageTimestamp = null;
       
@@ -479,7 +466,7 @@
         if (currentChatUserId) {
           await checkForNewMessages();
         }
-        // Update unread count in sidebar
+        
         await updateSidebarUnreadCount();
       }, 3000);
       
@@ -492,7 +479,6 @@
             
             // Check if we have new messages
             if (messages.length > lastMessageCount) {
-              // Only update if there are new messages
               displayMessages(messages);
               lastMessageCount = messages.length;
               
@@ -509,7 +495,7 @@
         }
       }
       
-             // Update message count when chat history is loaded
+       // Update message count when chat history is loaded
        function updateMessageCount(messages) {
          lastMessageCount = messages.length;
          if (messages.length > 0) {

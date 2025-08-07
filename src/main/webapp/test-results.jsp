@@ -21,9 +21,7 @@
 <html>
 <head>
     <title>Test Results - HealthLink</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet" />
 </head>
 <body>
     <div class="app-container">
@@ -112,7 +110,6 @@
                                 </div>
                                 <div class="card-body">
                                     <% 
-                                    // Get patient ID and assigned doctors
                                     int patientId = PatientService.getByUserId(user.getUserId()).getPatientId();
                                     List<Integer> assignedDoctorIds = AssignmentService.getAssignedDoctorIds(patientId);
                                     boolean hasDoctors = false;
@@ -319,7 +316,6 @@
         }
         
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle file upload form
             const uploadForm = document.getElementById('uploadForm');
             if (uploadForm) {
                 uploadForm.addEventListener('submit', async function(e) {

@@ -210,8 +210,6 @@
                 });
             }
 
-
-
             // As soon as the modal is hidden, reset to "Add New Doctor" modal
             doctorModal.addEventListener("hidden.bs.modal", () => {
                 doctorModalTitle.textContent = defaultTitle;

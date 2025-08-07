@@ -17,53 +17,53 @@
       padding: 0.75rem 1.5rem;
       transition: all 0.2s ease;
     }
-    
+
     .nav-tabs .nav-link:hover {
       border-color: transparent;
       color: #495057;
       background-color: rgba(0, 123, 255, 0.05);
     }
-    
+
     .nav-tabs .nav-link.active {
       border-bottom: 2px solid #0d6efd;
       color: #0d6efd;
       background-color: transparent;
     }
-    
+
     .nav-tabs .nav-link.active:hover {
       border-bottom: 2px solid #0d6efd;
       color: #0d6efd;
     }
-    
+
     /* Card styling for medications */
     .medication-card {
       transition: all 0.2s ease;
       border: 1px solid #dee2e6;
     }
-    
+
     .medication-card:hover {
       box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
       border-color: #adb5bd;
     }
-    
+
     /* Tab content animation */
     .tab-pane {
       transition: opacity 0.15s linear;
     }
-    
+
     .tab-pane.fade {
       opacity: 0;
     }
-    
+
     .tab-pane.fade.show {
       opacity: 1;
     }
-    
+
     /* Empty state styling */
     .empty-state {
       padding: 3rem 1rem;
     }
-    
+
     .empty-state i {
       opacity: 0.5;
     }
@@ -228,7 +228,7 @@
                             <p><strong>Member Since:</strong> <%= patient.getCreatedAt() != null ? patient.getCreatedAt() : "N/A" %></p>
                           </div>
                         </div>
-                        
+
                         <!-- Emergency Contact Section -->
                         <hr class="my-4">
                         <h6 class="text-muted mb-3">
@@ -481,34 +481,23 @@
   <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Check if Bootstrap is loaded
-      if (typeof bootstrap === 'undefined') {
-        console.warn('Bootstrap is not loaded');
-        return;
-      }
-
-      // Enhanced tab functionality
       const tabButtons = document.querySelectorAll('#patientTabs .nav-link');
       const tabPanes = document.querySelectorAll('.tab-pane');
-      
+
       tabButtons.forEach(button => {
         button.addEventListener('click', function(e) {
-          // Remove active class from all tabs
           tabButtons.forEach(btn => {
             btn.classList.remove('active');
             btn.setAttribute('aria-selected', 'false');
           });
-          
-          // Add active class to clicked tab
+
           this.classList.add('active');
           this.setAttribute('aria-selected', 'true');
-          
-          // Hide all tab panes
+
           tabPanes.forEach(pane => {
             pane.classList.remove('show', 'active');
           });
-          
-          // Show the target tab pane
+
           const targetId = this.getAttribute('data-bs-target');
           const targetPane = document.querySelector(targetId);
           if (targetPane) {
@@ -604,9 +593,9 @@
             result = { success: resp.ok };
           }
 
-                      if (editMedicationModal) {
-              editMedicationModal.hide();
-            }
+          if (editMedicationModal) {
+            editMedicationModal.hide();
+          }
 
           if (result.success) {
             alert('Medication updated successfully');
