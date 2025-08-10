@@ -35,7 +35,7 @@ public class AssignmentService {
                 Patient patient = PatientService.getByPatientId(patientId);
                 Doctor doctor = DoctorService.getByDoctorId(doctorId);
 
-                // Create notificatino for doctor assignment
+                // Create notification for doctor assignment
                 if (patient != null && doctor != null) {
                     NotificationService.createDoctorAssignmentNotification(patient.getUserId(), doctor.getUserId(),
                             true);
